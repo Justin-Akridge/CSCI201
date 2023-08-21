@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <string>
 #include "cube.h"
 
@@ -12,7 +13,7 @@ int getMeasurement() {
       valid = true;
     } else {
       std::cin.clear();
-      cin.ignore(numer_limits<streamsize>::max(), '\n');
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Invalid input. Please enter an integer: ";
     }
   } while (!valid);
@@ -29,7 +30,7 @@ std::string getColor() {
       valid = true;
     } else {
       std::cin.clear();
-      cin.ignore(numer_limits<streamsize>::max(), '\n');
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Invalid input. Please enter an color: ";
     }
   } while (!valid);
@@ -37,7 +38,7 @@ std::string getColor() {
 }
 
 int main() {
-  // TODO []: make this into a do while, validating input
+  bool change = true;
   do {
     int length = getMeasurement();
     int height = getMeasurement();
@@ -48,22 +49,22 @@ int main() {
     new_cube.setHeight(height);
     new_cube.setWidth(width);
     new_cube.setColor(color);
-    bool change = true;
-    char ans; 
-    std::cout << "Would you like to enter new measurements Y/N: "; 
-    std::cin >> ans;
-    if (ans == 'Y' || ans == 'y') {
-      continue;
-    } else if (ans == 'N' || ans == 'n') {
-      change = false;
-    } else {
-      std::cout << "Invalid input" << std::endl;
-    } while (change)
+    std::cout << "Length = " << new_cube.getLength() << '\n'
+              << "Width = " << new_cube.getWidth() << '\n'
+              << "Height = " << new_cube.getHeight() << '\n'
+              << "Color = " << new_cube.getColor() << '\n'
+              << "Volume = " << new_cube.calculateVolume(length, height, width) << '\n';
+    char ans = ' '; 
+    while (ans != 'y' && ans != 'Y' && ans != 'n' && ans != 'N') {
+      std::cout << "Would you like to enter new measurements Y/N: "; 
+      std::cin >> ans;
+      if (ans == 'Y' || ans == 'y')
+        break;
+      else if (ans == 'N' || ans == 'n')
+        change = false;
+      else
+        std::cout << "Invalid input" << std::endl;
+    }
 
-  while (change) {
-    int length = getMeasurement();
-    int height = getMeasurement();
-    int width = getMeasurement();
-    std::string color = getColor();
-  }
+  } while (change);
 }

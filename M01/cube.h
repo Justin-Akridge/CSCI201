@@ -4,12 +4,13 @@
 #include <string>
 
 class cube {
+public:
   cube(int, int, int, std::string);
   cube();
-  int getLength();
-  int getWidth();
-  int getHeight();
-  std::string getColor();
+  int getLength() const;
+  int getWidth() const;
+  int getHeight() const;
+  std::string getColor() const;
   void setLength(int& length);
   void setWidth(int& width);
   void setHeight(int& height);
@@ -20,6 +21,6 @@ private:
   int width;
   int height;
   std::string color;
-}
+};
 
 #endif

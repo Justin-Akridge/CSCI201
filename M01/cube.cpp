@@ -1,4 +1,5 @@
 #include "cube.h"
+#include <string>
 
 cube::cube() {
   length = 0;
@@ -7,25 +8,26 @@ cube::cube() {
   color = "";
 }
 
-cube::cube(int length, int width, int height, std::string color) {
-  length = length;
-  width = width;
-  height = height;
-  color = color;
+cube::cube(int setLength, int setWidth, int setHeight, std::string setColor) {
+  length = setLength;
+  width = setWidth;
+  height = setHeight;
+  color = setColor;
 }
-int cube::getLength() {
+
+int cube::getLength() const {
   return length;
 }
 
-int cube::getWidth() {
+int cube::getWidth() const {
   return width;
 }
 
-int cube::getHeight() {
+int cube::getHeight() const {
   return height;
 }
 
-std::color cube::getColor() {
+std::string cube::getColor() const {
   return color;
 }
 
@@ -45,5 +47,6 @@ void cube::setColor(std::string& color) {
   color = color;
 }
 
-int calculateVolume(int, int, int) {
-  return
+int cube::calculateVolume(int x, int y, int z) {
+  return x * y * z;
+}
