@@ -1,0 +1,10 @@
+[]  Prompt the user for the Manufacturer, Model, Serial Number, Wattage,, and Number of Channels
+[]  Validate the information
+[]  After Information from the user has been validated, create an object for the StereoReceiver.
+[]  Using the Accessor Methods, display the StereoReciever’s information (manufacturer, model, etc.).  
+[]  Turn on the StereoReceiver using the appropriate method.
+[]  Allow the user to change/set the band, frequency, and volume. Validate any input before calling the appropriate functions.
+[]  Allow the user to change any of the attributes you created (appropriately)
+[]  Display the StereoReceiver’s settings (power, band, station, and volume)
+[]  Turn off the StereoReceiver.
+

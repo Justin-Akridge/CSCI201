@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "StereoReceiver_h"
+#include "StereoReceiver.h"
 
 StereoReceiver::StereoReceiver() {
   std::string manufacturer = "";
@@ -89,17 +89,34 @@ void StereoReceiver::setSerial_number(std::string setSerial_number) {
   serial_number = setSerial_number;
 }
 
-void setWattage(int wattage) {
+void StereoReceiver::setWattage(int wattage) {
   wattage = setWattage;
 }
 
-void setNumber_of_channels(int setNumber_of_channels) {
+void StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
   number_of_channels = setNumber_of_channels;
 }
 
-//std::string setBand();
-//double setFrequency();
-//int setVolume();
-//bool setPower();
-//std::string setLights();
-//int setBass_booster();
+void StereoReceiver::setBand(std::string setBand) {
+  band = setBand;
+}
+
+void StereoReceiver::setFrequency(double setFrequency) {
+  frequency = setFrequency; 
+}
+
+void StereoReceiver::setVolume(int setVolume) {
+  volume = setVolume;
+}
+
+void StereoReceiver::setPower(bool setPower) {
+  power = setPower;
+}
+
+void StereoReceiver::setLights(std::string setLights) {
+  lights = setLights;
+}
+
+void setBass_booster(int setBass_booster) {
+  bass_booster = setBass_booster;
+}
