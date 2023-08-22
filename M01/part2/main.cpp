@@ -120,9 +120,9 @@ double getFrequency() const {
 int getVolume() const {
   bool valid = false;
   do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
+    int volume;
+    std::cout << "Enter volume: ";
+    std::cin >> volume;
     if (std::cin.good()) {
       valid = true;
     } else {
@@ -136,9 +136,9 @@ int getVolume() const {
 bool getPower() const {
   bool valid = false;
   do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
+    bool input;
+    std::cout << "Enter power: ";
+    std::cin >> input;
     if (std::cin.good()) {
       valid = true;
     } else {
@@ -152,9 +152,9 @@ bool getPower() const {
 std::string getLights() const {
   bool valid = false;
   do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
+    std::string input;
+    std::cout << "Enter color of lights: ";
+    std::cin >> input;
     if (std::cin.good()) {
       valid = true;
     } else {

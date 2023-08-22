@@ -9,7 +9,7 @@ int getMeasurement() {
   do {
     std::cout << "Enter the length of the cube: ";
     std::cin >> input;
-    if (std::cin.good()) {
+    if (std::cin.good() && input > 0) {
       valid = true;
     } else {
       std::cin.clear();

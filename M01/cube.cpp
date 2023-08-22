@@ -31,20 +31,20 @@ std::string cube::getColor() const {
   return color;
 }
 
-void cube::setLength(int& length) {
-  length = length;
+void cube::setLength(int& setLength) {
+  length = setLength;
 }
 
-void cube::setWidth(int& width) {
-  width = width;
+void cube::setWidth(int& setWidth) {
+  width = setWidth;
 }
 
-void cube::setHeight(int& height) {
-  height = height;
+void cube::setHeight(int& setHeight) {
+  height = setHeight;
 }
 
-void cube::setColor(std::string& color) {
-  color = color;
+void cube::setColor(std::string& setColor) {
+  color = setColor;
 }
 
 int cube::calculateVolume(int x, int y, int z) {
