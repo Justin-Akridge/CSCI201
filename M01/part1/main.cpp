@@ -1,3 +1,10 @@
+/*
+  Justin Akridge
+  08/23/2023
+  Implementation of Cube object. Program gets and set attributes of the cube class
+  and calculates the volume
+*/
+
 #include <iostream>
 #include <limits>
 #include <string>
