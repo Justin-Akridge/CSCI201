@@ -1,7 +1,8 @@
 #include <iostream>
+#include <limits>
 #include "StereoReceiver.h"
 
-std::string getManufacturer() const {
+std::string getManufacturer() {
   std::string input;
   bool valid = false;
   do {
@@ -19,7 +20,7 @@ std::string getManufacturer() const {
 }
 
 
-std::string getModel() const {
+std::string getModel() {
   std::string input;
   bool valid = false;
   do {
@@ -36,7 +37,7 @@ std::string getModel() const {
   return input;
 }
 
-std::string getSerial_number() const {
+std::string getSerial_number() {
   std::string input;
   bool valid = false;
   do {

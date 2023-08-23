@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "StereoReceiver.h"
 
 StereoReceiver::StereoReceiver() {
@@ -77,46 +78,54 @@ int StereoReceiver::getBass_booster() const {
   return bass_booster;
 }
 
-void StereoReceiver::setManufacturer(std::string& setManufacturer) {
-  manufacturer = setManufacturer;
+bool test_string(string_view s) {
+  int val = std::all_of(setManufacturer.begin(), setManufacturer.end(), [](char ch) {
+    return (isalpha(ch) || isspace(ch));
+  }); 
+}
+int StereoReceiver::setManufacturer(std::string& setManufacturer) {
+  if (val)
+    manufacturer = setManufacturer;
+  else
+    return 1;
 }
 
-void StereoReceiver::setModel(std::string setModel) {
+int StereoReceiver::setModel(std::string setModel) {
   model = setModel;
 }
 
-void StereoReceiver::setSerial_number(std::string setSerial_number) {
+int StereoReceiver::setSerial_number(std::string setSerial_number) {
   serial_number = setSerial_number;
 }
 
-void StereoReceiver::setWattage(int wattage) {
+int StereoReceiver::setWattage(int setWattage) {
   wattage = setWattage;
 }
 
-void StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
+int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
   number_of_channels = setNumber_of_channels;
 }
 
-void StereoReceiver::setBand(std::string setBand) {
+int StereoReceiver::setBand(std::string setBand) {
   band = setBand;
 }
 
-void StereoReceiver::setFrequency(double setFrequency) {
+int StereoReceiver::setFrequency(double setFrequency) {
   frequency = setFrequency; 
 }
 
-void StereoReceiver::setVolume(int setVolume) {
+int StereoReceiver::setVolume(int setVolume) {
   volume = setVolume;
 }
 
-void StereoReceiver::setPower(bool setPower) {
+int StereoReceiver::setPower(bool setPower) {
   power = setPower;
 }
 
-void StereoReceiver::setLights(std::string setLights) {
+int StereoReceiver::setLights(std::string setLights) {
   lights = setLights;
 }
 
-void setBass_booster(int setBass_booster) {
+int StereoReceiver::setBass_booster(int setBass_booster) {
   bass_booster = setBass_booster;
 }
