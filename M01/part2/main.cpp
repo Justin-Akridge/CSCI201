@@ -54,7 +54,7 @@ std::string getSerial_number() {
   return input;
 }
 
-int getWattage() const {
+int getWattage() {
   bool valid = false;
   do {
     int bass; 
@@ -70,7 +70,7 @@ int getWattage() const {
   } while (!valid);
 }
 
-int getNumber_of_channels() const {
+int getNumber_of_channels() {
   bool valid = false;
   do {
     int bass; 
@@ -86,7 +86,7 @@ int getNumber_of_channels() const {
   } while (!valid);
 }
 
-std::string getBand() const {
+std::string getBand() {
   bool valid = false;
   do {
     int bass; 
@@ -102,7 +102,7 @@ std::string getBand() const {
   } while (!valid);
 }
 
-double getFrequency() const {
+double getFrequency() {
   bool valid = false;
   do {
     int bass; 
@@ -118,7 +118,7 @@ double getFrequency() const {
   } while (!valid);
 }
 
-int getVolume() const {
+int getVolume() {
   bool valid = false;
   do {
     int volume;
@@ -134,7 +134,7 @@ int getVolume() const {
   } while (!valid);
 }
 
-bool getPower() const {
+bool getPower() {
   bool valid = false;
   do {
     bool input;
@@ -150,7 +150,7 @@ bool getPower() const {
   } while (!valid);
 }
 
-std::string getLights() const {
+std::string getLights() {
   bool valid = false;
   do {
     std::string input;
@@ -166,7 +166,7 @@ std::string getLights() const {
   } while (!valid);
 }
 
-int getBass_booster() const {
+int getBass_booster() {
   //add in dial
   bool valid = false;
   do {
@@ -185,7 +185,7 @@ int getBass_booster() const {
 }
 
 int main() {
-  do {
-    std::cout << " 
-  } while (); 
+//  do {
+//    std::cout << " 
+//  } while (); 
 }

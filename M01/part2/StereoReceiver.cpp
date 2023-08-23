@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <algorithm>
 #include "StereoReceiver.h"
 
@@ -78,54 +79,108 @@ int StereoReceiver::getBass_booster() const {
   return bass_booster;
 }
 
-bool test_string(string_view s) {
-  int val = std::all_of(setManufacturer.begin(), setManufacturer.end(), [](char ch) {
+bool is_valid_string(std::string_view s) {
+  return std::all_of(s.begin(), s.end(), [](char ch) {
     return (isalpha(ch) || isspace(ch));
   }); 
 }
+
+bool is_valid_int(int x) {
+  if (x > 0)
+    return true;
+  return false; 
+}
+
+bool is_valid_double(double x) {
+  if (x > 0.0)
+    return true;
+  return false; 
+}
+
 int StereoReceiver::setManufacturer(std::string& setManufacturer) {
-  if (val)
+  if (is_valid_string(setManufacturer))
     manufacturer = setManufacturer;
   else
     return 1;
+  return 0;
 }
 
 int StereoReceiver::setModel(std::string setModel) {
-  model = setModel;
+  if (is_valid_string(setModel))
+    model = setModel;
+  else
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setSerial_number(std::string setSerial_number) {
-  serial_number = setSerial_number;
+  if (is_valid_string(setSerial_number)) 
+    serial_number = setSerial_number;
+  else
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setWattage(int setWattage) {
-  wattage = setWattage;
+  if (is_valid_int(setWattage)) 
+    wattage = setWattage;
+  else
+    return 1; 
+  return 0;
 }
 
 int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
-  number_of_channels = setNumber_of_channels;
+  if (is_valid_int(setNumber_of_channels))
+    number_of_channels = setNumber_of_channels;
+  else
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setBand(std::string setBand) {
-  band = setBand;
+  if (is_valid_int(setBand))
+    band = setBand;
+  else 
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setFrequency(double setFrequency) {
-  frequency = setFrequency; 
+  if (is_valid_double(setFrequency)) 
+    frequency = setFrequency; 
+    return 0;
+  else 
+    return 1;
 }
 
 int StereoReceiver::setVolume(int setVolume) {
-  volume = setVolume;
+  if (is_valid_int(setVolume))
+    volume = setVolume;
+  else 
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setPower(bool setPower) {
-  power = setPower;
+  if (setPower || !setPower)
+    power = setPower;
+  else 
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setLights(std::string setLights) {
-  lights = setLights;
+  if (is_valid_string(setLights))
+    lights = setLights;
+  else
+    return 1;
+  return 0;
 }
 
 int StereoReceiver::setBass_booster(int setBass_booster) {
-  bass_booster = setBass_booster;
+  if(is_valid_int(setBass_booster))
+    bass_booster = setBass_booster;
+  else
+    return 1;
+  return 0;
 }
