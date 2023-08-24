@@ -2,11 +2,11 @@
 #include <limits>
 #include "StereoReceiver.h"
 
-std::string getManufacturer() {
+std::string get_string(std::string qtype) {
   std::string input;
   bool valid = false;
   do {
-    std::cout << "Enter manufacturer: ";
+    std::cout << "Enter " << qtype << ": ";
     std::cin >> input;
     if (std::cin.good()) {
       valid = true;
@@ -19,126 +19,45 @@ std::string getManufacturer() {
   return input;
 }
 
-
-std::string getModel() {
-  std::string input;
+int get_int(std::string qtype) {
   bool valid = false;
+  int input; 
   do {
-    std::cout << "Enter the model of the car: ";
+    std::cout << "Enter " << qtype << ": ";
     std::cin >> input;
     if (std::cin.good()) {
       valid = true;
     } else {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an the model of car: ";
+      std::cout << "Invalid input. Please enter an integer: ";
     }
   } while (!valid);
   return input;
 }
 
-std::string getSerial_number() {
-  std::string input;
+double get_double(std::string qtype) {
   bool valid = false;
+  double input;
   do {
-    std::cout << "Enter the serial_number: ";
+    std::cout << "Enter " << qtype << ": ";
     std::cin >> input;
     if (std::cin.good()) {
       valid = true;
     } else {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Serial number is invalid. ";
+      std::cout << "Invalid input. Please enter an double: ";
     }
   } while (!valid);
   return input;
 }
 
-int getWattage() {
+bool get_bool(std::string qtype) {
   bool valid = false;
+  bool input;
   do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-}
-
-int getNumber_of_channels() {
-  bool valid = false;
-  do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-}
-
-std::string getBand() {
-  bool valid = false;
-  do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-}
-
-double getFrequency() {
-  bool valid = false;
-  do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-}
-
-int getVolume() {
-  bool valid = false;
-  do {
-    int volume;
-    std::cout << "Enter volume: ";
-    std::cin >> volume;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-}
-
-bool getPower() {
-  bool valid = false;
-  do {
-    bool input;
-    std::cout << "Enter power: ";
+    std::cout << "Enter " << qtype << ": ";
     std::cin >> input;
     if (std::cin.good()) {
       valid = true;
@@ -148,44 +67,15 @@ bool getPower() {
       std::cout << "Invalid input. Please enter an integer: ";
     }
   } while (!valid);
-}
-
-std::string getLights() {
-  bool valid = false;
-  do {
-    std::string input;
-    std::cout << "Enter color of lights: ";
-    std::cin >> input;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-}
-
-int getBass_booster() {
-  //add in dial
-  bool valid = false;
-  do {
-    int bass; 
-    std::cout << "Enter bass: ";
-    std::cin >> bass;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-  
+  return input;
 }
 
 int main() {
-//  do {
-//    std::cout << " 
-//  } while (); 
+  std::string manufacturer = get_string("manufacturer");
+  std::string model = get_string("model");
+  std::string serial_number = get_string("serial number");
+  int wattage = get_int("wattage");
+  int number_of_channels = get_int("number of channels");
+  StereoReceiver radio(manufacturer, model, serial_number, wattage, number_of_channels);
+  radio.print();
 }

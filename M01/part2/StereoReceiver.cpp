@@ -1,43 +1,55 @@
 #include <iostream>
 #include <string>
-#include <string_view>
 #include <algorithm>
 #include "StereoReceiver.h"
 
 StereoReceiver::StereoReceiver() {
-  std::string manufacturer = "";
-  std::string model = "";
-  std::string serial_number = "";
-  int wattage = 0;
-  int number_of_channels = 0;
-  std::string band = "";
-  double frequency = 0.0;
-  int volume = 0;
-  bool power = 0;
-  std::string lights = "";
-  int bass_booster = 0;
+  manufacturer = "";
+  model = "";
+  serial_number = "";
+  wattage = 0;
+  number_of_channels = 0;
+  band = "";
+  frequency = 0.0;
+  volume = 0;
+  power = 0;
+  lights = "";
+  bass_booster = 0;
 }
 
 StereoReceiver::StereoReceiver(std::string setManufacturer, std::string setModel, 
                                std::string setSerial_number, int setWattage, 
                                int setNumber_of_channels) {
-  std::string manufacturer = setManufacturer;
-  std::string model = setModel;
-  std::string serial_number = setSerial_number;
-  int wattage = setWattage;
-  int number_of_channels = setNumber_of_channels;
-  std::string band = "AM";
-  double frequency = 0.0;
-  int volume = 0;
-  bool power = 0;
-  std::string lights = "off";
-  int bass_booster = 0;
+  manufacturer = setManufacturer;
+  model = setModel;
+  serial_number = setSerial_number;
+  wattage = setWattage;
+  number_of_channels = setNumber_of_channels;
+  band = "AM";
+  frequency = 0.0;
+  volume = 0;
+  power = 0;
+  lights = "off";
+  bass_booster = 0;
 }
 
-std::string StereoReceiver:: getManufacturer() const {
+void StereoReceiver::print() {
+  std::cout << "Manufacturer: " << manufacturer << '\n';
+  std::cout << "Model: " << model << '\n';
+  std::cout << "Serial Number: " << serial_number << '\n';
+  std::cout << "Wattage: " << wattage << '\n';
+  std::cout << "Number of channels: " << number_of_channels << '\n';
+  std::cout << "Band: " << band << '\n';
+  std::cout << "Frequency: " << frequency << '\n';
+  std::cout << "Volume: " << volume << '\n';
+  std::cout << "Power: " << power << '\n';
+  std::cout << "Lights: " << lights << '\n';
+  std::cout << "Bass booster: " << bass_booster << '\n';
+}
+
+std::string StereoReceiver::getManufacturer() const {
   return manufacturer;
 }
-
 
 std::string StereoReceiver::getModel() const {
   return model;
@@ -79,7 +91,7 @@ int StereoReceiver::getBass_booster() const {
   return bass_booster;
 }
 
-bool is_valid_string(std::string_view s) {
+bool is_valid_string(std::string s) {
   return std::all_of(s.begin(), s.end(), [](char ch) {
     return (isalpha(ch) || isspace(ch));
   }); 
@@ -138,7 +150,7 @@ int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
 }
 
 int StereoReceiver::setBand(std::string setBand) {
-  if (is_valid_int(setBand))
+  if (is_valid_string(setBand))
     band = setBand;
   else 
     return 1;
@@ -148,9 +160,9 @@ int StereoReceiver::setBand(std::string setBand) {
 int StereoReceiver::setFrequency(double setFrequency) {
   if (is_valid_double(setFrequency)) 
     frequency = setFrequency; 
-    return 0;
   else 
     return 1;
+  return 0;
 }
 
 int StereoReceiver::setVolume(int setVolume) {
