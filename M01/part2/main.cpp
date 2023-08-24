@@ -2,6 +2,21 @@
 #include <limits>
 #include "StereoReceiver.h"
 
+std::string get_string(std::string);
+int get_int(std::string);
+double get_double(std::string);
+bool get_bool(std::string qtype);
+
+int main() {
+  std::string manufacturer = get_string("manufacturer");
+  std::string model = get_string("model");
+  std::string serial_number = get_string("serial number");
+  int wattage = get_int("wattage");
+  int number_of_channels = get_int("number of channels");
+  StereoReceiver radio(manufacturer, model, serial_number, wattage, number_of_channels);
+  radio.print();
+}
+
 std::string get_string(std::string qtype) {
   std::string input;
   bool valid = false;
@@ -68,14 +83,4 @@ bool get_bool(std::string qtype) {
     }
   } while (!valid);
   return input;
-}
-
-int main() {
-  std::string manufacturer = get_string("manufacturer");
-  std::string model = get_string("model");
-  std::string serial_number = get_string("serial number");
-  int wattage = get_int("wattage");
-  int number_of_channels = get_int("number of channels");
-  StereoReceiver radio(manufacturer, model, serial_number, wattage, number_of_channels);
-  radio.print();
 }
