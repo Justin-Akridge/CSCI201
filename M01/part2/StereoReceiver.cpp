@@ -40,7 +40,7 @@ void StereoReceiver::print_controls() {
   std::cout << "Volume: " << volume << '\n';
   std::cout << "Power: " << power << '\n';
   std::cout << "Lights: " << lights << '\n';
-  std::cout << "Bass booster: " << bass_booster << '\n\n';
+  std::cout << "Bass booster: " << bass_booster << "\n\n";
 }
 
 void StereoReceiver::print() {
@@ -55,7 +55,7 @@ void StereoReceiver::print() {
   std::cout << "Volume: " << volume << '\n';
   std::cout << "Power: " << power << '\n';
   std::cout << "Lights: " << lights << '\n';
-  std::cout << "Bass booster: " << bass_booster << '\n\n';
+  std::cout << "Bass booster: " << bass_booster << "\n\n";
 }
 
 std::string StereoReceiver::getManufacturer() const {
