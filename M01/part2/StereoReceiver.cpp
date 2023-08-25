@@ -12,7 +12,7 @@ StereoReceiver::StereoReceiver() {
   band = "";
   frequency = 0.0;
   volume = 0;
-  power = "";
+  power = false;
   lights = "";
   bass_booster = 0;
 }
@@ -28,7 +28,7 @@ StereoReceiver::StereoReceiver(std::string setManufacturer, std::string setModel
   band = "AM";
   frequency = 0.0;
   volume = 0;
-  power = "off";
+  power = false;
   lights = "off";
   bass_booster = 0;
 }
@@ -158,7 +158,7 @@ int StereoReceiver::setBand(std::string setBand) {
 }
 
 int StereoReceiver::setFrequency(double setFrequency) {
-  if (is_valid_double(setFrequency)) 
+  if (setFrequency >= 0 && setFrequency <= 50)
     frequency = setFrequency; 
   else 
     return 1;
@@ -166,7 +166,7 @@ int StereoReceiver::setFrequency(double setFrequency) {
 }
 
 int StereoReceiver::setVolume(int setVolume) {
-  if (is_valid_int(setVolume))
+  if (setVolume >= 0 && setVolume <= 50)
     volume = setVolume;
   else 
     return 1;
@@ -190,7 +190,7 @@ int StereoReceiver::setLights(std::string setLights) {
 }
 
 int StereoReceiver::setBass_booster(int setBass_booster) {
-  if(is_valid_int(setBass_booster))
+  if (bass_booster >= 0 && bass_booster <= 10)
     bass_booster = setBass_booster;
   else
     return 1;

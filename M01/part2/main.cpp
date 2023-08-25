@@ -26,22 +26,36 @@ int main() {
     std::cout << "Press 1 to set the band\n";
     std::cout << "Press 2 to set the frequency\n";
     std::cout << "Press 3 to turn up/down the volume\n";
-    std::cout << "Press 4 to to turn off the radio\n";
+    std::cout << "Press 4 to to turn off/on the radio\n";
     std::cout << "Press 5 to turn the lights off/on\n";
     std::cout << "Press 6 to increase/decrease bass booster\n";
     std::cout << "Press 9 to quit\n";
     std::cin >> ans;
-    switch(ans) {
-      case 1:
-        std::string band = get_string("band");
-        radio.setBand(band);
-        break;
-      case 2:
-        double frequency = get_double("frequency");
-        radio.setFrequency(frequency);
-        break;
-      case 3:
-        int volume = getVolume("volume")
+    bool flag = false;
+    if (ans == 1) {
+      std::string band = get_string("band");
+      int response = radio.setBand(band);
+      if (response)
+        std::cout << "Error, invalid input";
+    } else if (ans == 2) {
+      double frequency = get_double("frequency");
+      if (radio.setFrequency(frequency)) {
+        std::cout << "Error, invalid input";
+      }
+    } else if (ans == 3) {
+      int volume = get_int("volume");
+      if (radio.setVolume(volume)) {
+        std::cout << "Error, invalid input";
+      }
+    } else if (ans == 4) {
+      if ((radio.getPower()) = false)
+        radio.setPower(true);
+    } else if (ans == 5) {
+
+    } else if (ans == 6) {
+
+    } else {
+      std::cout << "Invalid input\n";
     }
   } while (ans != 9);
 }
