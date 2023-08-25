@@ -29,6 +29,7 @@ public:
   int setLights(std::string);
   int setBass_booster(int);
   void print();
+  void print_settings();
 private:
   std::string manufacturer;
   std::string model;

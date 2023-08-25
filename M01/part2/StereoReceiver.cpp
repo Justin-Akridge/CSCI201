@@ -12,7 +12,7 @@ StereoReceiver::StereoReceiver() {
   band = "";
   frequency = 0.0;
   volume = 0;
-  power = 0;
+  power = "";
   lights = "";
   bass_booster = 0;
 }
@@ -28,9 +28,18 @@ StereoReceiver::StereoReceiver(std::string setManufacturer, std::string setModel
   band = "AM";
   frequency = 0.0;
   volume = 0;
-  power = 0;
+  power = "off";
   lights = "off";
   bass_booster = 0;
+}
+
+void StereoReceiver::print_settings() {
+  std::cout << "Band: " << band << '\n';
+  std::cout << "Frequency: " << frequency << '\n';
+  std::cout << "Volume: " << volume << '\n';
+  std::cout << "Power: " << power << '\n';
+  std::cout << "Lights: " << lights << '\n';
+  std::cout << "Bass booster: " << bass_booster << '\n';
 }
 
 void StereoReceiver::print() {
@@ -92,21 +101,12 @@ int StereoReceiver::getBass_booster() const {
 }
 
 bool is_valid_string(std::string s) {
-  return std::all_of(s.begin(), s.end(), [](char ch) {
-    return (isalpha(ch) || isspace(ch));
-  }); 
-}
-
-bool is_valid_int(int x) {
-  if (x > 0)
-    return true;
-  return false; 
-}
-
-bool is_valid_double(double x) {
-  if (x > 0.0)
-    return true;
-  return false; 
+  for (int i = 0; i < s.size(); i++) {
+    if (!isspace(s[i]) || !isalpha(s[i] || s[i] == '-')) {
+      return false;
+    }
+  }
+  return true;
 }
 
 int StereoReceiver::setManufacturer(std::string& setManufacturer) {
@@ -134,7 +134,7 @@ int StereoReceiver::setSerial_number(std::string setSerial_number) {
 }
 
 int StereoReceiver::setWattage(int setWattage) {
-  if (is_valid_int(setWattage)) 
+  if (setWattage > 0 && setWattage < 100) 
     wattage = setWattage;
   else
     return 1; 
@@ -142,7 +142,7 @@ int StereoReceiver::setWattage(int setWattage) {
 }
 
 int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
-  if (is_valid_int(setNumber_of_channels))
+  if (setNumber_of_channels > 0 && setNumber_of_channels < 110)
     number_of_channels = setNumber_of_channels;
   else
     return 1;
@@ -150,7 +150,7 @@ int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
 }
 
 int StereoReceiver::setBand(std::string setBand) {
-  if (is_valid_string(setBand))
+  if (is_valid_string(setBand) && setBand == "AM" || setBand == "PM")
     band = setBand;
   else 
     return 1;
