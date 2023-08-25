@@ -1,3 +1,9 @@
+/*
+ * Program name: stereo component
+ * Author: Justin Akridge
+ * Date last updated: 8/25/23
+ * Purpose: Defines and implements a radio
+ */
 #include <iostream>
 #include <limits>
 #include "StereoReceiver.h"
@@ -31,48 +37,64 @@ int main() {
     std::cout << "Press 5 to turn the lights off/on\n";
     std::cout << "Press 6 to increase/decrease bass booster\n";
     std::cout << "Press 9 to quit\n";
+    std::cout << '\n';
+    std::cout << "Enter: ";
     std::cin >> ans;
     if (ans == 0) {
       radio.print_controls();
-    }
-    if (ans == 1) {
-      std::string band = get_string("AM or FM");
-      int response = radio.setBand(band);
-      if (!response)
-        std::cout << "Error, invalid input\n";
+      std::cout << "Would you like to see all the settings? Y/N: ";
+      char input;
+      do {
+        std::cin >> input;
+        input = tolower(input);
+        std::cout << input << std::endl;
+        if (input != 'n' && input != 'y') {
+          std::cout << "Invalid input. Did you mean y/n? ";
+          std::cin >> input;
+        }
+      } while (input != 'y' && input != 'n');
+      if (input == 'y') {
+        radio.print();
+      }
+    } else if (ans == 1) {
+        std::string band = get_string("AM or FM");
+        int response = radio.setBand(band);
+        if (!response)
+          std::cout << "Error, invalid input\n";
     } else if (ans == 2) {
-      double frequency = get_double("frequency");
-      if (radio.setFrequency(frequency)) {
-        std::cout << "Error, invalid input";
-      }
+        double frequency = get_double("frequency");
+        if (radio.setFrequency(frequency))
+          std::cout << "Error, invalid input";
     } else if (ans == 3) {
-      int volume = get_int("volume");
-      if (radio.setVolume(volume)) {
-        std::cout << "Error, invalid input";
-      }
+        int volume = get_int("volume");
+        if (radio.setVolume(volume))
+          std::cout << "Error, invalid input";
     } else if (ans == 4) {
-      bool power = radio.getPower();
-      if (power)
-        radio.setPower(false);
-      else
-        radio.setPower(true);
+        bool power = radio.getPower();
+        if (power)
+          radio.setPower(false);
+        else
+          radio.setPower(true);
     } else if (ans == 5) {
-      std::string lights = radio.getLights();
-      if (lights == "on")
-        radio.setLights("off");
-      else
-        radio.setLights("on");
+        std::string lights = radio.getLights();
+        std::cout << lights << std::endl;
+        if (lights == "on")
+          radio.setLights("off");
+        else if (lights == "off" || lights == "") 
+          radio.setLights("on");
     } else if (ans == 6) {
-      int bass = get_int("bass volume");
-      if (radio.setBass_booster(bass)) {
-        std::cout << "Error, invalid input";
-      }
+        int bass = get_int("bass volume");
+        if (radio.setBass_booster(bass)) {
+          std::cout << "Error, invalid input";
+        }
     } else if (ans == 9) {
-      continue;
+        continue;
     } else {
-      std::cout << "Invalid input\n";
+        std::cout << "Invalid input\n";
     }
   } while (ans != 9);
+  radio.setPower(false);
+  std::cout << "GOODBYE!" << std::endl;
 }
 
 std::string get_string(std::string qtype) {

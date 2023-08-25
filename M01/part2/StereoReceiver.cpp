@@ -152,7 +152,8 @@ int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
 }
 
 int StereoReceiver::setBand(std::string setBand) {
-  if (is_valid_string(setBand) && setBand == "AM" || setBand == "PM")
+  if (is_valid_string(setBand) && setBand == "AM" || setBand == "PM" 
+                               || setBand == "am" || setBand == "pm")
     band = setBand;
   else 
     return 1;
@@ -160,7 +161,7 @@ int StereoReceiver::setBand(std::string setBand) {
 }
 
 int StereoReceiver::setFrequency(double setFrequency) {
-  if (setFrequency >= 0 && setFrequency <= 50)
+  if (setFrequency >= 0. && setFrequency <= 50)
     frequency = setFrequency; 
   else 
     return 1;
@@ -184,10 +185,12 @@ int StereoReceiver::setPower(bool setPower) {
 }
 
 int StereoReceiver::setLights(std::string setLights) {
-  if (is_valid_string(setLights))
-    lights = setLights;
-  else
-    return 1;
+ // if (is_valid_string(setLights))
+ //   lights = setLights;
+ // else
+ //   return 1;
+ // return 0;
+  lights = setLights;
   return 0;
 }
 
