@@ -185,12 +185,10 @@ int StereoReceiver::setPower(bool setPower) {
 }
 
 int StereoReceiver::setLights(std::string setLights) {
- // if (is_valid_string(setLights))
- //   lights = setLights;
- // else
- //   return 1;
- // return 0;
-  lights = setLights;
+  if (is_valid_string(setLights))
+    lights = setLights;
+  else
+    return 1;
   return 0;
 }
 
