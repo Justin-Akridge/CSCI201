@@ -19,10 +19,11 @@ int main() {
   if (power) 
     std::cout << "Error\n";
   std::cout << "Would you like to set any of the settings?\n";
-  radio.print_settings();
+  radio.print_controls();
   std::cout << '\n';
   int ans;
   do {
+    std::cout << "Press 0 display control settings\n";
     std::cout << "Press 1 to set the band\n";
     std::cout << "Press 2 to set the frequency\n";
     std::cout << "Press 3 to turn up/down the volume\n";
@@ -31,12 +32,14 @@ int main() {
     std::cout << "Press 6 to increase/decrease bass booster\n";
     std::cout << "Press 9 to quit\n";
     std::cin >> ans;
-    bool flag = false;
+    if (ans == 0) {
+      radio.print_controls();
+    }
     if (ans == 1) {
-      std::string band = get_string("band");
+      std::string band = get_string("AM or FM");
       int response = radio.setBand(band);
-      if (response)
-        std::cout << "Error, invalid input";
+      if (!response)
+        std::cout << "Error, invalid input\n";
     } else if (ans == 2) {
       double frequency = get_double("frequency");
       if (radio.setFrequency(frequency)) {
@@ -48,12 +51,24 @@ int main() {
         std::cout << "Error, invalid input";
       }
     } else if (ans == 4) {
-      if ((radio.getPower()) = false)
+      bool power = radio.getPower();
+      if (power)
+        radio.setPower(false);
+      else
         radio.setPower(true);
     } else if (ans == 5) {
-
+      std::string lights = radio.getLights();
+      if (lights == "on")
+        radio.setLights("off");
+      else
+        radio.setLights("on");
     } else if (ans == 6) {
-
+      int bass = get_int("bass volume");
+      if (radio.setBass_booster(bass)) {
+        std::cout << "Error, invalid input";
+      }
+    } else if (ans == 9) {
+      continue;
     } else {
       std::cout << "Invalid input\n";
     }

@@ -33,16 +33,18 @@ StereoReceiver::StereoReceiver(std::string setManufacturer, std::string setModel
   bass_booster = 0;
 }
 
-void StereoReceiver::print_settings() {
+void StereoReceiver::print_controls() {
+  std::cout << '\n' << "----------- Controls ----------\n";
   std::cout << "Band: " << band << '\n';
   std::cout << "Frequency: " << frequency << '\n';
   std::cout << "Volume: " << volume << '\n';
   std::cout << "Power: " << power << '\n';
   std::cout << "Lights: " << lights << '\n';
-  std::cout << "Bass booster: " << bass_booster << '\n';
+  std::cout << "Bass booster: " << bass_booster << '\n\n';
 }
 
 void StereoReceiver::print() {
+  std::cout << '\n' << "----------- All Settings -----------\n";
   std::cout << "Manufacturer: " << manufacturer << '\n';
   std::cout << "Model: " << model << '\n';
   std::cout << "Serial Number: " << serial_number << '\n';
@@ -53,7 +55,7 @@ void StereoReceiver::print() {
   std::cout << "Volume: " << volume << '\n';
   std::cout << "Power: " << power << '\n';
   std::cout << "Lights: " << lights << '\n';
-  std::cout << "Bass booster: " << bass_booster << '\n';
+  std::cout << "Bass booster: " << bass_booster << '\n\n';
 }
 
 std::string StereoReceiver::getManufacturer() const {
