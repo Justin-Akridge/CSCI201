@@ -33,14 +33,17 @@ void Date::setMonth() {
   do {
     try {
       std::cout << "Enter the month: ";
-      int initMonth;
+      std::string initMonth;
       std::cin >> initMonth;
+      for (int i = 0; i < initMonth.size(); i++) {
+        //[TODO] FINISH CHECKING THE INPUT FOR DIGITS IN ALL SETTERS
+        if (!isdigit(initMonth[i])
+      }
       if (initMonth < 1 || initMonth > 12) {
         throw initMonth;
-      } else {
-        month = initMonth;
-        flag = true;
       }
+      month = initMonth;
+      flag = true;
     } catch(int month) {
       std::cout << month << " is an invalid month.\n"; 
     } 
@@ -85,6 +88,7 @@ void Date::setYear() {
       if (initYear < 1900 || initYear > 2020)
         throw initYear;
       year = initYear;
+      flag = true;
     } catch(int initYear) {
       std::cout << initYear << " is an invalid year.\n";
     }
@@ -164,23 +168,4 @@ int main() {
   d1.setYear();
   std::string year = d1.date_to_string();
   std::cout << year << std::endl;
-  //try {
-  //  int month;
-  //  std::cout << "Enter the month: ";
-  //  std::cin >> month;
-  //  if (month < 1 || month > 12)
-  //    throw month
-  //  int day;
-  //  std::cout << "Enter the day: ";
-  //  std::cin >> day;
-  //  if (day < 1 || day  > 32)
-  //    throw day;
-  //  int year;
-  //  std::cout << "Enter the year: ";
-  //  std::cin >> year;
-  //  if (year < 1900 || year > 2020)
-  //    throw year;
-  //} catch (int value) {
-  //  std::cout << value << " is out of range\n";
-  //}
 }
