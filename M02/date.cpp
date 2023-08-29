@@ -36,13 +36,15 @@ void Date::setMonth() {
       std::string initMonth;
       std::cin >> initMonth;
       for (int i = 0; i < initMonth.size(); i++) {
-        //[TODO] FINISH CHECKING THE INPUT FOR DIGITS IN ALL SETTERS
-        if (!isdigit(initMonth[i])
+        if (!isdigit(initMonth[i])) {
+          throw initMonth;
+        }
       }
-      if (initMonth < 1 || initMonth > 12) {
-        throw initMonth;
+      int i_initMonth = std::stoi(initMonth);
+      if (i_initMonth < 1 || i_initMonth > 12) {
+        throw i_initMonth;
       }
-      month = initMonth;
+      month = i_initMonth;
       flag = true;
     } catch(int month) {
       std::cout << month << " is an invalid month.\n"; 
@@ -55,25 +57,31 @@ void Date::setDay() {
   do {
     try {
       std::cout << "Enter the day of the month: ";
-      int initDay;
-      std::cin >> initDay;
-      if (initDay < 0 || initDay > 31)
-        throw initDay;
+      std::string s_initDay;
+      std::cin >> s_initDay;
+      for (int i = 0; i < s_initDay.size(); i++) {
+        if (!isdigit(s_initDay[i])) {
+          throw s_initDay;
+        }
+      }
+      int i_initDay = std::stoi(s_initDay);
+      if (i_initDay < 0 || i_initDay > 31)
+        throw i_initDay;
       switch(month) {
         case 2:
-          if (initDay > 28)
-            throw initDay;
+          if (i_initDay > 28)
+            throw i_initDay;
         case 4:
         case 6:
         case 9:
         case 11:
-          if (initDay > 30)
-            throw initDay;
+          if (i_initDay > 30)
+            throw i_initDay;
       }
-      day = initDay;
+      day = i_initDay;
       flag = true;
-    } catch(int initDay) {
-      std::cout << initDay << " is an invalid day of the month\n";
+    } catch(int i_initDay) {
+      std::cout << i_initDay << " is an invalid day of the month\n";
     }
   } while(!flag);
 }
@@ -83,14 +91,22 @@ void Date::setYear() {
   do {
     try {
       std::cout << "Enter the year: ";
-      int initYear;
-      std::cin >> initYear;
-      if (initYear < 1900 || initYear > 2020)
-        throw initYear;
-      year = initYear;
+      std::string s_initYear;
+      std::cin >> s_initYear;
+      for (int i = 0; i < s_initYear.size(); i++) {
+        if (!isdigit(s_initYear[i])) {
+          throw s_initYear;
+        }
+      }
+      int i_initYear = std::stoi(s_initYear);
+      if (i_initYear < 1900 || i_initYear > 2020)
+        throw i_initYear;
+      year = i_initYear;
       flag = true;
-    } catch(int initYear) {
-      std::cout << initYear << " is an invalid year.\n";
+    } catch(int i_initYear) {
+      std::cout << i_initYear << " is an invalid year.\n";
+    } catch(std::string s_initYear) {
+      std::cout << s_initYear << " is an invalid year.\n";
     }
   } while(!flag);
 }
