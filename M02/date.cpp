@@ -50,9 +50,15 @@ void Date::setMonth() {
       month = i_initMonth;
       flag = true;
     } catch(int i_initMonth) {
-      std::cout << i_initMonth << " is an invalid month.\n"; 
+      if (i_initMonth > 12)
+        std::cout << "There are only 12 months in a year.\n"; 
+      else
+        std::cout << "A negative month is not a valid month.\n";
     } catch(std::string s_initMonth) {
-      std::cout << s_initMonth << " is an invalid month.\n";
+      if (std::stoi(s_initMonth) > 12)
+        std::cout << "There are only 12 months in a year.\n"; 
+      else
+        std::cout << "A negative month is not a valid month.\n";
     }
   } while(!flag);
 }
@@ -69,7 +75,7 @@ void Date::setDay() {
           continue;
         }
         if (!isdigit(s_initDay[i])) {
-          throw s_initDay;
+          throw std::stoi(s_initDay);
         }
       }
       int i_initDay = std::stoi(s_initDay);
@@ -89,11 +95,21 @@ void Date::setDay() {
       day = i_initDay;
       flag = true;
     } catch(int i_initDay) {
-      std::cout << i_initDay << " is an invalid day of the month\n";
-    } catch(std::string s_initDay) {
-      std::cout << s_initDay << " is an invalid day of the month\n";
+      switch(month) {
+        case 2:
+          std::cout << "There are only 28 day in February\n";
+          break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+          std::cout << "There are only 30 day in " << getMonth() << std::endl;
+          break;
+        default:
+          std::cout << "There are only 31 days in " << getMonth() << std::endl;
+          break;
+      }
     }
-
   } while(!flag);
 }
 
@@ -188,8 +204,6 @@ Date::Date(int initMonth, int initDay, int initYear) {
   day = initDay;
   year = initYear;
 }
-
-
 
 int main() {
   Date d1;
