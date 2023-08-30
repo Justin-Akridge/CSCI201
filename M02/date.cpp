@@ -33,22 +33,27 @@ void Date::setMonth() {
   do {
     try {
       std::cout << "Enter the month: ";
-      std::string initMonth;
-      std::cin >> initMonth;
-      for (int i = 0; i < initMonth.size(); i++) {
-        if (!isdigit(initMonth[i])) {
-          throw initMonth;
+      std::string s_initMonth;
+      std::cin >> s_initMonth;
+      for (int i = 0; i < s_initMonth.size(); i++) {
+        if (i == 0 && s_initMonth[i] == '-') {
+          continue;
+        }
+        if (!isdigit(s_initMonth[i])) {
+          throw s_initMonth;
         }
       }
-      int i_initMonth = std::stoi(initMonth);
+      int i_initMonth = std::stoi(s_initMonth);
       if (i_initMonth < 1 || i_initMonth > 12) {
         throw i_initMonth;
       }
       month = i_initMonth;
       flag = true;
-    } catch(int month) {
-      std::cout << month << " is an invalid month.\n"; 
-    } 
+    } catch(int i_initMonth) {
+      std::cout << i_initMonth << " is an invalid month.\n"; 
+    } catch(std::string s_initMonth) {
+      std::cout << s_initMonth << " is an invalid month.\n";
+    }
   } while(!flag);
 }
 
@@ -60,6 +65,9 @@ void Date::setDay() {
       std::string s_initDay;
       std::cin >> s_initDay;
       for (int i = 0; i < s_initDay.size(); i++) {
+        if (i == 0 && s_initDay[i] == '-') {
+          continue;
+        }
         if (!isdigit(s_initDay[i])) {
           throw s_initDay;
         }
@@ -82,7 +90,10 @@ void Date::setDay() {
       flag = true;
     } catch(int i_initDay) {
       std::cout << i_initDay << " is an invalid day of the month\n";
+    } catch(std::string s_initDay) {
+      std::cout << s_initDay << " is an invalid day of the month\n";
     }
+
   } while(!flag);
 }
 
@@ -94,6 +105,9 @@ void Date::setYear() {
       std::string s_initYear;
       std::cin >> s_initYear;
       for (int i = 0; i < s_initYear.size(); i++) {
+        if (i == 0 && s_initYear[i] == '-') {
+          continue;
+        }
         if (!isdigit(s_initYear[i])) {
           throw s_initYear;
         }
