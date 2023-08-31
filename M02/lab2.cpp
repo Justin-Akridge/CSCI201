@@ -13,15 +13,15 @@ int main() {
         throw std::out_of_range("Value is out of range of a byte");
       }
       std::byte byte_value = static_cast<std::byte>(input_value);
-      byte_value = byte_value + std::byte(1);
+      //byte_value = byte_value + std::byte(1);
       std::cout << "Byte value: " << static_cast<int>(byte_value) << std::endl;
     }
-  } catch (const std::out_of_range &e) {
-      std::cerr << "Out of range error: " << e.what() << std::endl;
-  } catch (const std::range_error &e) {
-      std::cerr << "Range error: " << e.what() << std::endl;
   } catch (const std::overflow_error &e) {
       std::cerr << "Overflow error: " << e.what() << std::endl;
+  } catch (const std::range_error &e) {
+      std::cerr << "Range error: " << e.what() << std::endl;
+  } catch (const std::out_of_range &e) {
+      std::cerr << "Out of range error: " << e.what() << std::endl;
   } catch (...) {
       std::cerr << "An unexpected error occured." << std::endl;
   }
