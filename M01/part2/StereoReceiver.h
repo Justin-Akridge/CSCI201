@@ -17,17 +17,17 @@ public:
   bool getPower() const;
   std::string getLights() const;
   int getBass_booster() const;
-  int setManufacturer(std::string&);
-  int setModel(std::string);
-  int setSerial_number(std::string);
-  int setWattage(int);
-  int setNumber_of_channels(int);
-  int setBand(std::string);
-  int setFrequency(double);
-  int setVolume(int);
-  int setPower(bool);
-  int setLights(std::string);
-  int setBass_booster(int);
+  void setManufacturer(std::string&);
+  void setModel(std::string);
+  void setSerial_number(std::string);
+  void setWattage(int);
+  void setNumber_of_channels(int);
+  void setBand(std::string);
+  void setFrequency(double);
+  void setVolume(int);
+  void setPower(bool);
+  void setLights(std::string);
+  void setBass_booster(int);
   void print();
   void print_controls();
 private:

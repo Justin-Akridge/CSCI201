@@ -21,9 +21,7 @@ int main() {
   int number_of_channels = get_int("number of channels");
   StereoReceiver radio(manufacturer, model, serial_number, wattage, number_of_channels);
   radio.print();
-  int power = radio.setPower(true);
-  if (power) 
-    std::cout << "Error\n";
+  radio.setPower(true);
   std::cout << "Would you like to set any of the settings?\n";
   radio.print_controls();
   std::cout << '\n';
@@ -58,17 +56,11 @@ int main() {
       }
     } else if (ans == 1) {
         std::string band = get_string("AM or FM");
-        int response = radio.setBand(band);
-        if (!response)
-          std::cout << "Error, invalid input\n";
+        radio.setBand(band);
     } else if (ans == 2) {
         double frequency = get_double("frequency");
-        if (radio.setFrequency(frequency))
-          std::cout << "Error, invalid input";
     } else if (ans == 3) {
         int volume = get_int("volume");
-        if (radio.setVolume(volume))
-          std::cout << "Error, invalid input";
     } else if (ans == 4) {
         bool power = radio.getPower();
         if (power)
@@ -77,16 +69,12 @@ int main() {
           radio.setPower(true);
     } else if (ans == 5) {
         std::string lights = radio.getLights();
-        std::cout << lights << std::endl;
         if (lights == "on")
           radio.setLights("off");
         else if (lights == "off" || lights == "") 
           radio.setLights("on");
     } else if (ans == 6) {
         int bass = get_int("bass volume");
-        if (radio.setBass_booster(bass)) {
-          std::cout << "Error, invalid input";
-        }
     } else if (ans == 9) {
         continue;
     } else {

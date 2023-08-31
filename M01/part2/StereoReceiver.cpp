@@ -111,91 +111,143 @@ bool is_valid_string(std::string s) {
   return true;
 }
 
-int StereoReceiver::setManufacturer(std::string& setManufacturer) {
-  if (is_valid_string(setManufacturer))
-    manufacturer = setManufacturer;
-  else
-    return 1;
-  return 0;
+void StereoReceiver::setManufacturer(std::string& setManufacturer) {
+  try {
+    if (is_valid_string(setManufacturer))
+      manufacturer = setManufacturer;
+    else
+      throw setManufacturer;
+  } catch (std::string setManufacturer) {
+    std::cout << setManufacturer << " is an invalid manufacturer\n";
+  }
 }
 
-int StereoReceiver::setModel(std::string setModel) {
-  if (is_valid_string(setModel))
-    model = setModel;
-  else
-    return 1;
-  return 0;
+void StereoReceiver::setModel(std::string setModel) {
+  try {
+    if (is_valid_string(setModel))
+      model = setModel;
+    else
+      throw setModel;
+  } catch (std::string setModel) {
+    std::cout << setModel << " is an invalid model\n";
+  }
 }
 
-int StereoReceiver::setSerial_number(std::string setSerial_number) {
-  if (is_valid_string(setSerial_number)) 
-    serial_number = setSerial_number;
-  else
-    return 1;
-  return 0;
+void StereoReceiver::setSerial_number(std::string setSerial_number) {
+  try {
+    if (is_valid_string(setSerial_number)) 
+      serial_number = setSerial_number;
+    else
+      throw setSerial_number;
+  } catch (std::string setSerial_number) {
+    std::cout << setSerial_number << "  is invalid serial number\n";
+  }
 }
 
-int StereoReceiver::setWattage(int setWattage) {
-  if (setWattage > 0 && setWattage < 100) 
-    wattage = setWattage;
-  else
-    return 1; 
-  return 0;
+void StereoReceiver::setWattage(int setWattage) {
+  try {
+    if (setWattage > 0 && setWattage < 100) 
+      wattage = setWattage;
+    else
+      throw setWattage;
+  } catch (int setWattage) {
+    if (setWattage < 0) {
+      std::cout << "Watts must be above 0\n"; 
+    }
+    else {
+      std::cout << "Watts must be below 100\n";
+    }
 }
 
-int StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
-  if (setNumber_of_channels > 0 && setNumber_of_channels < 110)
-    number_of_channels = setNumber_of_channels;
-  else
-    return 1;
-  return 0;
+void StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
+  try {
+    if (setNumber_of_channels > 0 && setNumber_of_channels < 110)
+      number_of_channels = setNumber_of_channels;
+    else
+      throw setNumber_of_channels;
+  } catch(setNumber_of_channels) {
+    if (setNumber_of_channels < 0) {
+      std::cout << "Number of channels must be greater then 0\n";
+    } else {
+      std::cout << "Number of channels must be less then 110 channels\n";
+    }
+  }
 }
 
-int StereoReceiver::setBand(std::string setBand) {
-  if (is_valid_string(setBand) && setBand == "AM" || setBand == "PM" 
-                               || setBand == "am" || setBand == "pm")
-    band = setBand;
-  else 
-    return 1;
-  return 0;
+void StereoReceiver::setBand(std::string setBand) {
+  try {
+    std::to_lower(setBand);
+    if (is_valid_string(setBand) && setBand == "am" || setBand == "fm")
+      band = setBand;
+    else 
+      throw setBand;
+  } catch (std::string setBand) {
+    std::cout << "You must enter am or fm\n";
+  }
 }
 
-int StereoReceiver::setFrequency(double setFrequency) {
-  if (setFrequency >= 0. && setFrequency <= 50)
-    frequency = setFrequency; 
-  else 
-    return 1;
-  return 0;
+void StereoReceiver::setFrequency(double setFrequency) {
+  try {
+    if (setFrequency >= 0.0 && setFrequency <= 50.0)
+      frequency = setFrequency; 
+    else 
+      throw setFrequency;
+  } catch (double setFrequency) {
+    if (setFrequency < 0.0) {
+      std::cout << "Frenquency must be greater than or equal to 0\n";
+    } else {
+      std::cout << "Frenquency must be less than or equal to 50\n";
+    }
+  }
 }
 
-int StereoReceiver::setVolume(int setVolume) {
-  if (setVolume >= 0 && setVolume <= 50)
-    volume = setVolume;
-  else 
-    return 1;
-  return 0;
+void StereoReceiver::setVolume(int setVolume) {
+  try {
+    if (setVolume >= 0 && setVolume <= 50)
+      volume = setVolume;
+    else 
+      throw setVolume;
+  } catch (int setVolume) {
+    if (setVolume < 0) {
+      std::cout << "Volume must be greater then or equal to 0\n";
+    } else {
+      std::cout << "Volume only goes up to 50\n";
+    }
+  }
 }
 
-int StereoReceiver::setPower(bool setPower) {
-  if (setPower || !setPower)
-    power = setPower;
-  else 
-    return 1;
-  return 0;
+void StereoReceiver::setPower(bool setPower) {
+  try {
+    if (setPower || !setPower)
+      power = setPower;
+    else 
+      throw setPower;
+  } catch (bool setPower) {
+    std::cout << "You must enter true or false\n";
+  }
 }
 
-int StereoReceiver::setLights(std::string setLights) {
-  if (is_valid_string(setLights))
-    lights = setLights;
-  else
-    return 1;
-  return 0;
+void StereoReceiver::setLights(std::string setLights) {
+  try {
+    std::to_lower(setLights);
+    if (is_valid_string(setLights) && setLights == "on" || setLights == "false")
+      lights = setLights;
+    else
+  } catch (std::string setLights) {
+    std::cout << "You must enter on or off\n";
+  }
 }
 
-int StereoReceiver::setBass_booster(int setBass_booster) {
-  if (bass_booster >= 0 && bass_booster <= 10)
-    bass_booster = setBass_booster;
-  else
-    return 1;
-  return 0;
+void StereoReceiver::setBass_booster(int setBass_booster) {
+  try {
+    if (bass_booster >= 0 && bass_booster <= 10)
+      bass_booster = setBass_booster;
+    else
+      throw setBass_booster;
+  } catch (int setBass_booster) {
+    if (setBass_booster < 0) {
+      std::cout << "You must enter value greater then 0\n";
+    } else {
+      std::cout << "You must enter value less then 11\n";
+    }
 }
