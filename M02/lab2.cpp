@@ -1,7 +1,16 @@
 #include <iostream>
 #include <cstdint>
 
-//This program needs to be compiled with clang for std::byte 
+/* Justin Akridge
+ * 08/31/2023
+ * This problem is test exception handling to see what errors we get 
+ * when an invalid value is entered 
+ * This program needs to be compiled with -std=c++17
+ *
+ * Conclusion: I only see a out_of_range error being throw from entering an
+ * invalid response. In the case of an array, it would throw an overflow error
+ * and when accessing an element that doesn't exist in the array, a range_error.
+ */
 
 int main() {
   try {
@@ -13,7 +22,6 @@ int main() {
         throw std::out_of_range("Value is out of range of a byte");
       }
       std::byte byte_value = static_cast<std::byte>(input_value);
-      //byte_value = byte_value + std::byte(1);
       std::cout << "Byte value: " << static_cast<int>(byte_value) << std::endl;
     }
   } catch (const std::overflow_error &e) {
