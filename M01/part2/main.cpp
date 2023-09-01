@@ -14,18 +14,7 @@ int get_int(std::string);
 double get_double(std::string);
 bool get_bool(std::string qtype);
 
-int main() {
-  std::string manufacturer = get_string("manufacturer");
-  std::string model = get_string("model");
-  std::string serial_number = get_string("serial number");
-  int wattage = get_int("wattage");
-  int number_of_channels = get_int("number of channels");
-  StereoReceiver radio(manufacturer, model, serial_number, wattage, number_of_channels);
-  radio.print();
-  radio.setPower(true);
-  std::cout << "Would you like to set any of the settings?\n";
-  radio.print_controls();
-  std::cout << '\n';
+int get_controls_input() {
   int ans;
   do {
     std::cout << "Press 0 display control settings\n";
@@ -39,48 +28,76 @@ int main() {
     std::cout << '\n';
     std::cout << "Enter: ";
     std::cin >> ans;
-    if (ans == 0) {
+  } while (ans != 0 && ans != 1 && ans != 2 && ans != 3 && ans != 4 && ans != 5 && ans != 6 && ans != 9);
+    return ans;
+}
+
+char see_all_settings() {
+  char input;
+  do {
+    std::cin >> input;
+    input = tolower(input);
+    if (input != 'n' && input != 'y') {
+      std::cout << "Invalid input. Did you mean y/n? ";
+      std::cin >> input;
+    }
+  } while (input != 'y' && input != 'n');
+  return input;
+}
+
+void set_control_settings(StereoReceiver& radio, int option) {
+  do {
+    if (option == 0) {
       radio.print_controls();
       std::cout << "Would you like to see all the settings? Y/N: ";
-      char input;
-      do {
-        std::cin >> input;
-        input = tolower(input);
-        if (input != 'n' && input != 'y') {
-          std::cout << "Invalid input. Did you mean y/n? ";
-          std::cin >> input;
-        }
-      } while (input != 'y' && input != 'n');
+      char input = see_all_settings();
       if (input == 'y') {
         radio.print();
       }
-    } else if (ans == 1) {
+    } else if (option == 1) {
         std::string band = get_string("AM or FM");
         radio.setBand(band);
-    } else if (ans == 2) {
+    } else if (option == 2) {
         double frequency = get_double("frequency");
-    } else if (ans == 3) {
+    } else if (option == 3) {
         int volume = get_int("volume");
-    } else if (ans == 4) {
+    } else if (option == 4) {
         bool power = radio.getPower();
         if (power)
           radio.setPower(false);
         else
           radio.setPower(true);
-    } else if (ans == 5) {
+    } else if (option == 5) {
         std::string lights = radio.getLights();
         if (lights == "on")
           radio.setLights("off");
         else if (lights == "off" || lights == "") 
           radio.setLights("on");
-    } else if (ans == 6) {
+    } else if (option == 6) {
         int bass = get_int("bass volume");
-    } else if (ans == 9) {
+    } else if (option == 9) {
         continue;
     } else {
         std::cout << "Invalid input\n";
-    }
+    } 
   } while (ans != 9);
+} 
+
+int main() {
+  std::string manufacturer = get_string("manufacturer");
+  std::string model = get_string("model");
+  std::string serial_number = get_string("serial number");
+  int wattage = get_int("wattage");
+  int number_of_channels = get_int("number of channels");
+  StereoReceiver radio(manufacturer, model, serial_number, wattage, number_of_channels);
+  radio.print();
+  radio.setPower(true);
+  std::cout << "Would you like to set any of the settings?\n";
+  radio.print_controls();
+  std::cout << '\n';
+  do {
+    int ans = get_controls_input();  
+    set_control_settings(radio, ans);
   radio.setPower(false);
   std::cout << "GOODBYE!" << std::endl;
 }
