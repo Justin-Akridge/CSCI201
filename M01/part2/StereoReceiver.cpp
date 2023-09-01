@@ -116,9 +116,9 @@ void StereoReceiver::setManufacturer(std::string& setManufacturer) {
     if (is_valid_string(setManufacturer))
       manufacturer = setManufacturer;
     else
-      throw setManufacturer;
-  } catch (std::string setManufacturer) {
-    std::cout << setManufacturer << " is an invalid manufacturer\n";
+      throw std::runtime_error(setManufacturer);
+  } catch (std::runtime_error& e) {
+    std::cout << " is an invalid manufacturer\n" << e.what() << '\n';
   }
 }
 
@@ -127,9 +127,9 @@ void StereoReceiver::setModel(std::string setModel) {
     if (is_valid_string(setModel))
       model = setModel;
     else
-      throw setModel;
-  } catch (std::string setModel) {
-    std::cout << setModel << " is an invalid model\n";
+      throw std::runtime_error(setModel);
+  } catch (std::runtime_error& e) {
+    std::cout << "This an invalid model\n" << e.what() << '\n';
   }
 }
 
@@ -138,9 +138,9 @@ void StereoReceiver::setSerial_number(std::string setSerial_number) {
     if (is_valid_string(setSerial_number)) 
       serial_number = setSerial_number;
     else
-      throw setSerial_number;
-  } catch (std::string setSerial_number) {
-    std::cout << setSerial_number << "  is invalid serial number\n";
+      throw std::runtime_error(setSerial_number);
+  } catch (std::runtime_error& e) {
+    std::cout << setSerial_number << "  is invalid serial number\n" << e.what() << '\n';
   }
 }
 
@@ -149,14 +149,10 @@ void StereoReceiver::setWattage(int setWattage) {
     if (setWattage > 0 && setWattage < 100) 
       wattage = setWattage;
     else
-      throw setWattage;
-  } catch (int setWattage) {
-    if (setWattage < 0) {
-      std::cout << "Watts must be above 0\n"; 
-    }
-    else {
-      std::cout << "Watts must be below 100\n";
-    }
+      throw std::out_of_range("Value is out of range");
+  } catch (std::out_of_range& e) {
+      std::cout << "Out of range error: " << e.what() << '\n';
+  }
 }
 
 void StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
@@ -164,13 +160,9 @@ void StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
     if (setNumber_of_channels > 0 && setNumber_of_channels < 110)
       number_of_channels = setNumber_of_channels;
     else
-      throw setNumber_of_channels;
-  } catch(setNumber_of_channels) {
-    if (setNumber_of_channels < 0) {
-      std::cout << "Number of channels must be greater then 0\n";
-    } else {
-      std::cout << "Number of channels must be less then 110 channels\n";
-    }
+      throw std::out_of_range("Value is out of range");
+  } catch(std::out_of_range& e) {
+      std::cout << "Out of range error: " << e.what() << '\n';
   }
 }
 
@@ -180,9 +172,9 @@ void StereoReceiver::setBand(std::string setBand) {
     if (is_valid_string(setBand) && setBand == "am" || setBand == "fm")
       band = setBand;
     else 
-      throw setBand;
-  } catch (std::string setBand) {
-    std::cout << "You must enter am or fm\n";
+      throw std::runtime_error("Value is not am or fm");
+  } catch (std::runtime_error& e) {
+      std:cout << "Runtime error: " << e.what() << '\n';
   }
 }
 
@@ -191,13 +183,9 @@ void StereoReceiver::setFrequency(double setFrequency) {
     if (setFrequency >= 0.0 && setFrequency <= 50.0)
       frequency = setFrequency; 
     else 
-      throw setFrequency;
-  } catch (double setFrequency) {
-    if (setFrequency < 0.0) {
-      std::cout << "Frenquency must be greater than or equal to 0\n";
-    } else {
-      std::cout << "Frenquency must be less than or equal to 50\n";
-    }
+      throw std::out_of_range("Value is out of range");
+  } catch (std::out_of_range& e) {
+      std::cout << "Out of range error: " << e.what() << '\n';
   }
 }
 
@@ -206,13 +194,9 @@ void StereoReceiver::setVolume(int setVolume) {
     if (setVolume >= 0 && setVolume <= 50)
       volume = setVolume;
     else 
-      throw setVolume;
-  } catch (int setVolume) {
-    if (setVolume < 0) {
-      std::cout << "Volume must be greater then or equal to 0\n";
-    } else {
-      std::cout << "Volume only goes up to 50\n";
-    }
+      throw std::out_of_range("Value is out of range");
+  } catch (std::out_of_range& e) {
+      std::cout << "Out of range: " << e.what() << '\n';
   }
 }
 
@@ -220,10 +204,9 @@ void StereoReceiver::setPower(bool setPower) {
   try {
     if (setPower || !setPower)
       power = setPower;
-    else 
-      throw setPower;
-  } catch (bool setPower) {
-    std::cout << "You must enter true or false\n";
+      throw std::runtime_error("Value is not equal to true or false");
+  } catch (std::runtime_error& e) {
+    std::cout << "Runtime error: " << e.what() << '\n';
   }
 }
 
@@ -233,8 +216,9 @@ void StereoReceiver::setLights(std::string setLights) {
     if (is_valid_string(setLights) && setLights == "on" || setLights == "false")
       lights = setLights;
     else
-  } catch (std::string setLights) {
-    std::cout << "You must enter on or off\n";
+      throw std::runtime_error("Value is not a valid string");
+  } catch (std::runtime_error& e) {
+    std::cout << "Runtime error: " << e.what() << '\n';
   }
 }
 
@@ -243,11 +227,8 @@ void StereoReceiver::setBass_booster(int setBass_booster) {
     if (bass_booster >= 0 && bass_booster <= 10)
       bass_booster = setBass_booster;
     else
-      throw setBass_booster;
-  } catch (int setBass_booster) {
-    if (setBass_booster < 0) {
-      std::cout << "You must enter value greater then 0\n";
-    } else {
-      std::cout << "You must enter value less then 11\n";
-    }
+      throw std::out_of_range("Value is out of range");
+  } catch (std::out_of_range& e) {
+      std::cout << "Out of range error: " << e.what() << '\n';
+  }
 }

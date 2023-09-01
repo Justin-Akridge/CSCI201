@@ -5,6 +5,7 @@
  * Purpose: Defines and implements a radio
  */
 #include <iostream>
+#include <exception>
 #include <limits>
 #include "StereoReceiver.h"
 
@@ -45,7 +46,6 @@ int main() {
       do {
         std::cin >> input;
         input = tolower(input);
-        std::cout << input << std::endl;
         if (input != 'n' && input != 'y') {
           std::cout << "Invalid input. Did you mean y/n? ";
           std::cin >> input;
