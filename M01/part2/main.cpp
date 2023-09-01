@@ -53,6 +53,8 @@ void set_control_settings(StereoReceiver& radio, int option) {
       char input = see_all_settings();
       if (input == 'y') {
         radio.print();
+      } else {
+        break;
       }
     } else if (option == 1) {
         std::string band = get_string("AM or FM");
@@ -80,7 +82,7 @@ void set_control_settings(StereoReceiver& radio, int option) {
     } else {
         std::cout << "Invalid input\n";
     } 
-  } while (ans != 9);
+  } while (option != 9);
 } 
 
 int main() {
@@ -95,9 +97,8 @@ int main() {
   std::cout << "Would you like to set any of the settings?\n";
   radio.print_controls();
   std::cout << '\n';
-  do {
-    int ans = get_controls_input();  
-    set_control_settings(radio, ans);
+  int ans = get_controls_input();  
+  set_control_settings(radio, ans);
   radio.setPower(false);
   std::cout << "GOODBYE!" << std::endl;
 }
