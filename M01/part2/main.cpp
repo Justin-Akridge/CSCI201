@@ -17,31 +17,43 @@ bool get_bool(std::string qtype);
 int get_controls_input() {
   int ans;
   do {
-    std::cout << "Press 0 display control settings\n";
-    std::cout << "Press 1 to set the band\n";
-    std::cout << "Press 2 to set the frequency\n";
-    std::cout << "Press 3 to turn up/down the volume\n";
-    std::cout << "Press 4 to to turn off/on the radio\n";
-    std::cout << "Press 5 to turn the lights off/on\n";
-    std::cout << "Press 6 to increase/decrease bass booster\n";
-    std::cout << "Press 9 to quit\n";
-    std::cout << '\n';
-    std::cout << "Enter: ";
-    std::cin >> ans;
-  } while (ans != 0 && ans != 1 && ans != 2 && ans != 3 && ans != 4 && ans != 5 && ans != 6 && ans != 9);
-    return ans;
+    try {
+      std::cout << "Press 0 display control settings\n";
+      std::cout << "Press 1 to set the band\n";
+      std::cout << "Press 2 to set the frequency\n";
+      std::cout << "Press 3 to turn up/down the volume\n";
+      std::cout << "Press 4 to to turn off/on the radio\n";
+      std::cout << "Press 5 to turn the lights off/on\n";
+      std::cout << "Press 6 to increase/decrease bass booster\n";
+      std::cout << "Press 9 to quit\n";
+      std::cout << '\n';
+      std::cout << "Enter: ";
+      std::cin >> ans;
+      if (ans != 0 && ans != 1 && ans != 2 && ans != 3 && 
+          ans != 4 && ans != 5 && ans != 6 && ans != 9)
+        throw std::out_of_range("Value is out of range");
+      catch (std::out_of_range& e)
+        std::cerr << "Out of range: " << e.what() << '\n';
+    }
+  } while (ans != 0 && ans != 1 && ans != 2 && ans != 3 
+           && ans != 4 && ans != 5 && ans != 6 && ans != 9);
+  return ans;
 }
 
 char see_all_settings() {
   char input;
-  do {
-    std::cin >> input;
-    input = tolower(input);
-    if (input != 'n' && input != 'y') {
-      std::cout << "Invalid input. Did you mean y/n? ";
+  while (true) {
+    try {
       std::cin >> input;
+      input = tolower(input);
+      if (input != 'n' && input != 'y')
+        throw std::invalid_argument("Value is not equal to yes or no");
+      else
+        break;
+    } catch (std::invalid_argument& e) {
+        std::cerr << "Invalid argument: " << e.what() << '\n';
     }
-  } while (input != 'y' && input != 'n');
+  }  
   return input;
 }
 
@@ -50,7 +62,8 @@ void set_control_settings(StereoReceiver& radio, int option) {
     if (option == 0) {
       radio.print_controls();
       std::cout << "Would you like to see all the settings? Y/N: ";
-      char input = see_all_settings();
+      char input;
+      std::cin >> input;
       if (input == 'y') {
         radio.print();
       } else {
@@ -121,52 +134,60 @@ std::string get_string(std::string qtype) {
 }
 
 int get_int(std::string qtype) {
-  bool valid = false;
-  int input; 
+  bool valid_int = false;
+  int ret;
+  std::string validate_input; 
   do {
-    std::cout << "Enter " << qtype << ": ";
-    std::cin >> input;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
+    try {
+      std::cout << "Enter " << qtype << ": ";
+      std::cin >> input;
+      for (int i = 0; i < input.size(); i++) {
+      }
+    } catch (std::invalid_argument& e) {
+      std::cerr << "Invalid argument: " << e.what() << '\n';
     }
-  } while (!valid);
-  return input;
+  } while (!valid_int);
+  return ret;
 }
 
 double get_double(std::string qtype) {
-  bool valid = false;
-  double input;
+  bool valid_double = false;
+  double ret;
+  std::string input;
   do {
-    std::cout << "Enter " << qtype << ": ";
-    std::cin >> input;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an double: ";
+    try {
+      std::cout << "Enter " << qtype << ": ";
+      std::cin >> input;
+      for (int i = 0; i < input.size(); i++) {
+        if (!isalpha(input[i])) {
+          throw std::invalid_argument("Input is not a number");
+        }
+      }
+      ret = static_cast<double>(input);
+      valid_double = true;
+    } catch (std::invalid_argument& e) {
+      std::cerr << "Invalid argument: " << e.what() << '\n';
     }
-  } while (!valid);
-  return input;
+  } while (!valid_double);
+  return ret;
 }
 
 bool get_bool(std::string qtype) {
-  bool valid = false;
-  bool input;
+  bool valid_bool = false;
+  std::string input;
   do {
-    std::cout << "Enter " << qtype << ": ";
-    std::cin >> input;
-    if (std::cin.good()) {
-      valid = true;
-    } else {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter an integer: ";
-    }
-  } while (!valid);
-  return input;
+    try {
+      std::cout << "Enter " << qtype << ": ";
+      std::cin >> input;
+      for (auto i : input)
+        i = tolower(i);
+      if (input == "true" || input == "false")
+        valid_bool = true;
+      else
+        throw std::invalid_argument("Value is not equal to true or false");
+  } while (!valid_bool);
+  if (input == "true") 
+    return true;
+  else 
+    return false;
 }
