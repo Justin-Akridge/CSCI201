@@ -31,8 +31,45 @@ int main() {
   std::cout << "Would you like to set any of the settings?\n";
   radio.print_controls();
   std::cout << '\n';
-  int ans = get_controls_input();  
-  set_control_settings(radio, ans);
+  int option;
+  do {
+    int option = get_controls_input();  
+    if (option == 0) {
+      radio.print_controls();
+      std::cout << "Would you like to see all the settings? Y/N: ";
+      char input;
+      std::cin >> input;
+      if (input == 'y') {
+        radio.print();
+      } else {
+        break;
+      }
+    } else if (option == 1) {
+        std::string band = get_string("AM or FM");
+        radio.setBand(band);
+    } else if (option == 2) {
+        double frequency = get_double("frequency");
+    } else if (option == 3) {
+        int volume = get_int("volume");
+    } else if (option == 4) {
+        bool power = radio.getPower();
+        if (power)
+          radio.setPower(false);
+        else
+          radio.setPower(true);
+    } else if (option == 5) {
+        std::string lights = radio.getLights();
+        if (lights == "on")
+          radio.setLights("off");
+        else if (lights == "off" || lights == "") 
+          radio.setLights("on");
+    } else if (option == 6) {
+        int bass = get_int("bass volume");
+    } else if (option == 9) {
+        continue;
+    }   
+    std::cout << std::endl;
+  } while (option != 9);
   radio.setPower(false);
   std::cout << "GOODBYE!" << std::endl;
 }
@@ -81,66 +118,20 @@ char see_all_settings() {
 }
 
 void set_control_settings(StereoReceiver& radio, int option) {
-  do {
-    try {
-      if (option == 0) {
-        radio.print_controls();
-        std::cout << "Would you like to see all the settings? Y/N: ";
-        char input;
-        std::cin >> input;
-        if (input == 'y') {
-          radio.print();
-        } else {
-          break;
-        }
-      } else if (option == 1) {
-          std::string band = get_string("AM or FM");
-          radio.setBand(band);
-      } else if (option == 2) {
-          double frequency = get_double("frequency");
-      } else if (option == 3) {
-          int volume = get_int("volume");
-      } else if (option == 4) {
-          bool power = radio.getPower();
-          if (power)
-            radio.setPower(false);
-          else
-            radio.setPower(true);
-      } else if (option == 5) {
-          std::string lights = radio.getLights();
-          if (lights == "on")
-            radio.setLights("off");
-          else if (lights == "off" || lights == "") 
-            radio.setLights("on");
-      } else if (option == 6) {
-          int bass = get_int("bass volume");
-      } else if (option == 9) {
-          continue;
-      } else {
-        throw std::invalid_argument("Argument must be between 0-6 or 9 to exit");
-      } 
-    } catch (std::invalid_argument& e) {
-      std::cerr << "Invalid argument: " << e.what() << '\n';
-    }
-  } while (option != 9);
 } 
 
 std::string get_string(std::string qtype) {
   std::string validate_input;
   bool valid_str = false;
   do {
-    try {
-      std::cout << "Enter " << qtype << ": ";
-      std::cin >> validate_input;
-      for (int i = 0; i < validate_input.size(); i++) {
-        if (!isalpha(validate_input[i])) {
-          throw std::invalid_argument("Value enter is not a string");
-        }
+    std::cout << "Enter " << qtype << ": ";
+    std::cin >> validate_input;
+    for (int i = 0; i < validate_input.size(); i++) {
+      if (!isalpha(validate_input[i])) {
+        throw std::invalid_argument("Value enter is not a string");
       }
-      valid_str = true;
-    } catch(std::invalid_argument& e) {
-      std::cerr << "Invalid argument: " << e.what() << '\n';
-    } 
+    }
+    valid_str = true;
   } while (!valid_str);
   return validate_input;
 }

@@ -103,9 +103,9 @@ int StereoReceiver::getBass_booster() const {
   return bass_booster;
 }
 
-bool is_valid_string(std::string s) {
+bool is_valid_string(std::string& s) {
   for (int i = 0; i < s.size(); i++) {
-    if (!isspace(s[i]) || !isalpha(s[i] || s[i] == '-')) {
+    if (!isspace(s[i]) || !isalpha(s[i]) || s[i] == '-') {
       return false;
     }
   }
@@ -165,33 +165,34 @@ void StereoReceiver::setWattage(int setWattage) {
 }
 
 void StereoReceiver::setNumber_of_channels(int setNumber_of_channels) {
-  do {
+  while (true) {
     try {
-      if (setNumber_of_channels > 0 && setNumber_of_channels < 110)
+      if (setNumber_of_channels > 0 && setNumber_of_channels < 110) {
         number_of_channels = setNumber_of_channels;
+        break;
+      }
       else
         throw std::out_of_range("value is out of range");
     } catch(std::out_of_range& e) {
         std::cout << "Out of range error: " << e.what() << '\n';
     }
-  } while (setNumber_of_channels <= 0 && setNumber_of_channels >= 110);
+  }
 }
 
 void StereoReceiver::setBand(std::string setBand) {
   do {
     try {
-      for (auto i : setBand) 
+      for (auto i : setBand) {
         i = std::tolower(i);
-      if (!is_valid_string(setBand))
-        throw std::invalid_argument("band must be a string");
-      if (setBand == "am" || setBand == "fm")
+      }
+      if (setBand == "am" || setBand == "fm") {
         band = setBand;
+        return;
+      }
       else 
         throw std::runtime_error("value is not am or fm");
-    } catch (std::runtime_error& e) {
-        std::cerr << "Runtime error: " << e.what() << '\n';
-    } catch (std::invalid_argument const& e) {
-        std::cerr << "Invalid argument: " << e.what() << '\n';
+    } catch (std::invalid_argument& e) {
+          std::cerr << "Invalid argument error: " << e.what() << '\n';
     }
   } while (setBand != "am" && setBand != "fm");
 }
@@ -199,8 +200,10 @@ void StereoReceiver::setBand(std::string setBand) {
 void StereoReceiver::setFrequency(double setFrequency) {
   do {
     try {
-      if (setFrequency >= 0.0 && setFrequency <= 50.0)
+      if (setFrequency >= 0.0 && setFrequency <= 50.0) {
         frequency = setFrequency; 
+        break;
+      }
       else 
         throw std::out_of_range("value is out of range");
     } catch (std::out_of_range& e) {
@@ -210,7 +213,7 @@ void StereoReceiver::setFrequency(double setFrequency) {
 }
 
 void StereoReceiver::setVolume(int setVolume) {
-  do {
+  while (true) {
     try {
       if (setVolume >= 0 && setVolume <= 50)
         volume = setVolume;
@@ -219,7 +222,7 @@ void StereoReceiver::setVolume(int setVolume) {
     } catch (std::out_of_range& e) {
         std::cout << "Out of range: " << e.what() << '\n';
     }
-  } while (setVolume < 0 && setVolume > 50);
+  }
 }
 
 void StereoReceiver::setPower(bool setPower) {
