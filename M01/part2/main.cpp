@@ -117,9 +117,6 @@ char see_all_settings() {
   return input;
 }
 
-void set_control_settings(StereoReceiver& radio, int option) {
-} 
-
 std::string get_string(std::string qtype) {
   std::string validate_input;
   bool valid_str = false;
