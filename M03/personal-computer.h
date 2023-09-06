@@ -16,13 +16,13 @@ public:
   std::string get_storage_type() const;
   int get_storage_size() const;
 
-  void set_manufacturer();
-  void set_form_factor();
-  void set_serial_number();
-  void set_processor();
-  void set_ram();
-  void set_storage_type();
-  void set_storage_size();
+  void set_manufacturer(std::string);
+  void set_form_factor(std::string);
+  void set_serial_number(std::string);
+  void set_processor(std::string);
+  void set_ram(int);
+  void set_storage_type(std::string);
+  void set_storage_size(int);
 
   bool is_valid_int(std::string);
 
