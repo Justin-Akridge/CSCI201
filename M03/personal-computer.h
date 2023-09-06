@@ -24,6 +24,8 @@ public:
   void set_storage_type();
   void set_storage_size();
 
+  bool is_valid_int(std::string);
+
 private:
   std::string manufacturer;
   std::string form_factor;
