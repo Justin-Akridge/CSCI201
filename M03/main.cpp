@@ -2,15 +2,18 @@
 #include <iostream>
 
 std::string get_manufacturer() {
-  std::string manufacturer;
-  std::cout << "Enter the manufacturer: ";
-  std::cin >> manufacturer;
-  for (int i = 0; i < manufacturer.size(); i++) {
-    if (!std::isalpha(manufacturer[i])) {
-
-      
+  bool done = false;
+  while (!done) {
+    std::string manufacturer;
+    std::cout << "Enter the manufacturer: ";
+    std::cin >> manufacturer;
+    for (int i = 0; i < manufacturer.size(); i++) {
+      if (!std::isalpha(manufacturer[i])) {
+      }
+    }
   }
   return manufacturer;
+}
 
 int main() {
   std::string init_manufacturer = get_manufacturer();
