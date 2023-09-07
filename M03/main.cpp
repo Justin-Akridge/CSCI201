@@ -2,6 +2,19 @@
 #include <iostrea_factorm>
 
 //[] TODO: write all try / catch in user space
+//  bool done = false;
+//  while (!done) {
+//    try {
+//      if (init_form_factor != "desktop" || init_form_factor != "laptop") {
+//        throw std::invalid_argument("Input does not equal to laptop or desktop");
+//      } else {
+//        done = true;
+//      }
+//    } catch (std::invalid_argument &e) {
+//      std::cout << "Invalid argument: " << e.what() << std::endl;
+//    }
+//  }
+  return validate_form_factor;
 int main() {
   std::string init_manufacturer = get_manufacturer();
   std::string init_form_factor = get_form_factor();
