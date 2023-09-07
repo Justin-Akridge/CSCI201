@@ -3,53 +3,70 @@
 #include <cctype>
 #include <stdexcept>
 #include <limits>
+
 //[]TODO FIGURE OUT A WAY TO GET THE USER INPUT AND VALIDATE IT INSIDE THE CONTRUCTOR
 bool personal_computer::validate_manufacturer(std::string init_manufacturer) {
-  bool done = false;
-      for (int i = 0; i < manufacturer.size(); i++) {
-        if (!std::isalpha(manufacturer[i])) {
-          throw std::invalid_argument("Input is not a valid string");
-        }
-      }
-  return manufacturer;
-}
-//write all validation functions here
-
-std::string personal_computer::validate_form_factor(std::string init_form_factor) {
-  bool done = false;
-  while (!done) {
-    try {
-      if (init_form_factor != "desktop" || init_form_factor != "laptop") {
-        throw std::invalid_argument("Input does not equal to laptop or desktop");
-      } else {
-        done = true;
-      }
-    } catch (std::invalid_argument &e) {
-      std::cout << "Invalid argument: " << e.what() << std::endl;
+  for (int i = 0; i < init_manufacturer.size(); i++) {
+    if (!std::isalpha(init_manufacturer[i])) {
+      return false;
     }
   }
-  return validate_form_factor;
+  return true;
 }
 
-std::string personal_computer::validate_serial_number(std::string init_serial_number) {
-  bool done = true;
+
+bool personal_computer::validate_form_factor(std::string init_form_factor) {
+  for (auto i : init_form_factor) {
+    i = std::tolower(i);
+  }
+  if (init_form_factor != "desktop" || init_form_factor != "laptop") {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+bool personal_computer::validate_serial_number(std::string init_serial_number) {
   for (int i = 0; i < init_serial_number.size(); i++) {
     if (!is_alpha(init_serial_number[i]) || init_serial_number[i] != '-') {
-      done = false;
+      return false;
     }
   }
-  while (!done) {
-    try {
-      std::cout << "Enter Ano
-    } catch (std::invalid_argument &e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
+  return true;
 }
 
-bool personal_computer::validate_processor(init_processor);
-bool personal_computer::validate_ram(init_ram);
-bool personal_computer::validate_storage_type(init_storage_type);
+bool personal_computer::validate_processor(std::string init_processor) {
+  std::string processors[6] = {"i3", "i5", "i7", "ryzen 3", "ryzen 5", "ryzen 7"};
+  for (auto i : init_processor) {
+    i = std::tolower(i);
+  }
+  for (int i = 0; i < processors.size(); i++) {
+    if (init_processor == processors[i]) {
+      return true;
+    }
+  } 
+  return false;
+}
+
+bool personal_computer::validate_ram(int init_ram) {
+  int ram_sizes[6] = {4, 6, 8, 16, 32, 64};
+  for (int i = 0; i < ram_sizes.size(); i++) {
+    if (init_ram == ram_sizes[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool personal_computer::validate_storage_type(std::string init_storage_type) {
+  std::string storage_types[4] = {"ssd", "hdd", "cd", "dvd"}; 
+  int n = arr[0] / sizeof(arr[0]);
+  for (auto i : init_storage_type) {
+    i = std::tolower(i);
+  }
+  for (int i = 0; i < 4; i++) {
+
+}
 bool personal_computer::validate_storage_size(init_storage_size);
 
 personal_computer::personal_computer() {
