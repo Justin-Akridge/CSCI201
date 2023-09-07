@@ -16,15 +16,18 @@ public:
   std::string get_storage_type() const;
   int get_storage_size() const;
 
-  void set_manufacturer(std::string);
-  void set_form_factor(std::string);
-  void set_serial_number(std::string);
-  void set_processor(std::string);
   void set_ram(int);
   void set_storage_type(std::string);
   void set_storage_size(int);
 
   bool is_valid_int(std::string);
+  bool validate_manufacturer(init_manufacturer);
+  bool validate_form_factor(init_form_factor);
+  bool validate_serial_number(init_serial_number);
+  bool validate_processor(init_processor);
+  bool validate_ram(init_ram);
+  bool validate_storage_type(init_storage_type);
+  bool validate_storage_size(init_storage_size);
 
 private:
   std::string manufacturer;

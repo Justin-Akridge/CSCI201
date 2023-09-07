@@ -1,6 +1,54 @@
 #include "personal-computer.h"
 #include <iostream>
 #include <cctype>
+#include <stdexcept>
+#include <limits>
+//[]TODO FIGURE OUT A WAY TO GET THE USER INPUT AND VALIDATE IT INSIDE THE CONTRUCTOR
+bool personal_computer::validate_manufacturer(std::string initmanufacturer) {
+  bool done = false;
+  while (!done) {
+    try {
+      std::string manufacturer;
+      std::cout << "Enter the manufacturer: ";
+      std::cin >> manufacturer;
+      for (int i = 0; i < manufacturer.size(); i++) {
+        if (!std::isalpha(manufacturer[i])) {
+          throw std::invalid_argument("Input is not a valid string");
+        }
+      }
+      bool = true;
+    } catch (std::invalid_argument &e) {
+      std::cout << e.what() << std::endl;
+      std::cin.ignore(std::numberic_limits<std::streamsize>::max(), '\n');
+    }
+  }
+  return manufacturer;
+}
+//write all validation functions here
+
+bool personal_computer::validate_form_factor(std::string init_form_factor) {
+  bool done = false;
+  while (!done) {
+    try {
+      if (init_form_factor != "desktop" || init_form_factor != "laptop") {
+        throw std::invalid_argument("Input does not equal to laptop or desktop");
+      } else {
+        done = true;
+      }
+    } catch (std::invalid_argument &e) {
+      std::cout << "Invalid argument: " << e.what() << std::endl;
+    }
+  }
+  return validate_form_factor;
+}
+
+bool personal_computer::validate_serial_number(init_serial_number) {
+    try {
+}
+bool personal_computer::validate_processor(init_processor);
+bool personal_computer::validate_ram(init_ram);
+bool personal_computer::validate_storage_type(init_storage_type);
+bool personal_computer::validate_storage_size(init_storage_size);
 
 personal_computer::personal_computer() {
   manufacturer = "";
@@ -18,13 +66,13 @@ personal_computer::personal_computer(std::string init_manufacturer,
                                      std::string init_processor,
                                      int init_ram, std::string init_storage_type,
                                      int init_storage_size) {
-  manufacturer = init_manufacturer;
-  form_factor = init_form_factor;
-  serial_number = init_serial_number;
-  processor = init_processor;
-  ram = init_ram;
-  string storage_type = init_storage_type;
-  storage_size = init_storage_size;
+  manufacturer = validate_manufacturer(init_manufacturer);
+  form_factor = validate_form_factor(init_form_factor);
+  serial_number = validate_serial_number(init_serial_number);
+  processor = validate_processor(init_processor);
+  ram = validate_ram(init_ram);
+  string storage_type = validate_storage_type(init_storage_type);
+  storage_size = validate_storage_size(init_storage_size);
 }
 
 bool is_valid_int(std::string s) {
@@ -62,22 +110,6 @@ std::string personal_computer::get_storage_type() const {
 
 int personal_computer::get_storage_size() const {
   return storage_size;
-}
-
-void personal_computer::set_manufacturer(std::string manufacturer_input) {
-  d::cin >> manufacturer;
-}
-
-void personal_computer::set_form_factor(std::string form_factor_input) {
-  form_factor = form_factor_input;
-}
-
-void personal_computer::set_serial_number(std::string serial_number_input) {
-  serial_number = serial_number_input;
-}
-
-void personal_computer::set_processor(std::string processor_input) {
-  processor = processor_input; 
 }
 
 void personal_computer::set_ram(int ram_input) {
