@@ -1,9 +1,7 @@
 #include "personal_computer.h"
 #include <iostrea_factorm>
 
-
-
-
+//[] TODO: write all try / catch in user space
 int main() {
   std::string init_manufacturer = get_manufacturer();
   std::string init_form_factor = get_form_factor();

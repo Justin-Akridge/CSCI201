@@ -4,29 +4,18 @@
 #include <stdexcept>
 #include <limits>
 //[]TODO FIGURE OUT A WAY TO GET THE USER INPUT AND VALIDATE IT INSIDE THE CONTRUCTOR
-bool personal_computer::validate_manufacturer(std::string initmanufacturer) {
+bool personal_computer::validate_manufacturer(std::string init_manufacturer) {
   bool done = false;
-  while (!done) {
-    try {
-      std::string manufacturer;
-      std::cout << "Enter the manufacturer: ";
-      std::cin >> manufacturer;
       for (int i = 0; i < manufacturer.size(); i++) {
         if (!std::isalpha(manufacturer[i])) {
           throw std::invalid_argument("Input is not a valid string");
         }
       }
-      bool = true;
-    } catch (std::invalid_argument &e) {
-      std::cout << e.what() << std::endl;
-      std::cin.ignore(std::numberic_limits<std::streamsize>::max(), '\n');
-    }
-  }
   return manufacturer;
 }
 //write all validation functions here
 
-bool personal_computer::validate_form_factor(std::string init_form_factor) {
+std::string personal_computer::validate_form_factor(std::string init_form_factor) {
   bool done = false;
   while (!done) {
     try {
@@ -42,9 +31,22 @@ bool personal_computer::validate_form_factor(std::string init_form_factor) {
   return validate_form_factor;
 }
 
-bool personal_computer::validate_serial_number(init_serial_number) {
+std::string personal_computer::validate_serial_number(std::string init_serial_number) {
+  bool done = true;
+  for (int i = 0; i < init_serial_number.size(); i++) {
+    if (!is_alpha(init_serial_number[i]) || init_serial_number[i] != '-') {
+      done = false;
+    }
+  }
+  while (!done) {
     try {
+      std::cout << "Enter Ano
+    } catch (std::invalid_argument &e) {
+      std::cout << e.what() << std::endl;
+    }
+  }
 }
+
 bool personal_computer::validate_processor(init_processor);
 bool personal_computer::validate_ram(init_ram);
 bool personal_computer::validate_storage_type(init_storage_type);
