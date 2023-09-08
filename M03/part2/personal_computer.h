@@ -30,10 +30,10 @@ public:
   bool validate_storage_size(int);
 
   void print();
+  std::string to_string(personal_computer);
 
 private:
-  std::string manufacturer;
-  std::string form_factor;
+  std::string manufacturer; std::string form_factor;
   std::string serial_number;
   std::string processor;
   int ram;

@@ -32,7 +32,6 @@ std::string get_form_factor() {
       std::cout << "Invalid argument: " << e.what() << "\n\n";
     }
   }
-  std::cout << '\n';
   return form_factor;
 }
 
@@ -59,7 +58,6 @@ std::string get_serial_number() {
     }
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
-  std::cout << '\n';
   return serial_number;
 }
 
@@ -115,7 +113,7 @@ int get_ram() {
           throw std::invalid_argument("input is not a valid selection");
       }
     } catch (std::invalid_argument &e) {
-      std::cerr << "Invalid argument: " << e.what() << std::endl;
+      std::cerr << "Invalid argument: " << e.what() << "\n\n"; 
     }
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
@@ -125,8 +123,8 @@ std::string get_storage_type() {
   char storage_type;
   while (true) {
     try {
-      std::cout << "Select storage type:\nEnter 1 for ssd\n2 for hdd\n"
-                   "3 for cd\n4 for dvd\n";
+      std::cout << "Select storage type:\n1 for ssd\n2 for hdd\n"
+                   "3 for cd\n4 for dvd\nselection: ";
       std::cin >> storage_type;
       switch (storage_type) {
         case '1':
@@ -141,7 +139,7 @@ std::string get_storage_type() {
           throw std::invalid_argument("Input is not a valid selection");
       } 
     } catch (std::invalid_argument &e) {
-      std::cerr << "Invalid argument: " << e.what() << std::endl; 
+      std::cerr << "Invalid argument: " << e.what() << "\n\n";
     }      
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
@@ -151,8 +149,8 @@ std::string get_storage_size() {
   char storage_size;
   while (true) {
     try {
-      std::cout << "Select the storage size:\nEnter 1 for 128gb\n2 for 256gb\n"
-                   "3 for 512gb\n 4 for 1tb\n5 for 2tb\n";
+      std::cout << "Select the storage size:\n1 for 128gb\n2 for 256gb\n"
+                   "3 for 512gb\n4 for 1tb\n5 for 2tb\nselection: ";
       std::cin >> storage_size;
       switch (storage_size) {
         case '1':

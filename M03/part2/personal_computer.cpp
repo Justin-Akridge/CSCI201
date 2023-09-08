@@ -4,8 +4,6 @@
 #include <stdexcept>
 #include <limits>
 
-//[]TODO FIGURE OUT A WAY TO GET THE USER INPUT AND VALIDATE IT INSIDE THE CONTRUCTOR
-#if 0
 bool personal_computer::validate_manufacturer(std::string init_manufacturer) {
   for (int i = 0; i < init_manufacturer.size(); i++) {
     if (!std::isalpha(init_manufacturer[i])) {
@@ -20,7 +18,7 @@ bool personal_computer::validate_form_factor(std::string init_form_factor) {
   for (auto i : init_form_factor) {
     i = std::tolower(i);
   }
-  if () {
+  if (init_form_factor != "desktop" && init_form_factor != "laptop) {
     return false;
   } else {
     return true;
@@ -29,7 +27,7 @@ bool personal_computer::validate_form_factor(std::string init_form_factor) {
 
 bool personal_computer::validate_serial_number(std::string init_serial_number) {
   for (int i = 0; i < init_serial_number.size(); i++) {
-    if (!isalpha(init_serial_number[i]) || init_serial_number[i] != '-') {
+    if (!isalpha(init_serial_number[i]) && init_serial_number[i] != '-') {
       return false;
     }
   }
@@ -37,7 +35,7 @@ bool personal_computer::validate_serial_number(std::string init_serial_number) {
 }
 
 bool personal_computer::validate_processor(std::string init_processor) {
-  std::string processors[6] = {"i3", "i5", "i7", "ryzen 3", "ryzen 5", "ryzen 7"};
+  std::string processors[6] = {"i3", "i5", "i7", "ryzen3", "ryzen5", "ryzen7"};
   for (auto i : init_processor) {
     i = std::tolower(i);
   }
@@ -81,7 +79,6 @@ bool personal_computer::validate_storage_size(int init_storage_size) {
   }
   return false;
 }
-#endif
 
 personal_computer::personal_computer() {
   manufacturer = "";
@@ -100,13 +97,45 @@ personal_computer::personal_computer(std::string init_manufacturer,
                                      int init_ram, 
                                      std::string init_storage_type,
                                      std::string init_storage_size) {
-  manufacturer = init_manufacturer;
-  form_factor = init_form_factor;
-  serial_number = init_serial_number;
-  processor = init_processor;
-  ram = init_ram;
-  storage_type = init_storage_type; 
-  storage_size = init_storage_size;
+  try {
+    if (validate_manufacturer(init_manufacturer)) {
+      manufacturer = init_manufacturer;
+    } else {
+      throw std::invalid_argument("input is not a valid manufacturer.");
+    }
+    if (validate_form_factor(init_form_factor)) {
+      form_factor = init_form_factor;
+    } else {
+      throw std::invalid_argument("input is not a valid form factor.");
+    }
+    if (validate_serial_number(init_serial_number)) {
+      serial_number = init_serial_number;
+    } else {
+      throw std::invalid_argument("input is not a valid serial number.");
+    }
+    if (validate_processor(init_processor)) {
+      processor = init_processor;
+    } else {
+      throw std::invalid_argument("input is not a valid processor.");
+    }
+    if(validate_ram(init_ram)) {
+      ram = init_ram;
+    } else {
+      throw std::invalid_argument("input is not valid amount of ram.");
+    }
+    if (validate_storage_type(init storage_type)) {
+      storage_type = init_storage_type; 
+    } else {
+      throw std::invalid_argument("input is not valid a valid storage type.");
+    }
+    if (validate_storage_size(init_storage_size)) {
+      storage_size = init_storage_size;
+    } else {
+      throw std::invalid_argument("input is not a valid storage size.");
+    }
+  } catch (std::invalid_argument &e) {
+    std::cerr << "Invalid argument: " << e.what() << '\n';
+  }
 }
 
 bool is_valid_int(std::string s) {
@@ -116,6 +145,16 @@ bool is_valid_int(std::string s) {
     }
   }
   return true;
+}
+
+std::string personal_computer::to_string(personal_computer computer) {
+  return "Manufacturer: " + computer.manufacturer + '\n' +
+         "Form of computer: " + form_factor + '\n' +
+         "Serial number: " + serial_number + '\n' +
+         "Processor: " + processor + '\n' + 
+         "Ram: " + ram + '\n' +
+         "Storage type: " + storage_type + '\n' +
+         "Storage size: " + storage_size + '\n';
 }
 
 std::string personal_computer::get_manufacturer() const {
