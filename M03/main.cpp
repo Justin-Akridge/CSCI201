@@ -5,18 +5,21 @@
 std::string get_manufacturer() {
   std::string manufacturer;
   std::cout << "Enter the computers manufacturer";
-  std::cin >> std::string manufacturer;
+  std::cin >> manufacturer;
   return manufacturer;
 }
 
 std::string get_form_factor() {
-  bool done = false;
   std::string form_factor;
+  bool done = false;
   while (!done) {
     try {
       std::cout << "Is it a desktop or laptop? ";
-      std::cin >> std::string form_factor;
-      if (init_form_factor != "desktop" || init_form_factor != "laptop") {
+      std::cin >> form_factor;
+      for (auto i : form_factor) {
+        i = std::tolower(i);
+      }
+      if (form_factor != "desktop" || form_factor != "laptop") {
         throw std::invalid_argument("input is not equal to laptop or desktop");
       } else {
         done = true;
@@ -29,19 +32,24 @@ std::string get_form_factor() {
 }
 
 std::string get_serial_number() {
+  std::string serial_number;
   bool done = false;
   while (!done) {
     try {
-      std::string serial_number;
       std::cout << "Enter the serial number: ";
-      std::cin >> std::string serial_number;
+      std::cin >> serial_number;
       if (serial_number.size() > 10 && serial_number.size() < 30) {
         done = true;
-      } else {
+      } else if (serial_number.size() <= 10 || serial_number.size() >= 30) {
         throw std::out_of_range("input is out of range");
+      } else {
+        throw std::invalid_argument("input is not valid");
       }
     } catch (std::out_of_range &e) {
       std::cerr << "Out of range error: " << e.what() << std::endl;
+    } catch (std::invalid_argument &e) {
+      std::cerr << "Invalid argument: " << e.what() << std::endl;
+    }
   }
   return serial_number;
 }
@@ -74,6 +82,7 @@ std::string get_processor() {
 }
 
 int get_ram() {
+  int ram;
   while (true) {
     try {
       std::cout << "Select the storage amount of ram:\n1 for 4\n2 for 6\n3 for 8\n"
@@ -83,7 +92,7 @@ int get_ram() {
         case 1:
           return 4;
         case 2:
-          return 6
+          return 6;
         case 3:
           return 8;
         case 4:
@@ -105,7 +114,7 @@ std::string get_storage_type() {
   int storage_type;
   while (true) {
     try {
-      std::cout << "Select storage type:\nEnter 1 for ssd\n2 for hdd\n 
+      std::cout << "Select storage type:\nEnter 1 for ssd\n2 for hdd\n"
                    "3 for cd\n4 for dvd\n";
       std::cin >> storage_type;
       switch (storage_type) {
@@ -127,7 +136,8 @@ std::string get_storage_type() {
 }
 
 int get_storage_size() {
-  int storage_size;
+  int storage_input;
+  std::string parse_storage;
   while (true) {
     try {
       std::cout << "Select the storage size:\nEnter 1 for 128gb\n2 for 256gb\n"
@@ -135,20 +145,46 @@ int get_storage_size() {
       std::cin >> storage_size;
       switch (storage_size) {
         case 1:
-          return "128gb";
+          parse_storage = "128gb";
+          break;
         case 2:
-          return "256gb";
+          parse_storage = "256gb";
+          break;
         case 3:
-          return "512gb";
+          parse_storage = "512gb";
+          break;
         case 4:
-          return "1tb";
+          parse_storage = "1tb";
+          break;
         case 5:
-          return "2tb";
+          parse_storage = "2tb";
+          break;
         default:
           throw std::invalid_argument("input is not a valid selection");
+          break;
       }
     } catch(std::invalid_argument &e) {
       std::cerr << "Invalid argument: " << e.what() << std::endl;
+    }
+  }
+}
+
+bool have_another_computer() {
+  char input;
+  while (true) {
+    try {
+      std::cout << "Would you like to enter another computer. Enter y/n: ";
+      std::cin >> input;
+      std::tolower(input);
+      if (input == 'y') {
+        return true;
+      } else if(input == 'n') {
+        return false;
+      } else {
+        throw std::invalid_argument("Input is not equal to y or n");
+      }
+    } catch (std::invalid_argument &e) {
+      std::cout << "Invalid argument: " << e.what() << std::endl;
     }
   }
 }
@@ -157,7 +193,6 @@ int main() {
   //[] TODO: Should vector take address instead? 
   std::vector<personal_computer> computer_list;
   bool done = false;
-  std::cout
   while (!done) {
     std::string manufacturer = get_manufacturer();
     std::string form_factor = get_form_factor();
@@ -172,12 +207,16 @@ int main() {
                                          std::string init_processor,
                                          int init_ram, std::string init_storage_type,
                                          int init_storage_size);
-
-  std::cout << "Is it a desktop or laptop? ";
-  std::cin >> test_form_factor;
-  std::tolower(test_form_factor);
-  while (test_form_factor != "desktop" && test_form_factor != "laptop") {
-    std::cout << "Invalid input. Please enter desktop or laptop: ";
-    std::cin >> test_form_factor;
+    computer_list.push_back(computer);
+    std::cout << "Computer number " << computer_list.size() << " info\n";
+    std::cout << "----------------------\n";
+    computer.print();
+    std::cout << std::endl;
+    std::cout << "There are " << computer_list.size() << " number of computers\n\n.";
+    if (have_another_computer()) {
+      continue;
+    } else {
+      done = true;
+    }
   }
 }
