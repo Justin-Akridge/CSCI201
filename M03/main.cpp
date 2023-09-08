@@ -1,6 +1,7 @@
 #include "personal_computer.h"
 #include <iostream>
 #include <cctype>
+#include <vector>
 
 std::string get_manufacturer() {
   std::string manufacturer;
@@ -135,9 +136,8 @@ std::string get_storage_type() {
   }
 }
 
-int get_storage_size() {
-  int storage_input;
-  std::string parse_storage;
+std::string get_storage_size() {
+  int storage_size;
   while (true) {
     try {
       std::cout << "Select the storage size:\nEnter 1 for 128gb\n2 for 256gb\n"
@@ -145,23 +145,17 @@ int get_storage_size() {
       std::cin >> storage_size;
       switch (storage_size) {
         case 1:
-          parse_storage = "128gb";
-          break;
+          return "128gb";
         case 2:
-          parse_storage = "256gb";
-          break;
+          return "256gb";
         case 3:
-          parse_storage = "512gb";
-          break;
+          return "512gb";
         case 4:
-          parse_storage = "1tb";
-          break;
+          return "1tb";
         case 5:
-          parse_storage = "2tb";
-          break;
+          return "2tb";
         default:
           throw std::invalid_argument("input is not a valid selection");
-          break;
       }
     } catch(std::invalid_argument &e) {
       std::cerr << "Invalid argument: " << e.what() << std::endl;
@@ -175,7 +169,7 @@ bool have_another_computer() {
     try {
       std::cout << "Would you like to enter another computer. Enter y/n: ";
       std::cin >> input;
-      std::tolower(input);
+      input = std::tolower(input);
       if (input == 'y') {
         return true;
       } else if(input == 'n') {
@@ -200,17 +194,18 @@ int main() {
     std::string process = get_processor();
     int ram = get_ram();
     std::string storage_type = get_storage_type();
-    int storage_size = get_storage_size();
+    std::string storage_size = get_storage_size();
     personal_computer computer(std::string init_manufacturer,
                                          std::string init_form_factor,
                                          std::string init_serial_number,
                                          std::string init_processor,
                                          int init_ram, std::string init_storage_type,
                                          int init_storage_size);
-    computer_list.push_back(computer);
+    //computer_list.push_back(*computer);
     std::cout << "Computer number " << computer_list.size() << " info\n";
     std::cout << "----------------------\n";
-    computer.print();
+    computer.print(); /*bug here.main.cpp:207:13: error: member reference base type 'personal_computer (std:                      :string, std::string, std::string, std::string, int, std::string, int)' (aka 'personal                      _computer (basic_string<char>, basic_string<char>, basic_string<char>, basic_string<ch                      ar>, int, basic_string<char>, int)') is not a structure or union*/
+
     std::cout << std::endl;
     std::cout << "There are " << computer_list.size() << " number of computers\n\n.";
     if (have_another_computer()) {

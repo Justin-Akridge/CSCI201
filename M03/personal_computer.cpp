@@ -5,6 +5,7 @@
 #include <limits>
 
 //[]TODO FIGURE OUT A WAY TO GET THE USER INPUT AND VALIDATE IT INSIDE THE CONTRUCTOR
+#if 0
 bool personal_computer::validate_manufacturer(std::string init_manufacturer) {
   for (int i = 0; i < init_manufacturer.size(); i++) {
     if (!std::isalpha(init_manufacturer[i])) {
@@ -19,7 +20,7 @@ bool personal_computer::validate_form_factor(std::string init_form_factor) {
   for (auto i : init_form_factor) {
     i = std::tolower(i);
   }
-  if (int) {
+  if () {
     return false;
   } else {
     return true;
@@ -80,6 +81,7 @@ bool personal_computer::validate_storage_size(int init_storage_size) {
   }
   return false;
 }
+#endif
 
 personal_computer::personal_computer() {
   manufacturer = "";
@@ -87,7 +89,7 @@ personal_computer::personal_computer() {
   serial_number = "";
   processor = "";
   ram = 0;
-  string storage_type = "";
+  std::string storage_type = "";
   storage_size = 0;
 }
 
@@ -97,47 +99,13 @@ personal_computer::personal_computer(std::string init_manufacturer,
                                      std::string init_processor,
                                      int init_ram, std::string init_storage_type,
                                      int init_storage_size) {
-  if (validate_manufacturer(init_manufacturer)) {
-    manufacturer = init_manufacturer;
-  } else {
-    manufacturer = "";
-  }
-
-  if (validate_form_factor(init_form_factor)) {
-    form_factor = init_form_factor;
-  } else {
-    form_factor = "";
-  }
-  
-  if (validate_serial_number(init_serial_number)) {
-    serial_number = init serial_number;
-  } else {
-    serial_number = "";
-  }
-
-  if (validate_processor(init_processor)) {
-    processor = init_processor;
-  } else {
-    processor = "";
-  }
-
-  if (validate_ram(init_ram)) {
-    ram = init_ram;
-  } else {
-    ram = 0;
-  }
-
-  if(validate_storage_type(init_storage_type)) {
-    storage_type = init_storage_type; 
-  } else {
-    storage_type = "";
-  }
-  
-  if (validate_storage_size(init_storage_size)) {
-    storage_size_size = init_storage_size;
-  } else {
-    storage_type_size = 0;
-  }
+  manufacturer = init_manufacturer;
+  form_factor = init_form_factor;
+  serial_number = init_serial_number;
+  processor = init_processor;
+  ram = init_ram;
+  storage_type = init_storage_type; 
+  storage_size = init_storage_size;
 }
 
 bool is_valid_int(std::string s) {
@@ -187,4 +155,14 @@ void personal_computer::set_storage_type(std::string storage_type_input) {
 
 void personal_computer::set_storage_size(int storage_size_input) {
   storage_size = storage_size_input;
+}
+
+void personal_computer::print() {
+  std::cout << "Manufacturer: " << get_manufacturer() << '\n';
+  std::cout << "Form factor: " << get_form_factor() << '\n';
+  std::cout << "Serial number: " << get_serial_number() << '\n';
+  std::cout << "Processor: " << get_processor() << '\n';
+  std::cout << "Ram: " << get_ram() << '\n';
+  std::cout << "Storage type: " << get_storage_type() << '\n';
+  std::cout << "Storage size: " << get_storage_size() << '\n';
 }
