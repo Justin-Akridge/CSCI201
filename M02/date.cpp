@@ -37,43 +37,39 @@ std::string Date::date_to_string() {
 }
 
 void Date::setMonth() {
-  bool flag = false;
-  do {
+  bool done = false;
+  while (!done) {
     try {
-      std::cout << "Enter the month: ";
+      std::cout << "Enter the month (1-12): ";
       std::string s_initMonth;
       std::cin >> s_initMonth;
       for (int i = 0; i < s_initMonth.size(); i++) {
         if (i == 0 && s_initMonth[i] == '-') {
           continue;
         }
-        if (!isdigit(s_initMonth[i])) {
-          throw s_initMonth;
+        else if (!std::isdigit(s_initMonth[i])) {
+          throw std::invalid_argument("input is not a number.");
         }
       }
       int i_initMonth = std::stoi(s_initMonth);
-      if (i_initMonth < 1 || i_initMonth > 12) {
-        throw i_initMonth;
+      if (i_initMonth < 1) {
+        throw std::out_of_range("number must be greater then 0");
+      } else if (i_initMonth > 12) {
+        throw std::out_of_range("number must be less then 13");
       }
       month = i_initMonth;
-      flag = true;
-    } catch(int i_initMonth) {
-      if (i_initMonth > 12)
-        std::cout << "There are only 12 months in a year.\n"; 
-      else
-        std::cout << "A negative month is not a valid month.\n";
-    } catch(std::string s_initMonth) {
-      if (std::stoi(s_initMonth) > 12)
-        std::cout << "There are only 12 months in a year.\n"; 
-      else
-        std::cout << "A negative month is not a valid month.\n";
+      done = true;
+    } catch(std::invalid_argument &e) {
+      std::cerr << "Invalid argument: " << e.what() << "\n\n";
+    } catch(std::out_of_range &e) {
+      std::cerr << "Out of range: " << e.what() << "\n\n";
     }
-  } while(!flag);
+  }
 }
 
 void Date::setDay() {
-  bool flag = false;
-  do {
+  bool done = false;
+  while (!done) {
     try {
       std::cout << "Enter the day of the month: ";
       std::string s_initDay;
@@ -83,47 +79,52 @@ void Date::setDay() {
           continue;
         }
         if (!isdigit(s_initDay[i])) {
-          throw std::stoi(s_initDay);
+          throw std::invalid_argument("input is not a number.");
         }
       }
       int i_initDay = std::stoi(s_initDay);
-      if (i_initDay < 0 || i_initDay > 31)
-        throw i_initDay;
+      if (i_initDay < 0)
+        throw std::invalid_argument("Input must be greater then 0.");
       switch(month) {
         case 2:
           if (i_initDay > 28)
-            throw i_initDay;
+            throw std::out_of_range("There are only 28 days in Feburary.");
         case 4:
         case 6:
         case 9:
         case 11:
           if (i_initDay > 30)
-            throw i_initDay;
+            throw std::out_of_range("There are only 30 days in ");
+        default:
+          if (i_initDay > 31)
+            throw std::invalid_argument("There are only 31 days in ");
       }
       day = i_initDay;
-      flag = true;
-    } catch(int i_initDay) {
+      done = true;
+    } catch(std::out_of_range &e) {
       switch(month) {
         case 2:
-          std::cout << "There are only 28 day in February\n";
+          std::cerr << "Out of range: " << e.what() << "\n\n";
           break;
         case 4:
         case 6:
         case 9:
         case 11:
-          std::cout << "There are only 30 day in " << getMonth() << std::endl;
+          std::cout << "Out of range: " << e.what() << getMonth() << "\n\n";
           break;
         default:
-          std::cout << "There are only 31 days in " << getMonth() << std::endl;
+          std::cout << "Out of range: " << e.what() << getMonth() << "\n\n";
           break;
       }
+    } catch(std::invalid_argument &e) {
+      std::cerr << "Invalid argument: " << e.what() << "\n\n";
     }
-  } while(!flag);
+  }
 }
 
 void Date::setYear() {
-  bool flag = false;
-  do {
+  bool done = false;
+  while (!done) {
     try {
       std::cout << "Enter the year: ";
       std::string s_initYear;
@@ -133,20 +134,22 @@ void Date::setYear() {
           continue;
         }
         if (!isdigit(s_initYear[i])) {
-          throw s_initYear;
+          throw std::invalid_argument("input is not a number.");
         }
       }
       int i_initYear = std::stoi(s_initYear);
-      if (i_initYear < 1900 || i_initYear > 2020)
-        throw i_initYear;
+      if (i_initYear < 1900)
+        throw std::out_of_range("Year must be greater then 1900.");
+      else if (i_initYear > 2020)
+        throw std::out_of_range("Year must be less then 2020.");
       year = i_initYear;
-      flag = true;
-    } catch(int i_initYear) {
-      std::cout << i_initYear << " is an invalid year.\n";
-    } catch(std::string s_initYear) {
-      std::cout << s_initYear << " is an invalid year.\n";
+      done = true;
+    } catch(std::out_of_range &e) {
+      std::cerr << "Out of range: " << e.what() << "\n\n";
+    } catch(std::invalid_argument &e) {
+      std::cerr << "Invalid argument: " << e.what() << "\n\n";
     }
-  } while(!flag);
+  }
 }
 
 std::string Date::getMonth() {
@@ -219,5 +222,5 @@ int main() {
   d1.setDay();
   d1.setYear();
   std::string year = d1.date_to_string();
-  std::cout << year << std::endl;
+  std::cout << "Date is: " << year << std::endl;
 }
