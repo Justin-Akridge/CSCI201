@@ -1,3 +1,10 @@
+/*
+ * Justin Akridge
+ * 09/09/2023
+ * CSCI201
+ * This program collects a stream of data in the form of (state, governor, flower) and stores
+ * each states info into a map. The user can look up the values by the states initials.
+ */
 #include <iostream>
 #include <fstream>
 #include <string>
