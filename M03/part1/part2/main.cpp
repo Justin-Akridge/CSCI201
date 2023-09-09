@@ -1,3 +1,8 @@
+/*
+ * Justin Akridge
+ * 09/09/2023
+ * The problem collects data on users computers and its stores it in memory, and then it will display on the information in a formatted string
+ */
 #include "personal_computer.h"
 #include <iostream>
 #include <ios>
