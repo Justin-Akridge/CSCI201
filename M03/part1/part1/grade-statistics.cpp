@@ -1,3 +1,10 @@
+/*
+ * Justin Akridge
+ * 09/09/2023
+ * CSCI201
+ * This problem calculates the average grade and lowest/highest grade over 16 different tests
+ * grade calculator
+ */
 #include <iostream>
 #include <array>
 #include <climits>
