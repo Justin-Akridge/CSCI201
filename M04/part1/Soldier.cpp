@@ -12,17 +12,20 @@ std::string Soldier::get_rank() const {
   return rank;
 }
 
-void Soldier::set_pay(double init_pay) {
+Soldier& Soldier::set_pay(double init_pay) {
   assert(pay >= 0);
   pay = init_pay
+  return *this;
 }
 
-void Soldier::set_name(std::string &init_name) {
+Soldier& Soldier::set_name(std::string &init_name) {
   name = init_name;
+  return *this;
 }
 
-void Soldier::set_rank(std::string &init_rank) {
+Soldier& Soldier::set_rank(std::string &init_rank) {
   rank = init_rank;
+  return *this;
 }
 
 std::string Soldier::to_string() {

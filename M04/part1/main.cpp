@@ -1,7 +1,8 @@
+#include "Soldier.h"
 #include <iostream>
+#include <cctype>
 #include <vector>
 #include <algorithm>
-#include "Soldier.h"
 
 bool validate_name(const std::string &input) {
   for (int i = 0; i < input.size(); i++) {
@@ -12,10 +13,26 @@ bool validate_name(const std::string &input) {
 }
 
 std::string get_name() {
-  std::string name;
-  std::cout << "Enter your name: ";
-  std::cin >> name;
-  return name;
+  std::string first_name;
+  std::string last_name;
+  bool done = false;
+  while (!done) {
+    try {
+      std::cout << "Enter your first name: ";
+      std::cin >> first_name;
+      std::cout << "Enter your last name: ";
+      std::cin >> last_name;
+      if (validate_name(first_name)) {
+
+      } else {
+        throw std::invalid_argument("First name must be characters a-z.");
+      }
+      if (validate_name(second_name)) {
+      } else {
+        throw std::invalid_argument("Last name must be characters a-z.");
+      }
+  }
+  return first_name + second_name;
 }
 
 bool is_valid_int(std::string &input) {
@@ -28,8 +45,23 @@ bool is_valid_int(std::string &input) {
 }
 
 bool is_correct_response(std::string &ranks, index) {
-  std::cout << "
-          std::cout << "Is " << ranks[index] << " the correct rank (y/n): "; 
+  char input;
+  while (true) {
+    try {
+      std::cout << "Is " << ranks[index] << " the correct rank (y/n): "; 
+      std::cin >> input;
+      input = std::tolower(input);
+      if (input == 'y') {
+        return true;
+      } else if (input == 'n') {
+        return false;
+      } else {
+        std::invalid_argument("input must be y/n.");
+      }
+    } catch(std::invalid_argument &e) {
+      std::cerr << "Invalid argument: " << e.what() << "\n\n";
+    }
+  }
 }
 
 std::string get_rank() {
