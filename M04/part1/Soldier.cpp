@@ -30,8 +30,27 @@ std::string Soldier::to_string() {
   return s;
 }
 
-bool operator==(const Soldier &obj) const {
+bool Soldier::operator==(const Soldier &soldier) const {
   return (name == obj.name && rank == obj.rank && classification == obj.classification);
+}
+
+bool Soldier::operator<(const Soldier &soldier) const {
+  return (rank < soldier.rank);
+}
+
+bool Soldier::operator++<(const Soldier &soldier) const {
+  return soldier.rank++;
+  //check for rank: make sure they do not cross
+}
+
+bool Soldier::operator--(const Soldier &soldier) const {
+  return rank < soldier.rank--;
+  //check for rank: make sure they do not cross
+}
+
+ostream& operator<<(ostream& os, const Soldier &soldier) const {
+  os << soldier.name << " " << soldier.rank << " " << soldier.classification
+     << soldier.pay << '\n';
 }
 
 Soldier::Soldier() {

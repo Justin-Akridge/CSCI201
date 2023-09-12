@@ -11,7 +11,10 @@ public:
   void set_name(std::string);
   void set_rank(std::string);
   std::string to_string();
-  bool operator==(const Soldier &obj) const;
+  bool operator==(const Soldier &soldier) const;
+  bool operator<(const Soldier &soldier) const;
+  bool operator--(const Soldier &soldier) const;
+  bool operator++(const Soldier &soldier) const;
   Soldier();
   Soldier(std::string, std::string, std::string, double);
 private:
