@@ -38,16 +38,16 @@ bool Soldier::operator<(const Soldier &soldier) const {
   return (rank < soldier.rank);
 }
 
-bool Soldier::operator++<(const Soldier &soldier) const {
-  return soldier.rank++;
-  //check for rank: make sure they do not cross
-}
-
-bool Soldier::operator--(const Soldier &soldier) const {
-  return rank < soldier.rank--;
-  //check for rank: make sure they do not cross
-}
-
+//bool Soldier::operator++<(const Soldier &soldier) const {
+//  return soldier.rank++;
+//  //check for rank: make sure they do not cross
+//}
+//
+//bool Soldier::operator--(const Soldier &soldier) const {
+//  return rank < soldier.rank--;
+//  //check for rank: make sure they do not cross
+//}
+//
 ostream& operator<<(ostream& os, const Soldier &soldier) const {
   os << soldier.name << " " << soldier.rank << " " << soldier.classification
      << soldier.pay << '\n';
