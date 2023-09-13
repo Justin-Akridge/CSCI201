@@ -9,9 +9,10 @@ public:
   std::string get_name() const;
   std::string get_rank() const;
   Soldier& set_pay(double);
-  Soldier& set_name(std::string);
-  Soldier& set_rank(std::string);
+  Soldier& set_name(std::string&);
+  Soldier& set_rank(std::string&);
   std::string to_string();
+  //std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const; 
   bool operator==(const Soldier &soldier) const;
   bool operator<(const Soldier &soldier) const;
  // bool operator--(const Soldier &soldier) const;

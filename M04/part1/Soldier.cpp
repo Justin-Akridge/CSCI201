@@ -14,7 +14,7 @@ std::string Soldier::get_rank() const {
 
 Soldier& Soldier::set_pay(double init_pay) {
   assert(pay >= 0);
-  pay = init_pay
+  pay = init_pay;
   return *this;
 }
 
@@ -34,7 +34,8 @@ std::string Soldier::to_string() {
 }
 
 bool Soldier::operator==(const Soldier &soldier) const {
-  return (name == obj.name && rank == obj.rank && classification == obj.classification);
+  return (name == soldier.name && rank == soldier.rank 
+          && classification == soldier.classification);
 }
 
 bool Soldier::operator<(const Soldier &soldier) const {
@@ -51,10 +52,10 @@ bool Soldier::operator<(const Soldier &soldier) const {
 //  //check for rank: make sure they do not cross
 //}
 //
-ostream& operator<<(ostream& os, const Soldier &soldier) const {
-  os << soldier.name << " " << soldier.rank << " " << soldier.classification
-     << soldier.pay << '\n';
-}
+//std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const {
+//  os << soldier.name << " " << soldier.rank << " " << soldier.classification
+//     << soldier.pay << '\n';
+//}
 
 Soldier::Soldier() {
   name = "";
@@ -63,7 +64,7 @@ Soldier::Soldier() {
   pay = 0.0;
 }
 
-Soldier(std::string init_name, std::string init_rank, 
+Soldier::Soldier(std::string init_name, std::string init_rank, 
         std::string init_classification, double init_pay) {
   name = init_name;
   rank = init_rank;
