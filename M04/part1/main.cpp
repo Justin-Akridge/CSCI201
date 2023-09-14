@@ -21,7 +21,8 @@ std::string get_name() {
   while (true) {
     try {
       std::cout << "Enter your full name: ";
-      std::cin >> name;
+      std::getline(std::cin, name);
+      std::cout << '\n';
       if (validate_name(name)) {
         return name;
       } else {
@@ -61,16 +62,22 @@ bool is_correct_rank(std::string &ranks, int index) {
     }
   }
 }
-//[_] TODO: make a hashmap to store rank with title "seargent". Figure out how to get
-// name of rank and rank seperately
+
 std::string get_rank_classification(int index) {
   assert (index >= 0 && index <= 29);
-  std::vector<std::string> ranks = {"E1 ", "E2", "E3", "E4A", "E4B", "E5", "E6", 
+  std::vector<std::string> ranks = {"E1", "E2", "E3", "E4A", "E4B", "E5", "E6", 
                                     "E7A", "E7B", "E8", "E9A", "E9B", "E9C", 
                                     "W1", "W2", "W3", "W4", "W5", "O1", "O2", 
                                     "O3", "O4", "O5", "O6", "O7", "O8", "O9", 
-                                    "10a", "10b"};
-  return ranks[index];
+                                    "O10a", "O10b"};
+  std::string classification = ranks[index];
+  if (classification[0] == 'E') {
+    return "Enlisted";
+  } else if (classification[0] == 'W') {
+    return "Warrant";
+  } else {
+    return "Officer";
+  }
 }
 
 int get_rank_index() {
@@ -92,8 +99,15 @@ int get_rank_index() {
                     "24 for O-8 major general\n25 for O-9 lieutenant general\n"
                     "26 for O-10 general\n27 for O-10 general of the army\nselection: ";
       std::cin >> input;
-      int index = std::stoi(input);
+      int index;
+      if (is_valid_int(input)) {
+        index = std::stoi(input);
+      } else {
+        throw std::invalid_argument("input must be a number.");
+      }
+      std::cout << index << '\n';
       if (index >= 0 && index <= 28) {
+        std::cout << "returning\n";
         return index;
       } else if (index < 0) {
         throw std::out_of_range("input must be greater then or equal to 0.");
@@ -116,6 +130,23 @@ double get_pay(std::vector<std::string> pay_scale, int index) {
   return std::stod(pay_scale[index]);
 } 
 
+std::string get_classification(int index) {
+  std::vector<std::string> classifications = {"private","private second class", "private first class", 
+                                              "specialist", "corporal", "sergeant",
+                                              "sergeant", "staff sergeant",
+                                              "sergeant first class", "master sergeant",
+                                              "sergeant major", "command sergeant major",
+                                              "Sergeant major of the army", "Warrant officer 1",
+                                              "Chief warrant officer 2", "chief warrant officer 3",
+                                              "chief warrant officer 4", "chief warrant offcier 5",
+                                              "second lieutenant", "first lieutenant",
+                                              "captain", "major", "lieutenant coloniel",
+                                              "colonel", "brigadier general",
+                                              "major general", "lieutenant general",
+                                              "general", "general of the army"};
+  return classifications[index];
+}
+
 int main() {
   std::vector<std::string> pay_scale;
   std::ifstream pay_scale_file ("input.txt");
@@ -132,12 +163,12 @@ int main() {
   for (int i = 0; i < 7; i++) {
     std::string name = get_name();
     int rank_index = get_rank_index();
-    std::string rank = get_rank_classification(rank_index);
-    std::cout << name << " " << rank_index << " " << rank << '\n';
-    Soldier new_soldier(name,;
-    std::string rank;
-    std::string classification;
-    double pay;
-    
+    std::string classification = get_rank_classification(rank_index);
+    std::string rank = get_classification(rank_index);
+    double pay = get_pay(pay_scale, rank_index);
+    Soldier new_soldier(name, rank, classification, pay);
+    soldiers.push_back(new_soldier);
+    std::string print = new_soldier.to_string();
+    std::cout << print << '\n';
   }
 }
