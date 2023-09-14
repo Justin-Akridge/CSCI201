@@ -1,7 +1,6 @@
 #ifndef SOLDIER_H
 #define SOLDIER_H
 #include <string>
-#include <unordered_map>
 
 class Soldier {
 public:
@@ -13,10 +12,10 @@ public:
   Soldier& set_rank(std::string&);
   std::string to_string();
   //std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const; 
-  bool operator==(const Soldier &soldier) const;
-  bool operator<(const Soldier &soldier) const;
- // bool operator--(const Soldier &soldier) const;
- // bool operator++(const Soldier &soldier) const;
+  //bool operator==(const Soldier &soldier) const;
+  //bool operator<(const Soldier &soldier) const;
+  // bool operator--(const Soldier &soldier) const;
+  // bool operator++(const Soldier &soldier) const;
   Soldier();
   Soldier(std::string, std::string, std::string, double);
   //std::unordered_map

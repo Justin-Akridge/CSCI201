@@ -1,5 +1,8 @@
 #include "Soldier.h"
 #include <cassert>
+#include <string>
+#include <iostream>
+
 double Soldier::get_pay() const {
   return pay;
 }
@@ -29,19 +32,19 @@ Soldier& Soldier::set_rank(std::string &init_rank) {
 }
 
 std::string Soldier::to_string() {
-  std::string s = name + " " + rank + " " + classification;
+  std::string s = name + " " + rank + " " + classification + std::to_string(pay);
   return s;
 }
 
-bool Soldier::operator==(const Soldier &soldier) const {
-  return (name == soldier.name && rank == soldier.rank 
-          && classification == soldier.classification);
-}
-
-bool Soldier::operator<(const Soldier &soldier) const {
-  return (rank < soldier.rank);
-}
-
+//bool Soldier::operator==(const Soldier &soldier) const {
+//  return (name == soldier.name && rank == soldier.rank 
+//          && classification == soldier.classification);
+//}
+//
+//bool Soldier::operator<(const Soldier &soldier) const {
+//  return (rank < soldier.rank);
+//}
+//
 //bool Soldier::operator++<(const Soldier &soldier) const {
 //  return soldier.rank++;
 //  //check for rank: make sure they do not cross
@@ -66,6 +69,7 @@ Soldier::Soldier() {
 
 Soldier::Soldier(std::string init_name, std::string init_rank, 
         std::string init_classification, double init_pay) {
+  std::cout << "Creating new object\n";
   name = init_name;
   rank = init_rank;
   classification = init_classification;
