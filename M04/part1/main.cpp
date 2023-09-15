@@ -1,3 +1,9 @@
+/*
+ * Justin Akridge
+ * Program name: Soldier inventory
+ * 09/15/2023
+ * Purpose: Collect data on each soldier and output there pay
+ */
 #include "Soldier.h"
 #include <iostream>
 #include <limits>
