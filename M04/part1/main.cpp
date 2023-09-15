@@ -21,12 +21,17 @@ std::string get_name() {
   std::string name;
   while (true) {
     try {
-      std::cout << "Enter your full name: ";
-      std::getline(std::cin, name);
-      std::cout << '\n';
-      if (validate_name(name)) {
-        std::cin.ignore(100, '\n');
-        return name;
+      std::string first_name;
+      std::cout << "Enter your first name: ";
+      std::cin >> first_name;
+      first_name[0] = std::toupper(first_name[0]);
+      std::string last_name;
+      std::cout << "Enter you last name: ";
+      std::cin >> last_name;
+      last_name[0] = std::toupper(last_name[0]);
+      std::string full_name = first_name + " " + last_name;
+      if (validate_name(full_name)) {
+        return full_name;
       } else {
         throw std::invalid_argument("Name must contain characters a-z.");
       }
@@ -107,9 +112,7 @@ int get_rank_index() {
       } else {
         throw std::invalid_argument("input must be a number.");
       }
-      std::cout << index << '\n';
       if (index >= 0 && index <= 28) {
-        std::cout << "returning\n";
         return index;
       } else if (index < 0) {
         throw std::out_of_range("input must be greater then or equal to 0.");

@@ -10,9 +10,9 @@ public:
   Soldier& set_name(std::string&);
   Soldier& set_rank(std::string&);
   std::string to_string();
-  //std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const; 
-  //bool operator==(const Soldier &soldier) const;
-  //bool operator<(const Soldier &soldier) const;
+  // std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const; 
+  bool operator==(const Soldier &soldier) const;
+  // bool operator<(const Soldier &soldier) const;
   // bool operator--(const Soldier &soldier) const;
   // bool operator++(const Soldier &soldier) const;
   Soldier();

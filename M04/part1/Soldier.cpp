@@ -27,20 +27,20 @@ Soldier& Soldier::set_rank(std::string &init_rank) {
 }
 
 std::string Soldier::to_string() {
-  std::string s = name + " " + rank + " " + classification + pay;
+  std::string s = "Name: " + name + '\n' + "Rank: " + rank + '\n' + "classification: " + classification + '\n' + "Pay: $" + pay + " a year\n";
   return s;
 }
 
-//bool Soldier::operator==(const Soldier &soldier) const {
-//  return (name == soldier.name && rank == soldier.rank 
-//          && classification == soldier.classification);
-//}
-//
+bool Soldier::operator==(const Soldier &soldier) const {
+  return (name == soldier.name && rank == soldier.rank 
+          && classification == soldier.classification);
+}
+
 //bool Soldier::operator<(const Soldier &soldier) const {
 //  return (rank < soldier.rank);
 //}
-//
-//bool Soldier::operator++<(const Soldier &soldier) const {
+
+//bool Soldier::operator++(const Soldier &soldier) const {
 //  return soldier.rank++;
 //  //check for rank: make sure they do not cross
 //}
@@ -64,7 +64,6 @@ Soldier::Soldier() {
 
 Soldier::Soldier(std::string init_name, std::string init_rank, 
         std::string init_classification, std::string init_pay) {
-  std::cout << "Creating new object\n";
   name = init_name;
   rank = init_rank;
   classification = init_classification;
