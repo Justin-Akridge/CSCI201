@@ -166,6 +166,7 @@ int main() {
     std::string pay = pay_scale[rank_index];
     Soldier new_soldier(name, rank, classification, pay);
     soldiers.push_back(new_soldier);
-    ///std::string print = new_soldier.to_string();
+    std::string print = new_soldier.to_string();
+    std::cout << print << std::endl;
   }
 }
