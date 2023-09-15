@@ -57,7 +57,8 @@ bool operator<(const Nerf_gun &gun) const {
 
 Nerf_gun& operator--() const {
   try {
-    if (darts <= 0) {
+    if (darts - 1 <= 0) {
+      darts = 0;
       throw std::out_of_range("You are out of ammo. You need to reload.");
     }
     --darts;
@@ -67,7 +68,7 @@ Nerf_gun& operator--() const {
 }
 
 Nerf_gun& operator+=() const;
-std::osstream operator<<(const Nerf_gun &gun) const;
+//std::osstream operator<<(const Nerf_gun &gun) const;
 int main() {
 }
 
