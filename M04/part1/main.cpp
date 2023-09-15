@@ -1,5 +1,6 @@
 #include "Soldier.h"
 #include <iostream>
+#include <limits>
 #include <fstream>
 #include <cctype>
 #include <cassert>
@@ -24,6 +25,7 @@ std::string get_name() {
       std::getline(std::cin, name);
       std::cout << '\n';
       if (validate_name(name)) {
+        std::cin.ignore(100, '\n');
         return name;
       } else {
         throw std::invalid_argument("Name must contain characters a-z.");
@@ -126,11 +128,6 @@ int get_rank_index() {
   }
 }
 
-double get_pay(std::vector<std::string> pay_scale, int index) {
-  double pay = std::stod(pay_scale[index]);
-  return pay;
-} 
-
 std::string get_classification(int index) {
   std::vector<std::string> classifications = {"private","private second class", "private first class", 
                                               "specialist", "corporal", "sergeant",
@@ -153,27 +150,22 @@ int main() {
   std::ifstream pay_scale_file ("input.txt");
   if(pay_scale_file.is_open()) {
     std::string pay_input;
-    while (std::getline(pay_scale_file, pay_input)) {
+    while (pay_scale_file.good()) {
+      std::getline(pay_scale_file, pay_input);
       pay_scale.push_back(pay_input);
     }
   } else {
     std::cout << "Unable to open file.\n";
   }
-  for (auto i : pay_scale) std::cout << i << std::endl;
   std::vector<Soldier> soldiers;
   for (int i = 0; i < 7; i++) {
     std::string name = get_name();
     int rank_index = get_rank_index();
     std::string classification = get_rank_classification(rank_index);
     std::string rank = get_classification(rank_index);
-    for (int i = 0; i < pay_scale.size(); i++) {
-      std::cout << pay_scale[i] << std::endl;
-    }
-    double pay = get_pay(pay_scale, rank_index);
-    std::cout << pay << std::endl;
+    std::string pay = pay_scale[rank_index];
     Soldier new_soldier(name, rank, classification, pay);
-    std::cout << "returning1" << std::endl;
     soldiers.push_back(new_soldier);
-    std::string print = new_soldier.to_string();
+    ///std::string print = new_soldier.to_string();
   }
 }

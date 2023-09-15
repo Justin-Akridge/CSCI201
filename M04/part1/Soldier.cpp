@@ -3,10 +3,6 @@
 #include <string>
 #include <iostream>
 
-double Soldier::get_pay() const {
-  return pay;
-}
-
 std::string Soldier::get_name() const {
   return name;
 }
@@ -15,8 +11,7 @@ std::string Soldier::get_rank() const {
   return rank;
 }
 
-Soldier& Soldier::set_pay(double init_pay) {
-  assert(pay >= 0);
+Soldier& Soldier::set_pay(std::string init_pay) {
   pay = init_pay;
   return *this;
 }
@@ -32,7 +27,7 @@ Soldier& Soldier::set_rank(std::string &init_rank) {
 }
 
 std::string Soldier::to_string() {
-  std::string s = name + " " + rank + " " + classification + std::to_string(pay);
+  std::string s = name + " " + rank + " " + classification + pay;
   return s;
 }
 
@@ -68,7 +63,7 @@ Soldier::Soldier() {
 }
 
 Soldier::Soldier(std::string init_name, std::string init_rank, 
-        std::string init_classification, double init_pay) {
+        std::string init_classification, std::string init_pay) {
   std::cout << "Creating new object\n";
   name = init_name;
   rank = init_rank;
