@@ -27,29 +27,28 @@ Soldier& Soldier::set_rank(std::string &init_rank) {
 }
 
 std::string Soldier::to_string() {
-  std::string s = "Name: " + name + '\n' + "Rank: " + rank + '\n' + "classification: " + classification + '\n' + "Pay: $" + pay + " a year\n";
+  std::string s = "Name: " + name + '\n' + "Rank: " + rank + '\n' + "classification: " 
+                  + classification + '\n' + "Pay: $" + pay + " a year\n";
   return s;
 }
 
-bool Soldier::operator==(const Soldier &soldier) const {
+bool Soldier::operator==(const Soldier &soldier) {
   return (name == soldier.name && rank == soldier.rank 
           && classification == soldier.classification);
 }
 
-//bool Soldier::operator<(const Soldier &soldier) const {
-//  return (rank < soldier.rank);
-//}
+bool Soldier::operator<(const Soldier &soldier) {
+  return (rank_index < soldier.rank_index);
+}
 
-//bool Soldier::operator++(const Soldier &soldier) const {
-//  return soldier.rank++;
-//  //check for rank: make sure they do not cross
-//}
-//
-//bool Soldier::operator--(const Soldier &soldier) const {
-//  return rank < soldier.rank--;
-//  //check for rank: make sure they do not cross
-//}
-//
+bool Soldier::operator++(const Soldier &soldier) {
+  return soldier.rank_index++;
+}
+
+bool Soldier::operator--(const Soldier &soldier) {
+  return soldier.rank--;
+}
+
 //std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const {
 //  os << soldier.name << " " << soldier.rank << " " << soldier.classification
 //     << soldier.pay << '\n';
