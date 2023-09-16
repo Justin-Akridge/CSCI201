@@ -32,37 +32,61 @@ std::string Soldier::to_string() {
   return s;
 }
 
-bool Soldier::operator==(const Soldier &soldier) {
+void Soldier::print() {
+  std::cout << "Name: " + name + '\n' + "Rank: " + rank + '\n' + "classification: " 
+                  + classification + '\n' + "Pay: $" + pay + " a year\n";
+}
+
+int Soldier::get_rank_index() const {
+  return rank_index;
+}
+
+
+bool Soldier::operator==(const Soldier &soldier) const {
   return (name == soldier.name && rank == soldier.rank 
           && classification == soldier.classification);
 }
 
-bool Soldier::operator<(const Soldier &soldier) {
-  return (rank_index < soldier.rank_index);
+bool Soldier::operator<(const Soldier& soldier) const {
+  return (rank_index < soldier.get_rank_index());
 }
 
-bool Soldier::operator++(const Soldier &soldier) {
-  return soldier.rank_index++;
-}
-
-bool Soldier::operator--(const Soldier &soldier) {
-  return soldier.rank--;
-}
-
-//std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const {
-//  os << soldier.name << " " << soldier.rank << " " << soldier.classification
-//     << soldier.pay << '\n';
+//Soldier Soldier::operator++() {
+// return *this;
+//}
+//
+//Soldier Soldier::operator++(int) {
+//  Solder tmp;
+//  tmp.rank_index;
+//}
+//
+//Soldier Soldier::operator--() {
+// return *this;
+//}
+//
+//Soldier Soldier::operator--(int) {
+//  Soldier copy(*this);
+//  --(*this);
+//  return copy;
 //}
 
+std::ostream& operator<< (std::ostream &os, const Soldier &soldier) {
+  os << "Name: " << soldier.name << '\n' << "Rank: " << soldier.rank << '\n' << "classification: "
+                  << soldier.classification << '\n' << "Pay: $" << soldier.pay << " a year\n";
+  return os;
+}
+
 Soldier::Soldier() {
+  rank_index = 0;
   name = "";
   rank = "";
   classification = ""; 
   pay = 0.0;
 }
 
-Soldier::Soldier(std::string init_name, std::string init_rank, 
+Soldier::Soldier(int init_rank_index, std::string init_name, std::string init_rank, 
         std::string init_classification, std::string init_pay) {
+  rank_index = init_rank_index;
   name = init_name;
   rank = init_rank;
   classification = init_classification;

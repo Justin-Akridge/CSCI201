@@ -23,6 +23,7 @@ bool validate_name(const std::string &input) {
   return true;
 }
 
+
 std::string get_name() {
   std::string name;
   while (true) {
@@ -30,16 +31,27 @@ std::string get_name() {
       std::string first_name;
       std::cout << "Enter your first name: ";
       std::cin >> first_name;
-      first_name[0] = std::toupper(first_name[0]);
-      std::string last_name;
-      std::cout << "Enter you last name: ";
-      std::cin >> last_name;
-      last_name[0] = std::toupper(last_name[0]);
-      std::string full_name = first_name + " " + last_name;
-      if (validate_name(full_name)) {
-        return full_name;
-      } else {
-        throw std::invalid_argument("Name must contain characters a-z.");
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      if (!validate_name(first_name)) {
+        throw std::invalid_argument("You must enter characters a-z");
+      }
+      while (true) {
+        try {
+          first_name[0] = std::toupper(first_name[0]);
+          std::string last_name;
+          std::cout << "Enter you last name: ";
+          std::cin >> last_name;
+          std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+          if (validate_name(last_name)) {
+            last_name[0] = std::toupper(last_name[0]);
+            std::string full_name = first_name + " " + last_name;
+            return full_name;
+          } else {
+            throw std::invalid_argument("You must enter characters a-z");
+          }
+        } catch (std::invalid_argument &e) {
+          std::cerr << "Invalid argument: " << e.what() << '\n';
+        }
       }
     } catch(std::invalid_argument &e) {
       std::cerr << "Invalid argument: " << e.what() << '\n';
@@ -54,26 +66,6 @@ bool is_valid_int(std::string &input) {
     }
   }
   return true;
-}
-
-bool is_correct_rank(std::string &ranks, int index) {
-  char input;
-  while (true) {
-    try {
-      std::cout << "Is " << ranks[index] << " the correct rank (y/n): "; 
-      std::cin >> input;
-      input = std::tolower(input);
-      if (input == 'y') {
-        return true;
-      } else if (input == 'n') {
-        return false;
-      } else {
-        std::invalid_argument("input must be y/n.");
-      }
-    } catch(std::invalid_argument &e) {
-      std::cerr << "Invalid argument: " << e.what() << "\n\n";
-    }
-  }
 }
 
 std::string get_rank_classification(int index) {
@@ -167,15 +159,27 @@ int main() {
     std::cout << "Unable to open file.\n";
   }
   std::vector<Soldier> soldiers;
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 2; i++) {
     std::string name = get_name();
     int rank_index = get_rank_index();
     std::string classification = get_rank_classification(rank_index);
     std::string rank = get_classification(rank_index);
     std::string pay = pay_scale[rank_index];
-    Soldier new_soldier(name, rank, classification, pay);
+    Soldier new_soldier(rank_index, name, rank, classification, pay);
     soldiers.push_back(new_soldier);
     std::string print = new_soldier.to_string();
     std::cout << print << std::endl;
   }
+  int high_ranking_soldier_index = 0;
+  for (int i = 1; i < soldiers.size(); i++) {
+    if (soldiers[high_ranking_soldier_index] < soldiers[i]) {
+      high_ranking_soldier_index = i;
+    }
+  }
+
+  //soldiers[high_ranking_soldier_index];
+  std::cout << soldiers[high_ranking_soldier_index] << '\n';
+            //<< "The highest ranking soldier is: "
+            //<< soldiers[high_ranking_soldier_index] << " "
+            //<< soldiers[high_ranking_soldier_index] << '\n';
 }

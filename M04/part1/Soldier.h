@@ -12,14 +12,16 @@ public:
   Soldier& set_name(std::string&);
   Soldier& set_rank(std::string&);
   std::string to_string();
-  // std::ostream& operator<<(std::ostream& os, const Soldier &soldier) const; 
-  bool operator==(const Soldier &soldier) const;
-  bool operator<(const Soldier &soldier) const;
-  Soldier operator--(const Soldier &soldier) const;
-  Soldier operator++(const Soldier &soldier) const;
+  void print();
+  friend std::ostream& operator<< (std::ostream&, const Soldier&);
+  bool operator==(const Soldier &) const;
+  bool operator<(const Soldier&) const;
+  Soldier operator--(int);
+  Soldier operator--();
+  Soldier operator++(int);
+  Soldier operator++();
   Soldier();
-  Soldier(std::string, std::string, std::string, std::string);
-  //std::unordered_map
+  Soldier(int, std::string, std::string, std::string, std::string);
 private:
   int rank_index;
   std::string name;
