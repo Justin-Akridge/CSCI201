@@ -1,6 +1,7 @@
 #ifndef SOLDIER_H
 #define SOLDIER_H
 #include <string>
+#include <vector>
 
 class Soldier {
 public:
@@ -8,10 +9,12 @@ public:
   std::string get_name() const;
   std::string get_rank() const;
   void set_rank_index();
-  Soldier& set_pay(std::string);
-  Soldier& set_name(std::string&);
-  Soldier& set_rank(std::string&);
+  void update_rank();
+  void set_pay(std::vector<std::string>&, int);
+  void set_name(std::string&);
+  void set_rank(std::string&);
   std::string to_string();
+
   void print();
   friend std::ostream& operator<< (std::ostream&, const Soldier&);
   bool operator==(const Soldier &) const;

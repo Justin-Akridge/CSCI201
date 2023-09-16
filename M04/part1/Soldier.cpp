@@ -1,4 +1,5 @@
 #include "Soldier.h"
+#include <vector>
 #include <cassert>
 #include <string>
 #include <iostream>
@@ -11,19 +12,16 @@ std::string Soldier::get_rank() const {
   return rank;
 }
 
-Soldier& Soldier::set_pay(std::string init_pay) {
-  pay = init_pay;
-  return *this;
+void Soldier::set_pay(std::vector<std::string> &pay_scale, int rank_index) {
+  pay = pay_scale[rank_index];
 }
 
-Soldier& Soldier::set_name(std::string &init_name) {
+void Soldier::set_name(std::string &init_name) {
   name = init_name;
-  return *this;
 }
 
-Soldier& Soldier::set_rank(std::string &init_rank) {
+void Soldier::set_rank() {
   rank = init_rank;
-  return *this;
 }
 
 std::string Soldier::to_string() {
@@ -34,7 +32,7 @@ std::string Soldier::to_string() {
 
 void Soldier::print() {
   std::cout << "Name: " + name + '\n' + "Rank: " + rank + '\n' + "classification: " 
-                  + classification + '\n' + "Pay: $" + pay + " a year\n";
+                + classification + '\n' + "Pay: $" + pay + " a year\n";
 }
 
 int Soldier::get_rank_index() const {
@@ -51,28 +49,32 @@ bool Soldier::operator<(const Soldier& soldier) const {
   return (rank_index < soldier.get_rank_index());
 }
 
-//Soldier Soldier::operator++() {
-// return *this;
-//}
-//
-//Soldier Soldier::operator++(int) {
-//  Solder tmp;
-//  tmp.rank_index;
-//}
-//
-//Soldier Soldier::operator--() {
-// return *this;
-//}
-//
-//Soldier Soldier::operator--(int) {
-//  Soldier copy(*this);
-//  --(*this);
-//  return copy;
-//}
+Soldier Soldier::operator++() {
+  ++rank_index;
+  std::cout << rank_index << '\n';
+  return *this;
+}
+
+Soldier Soldier::operator++(int) {
+  Soldier tmp(*this);
+  ++rank_index;
+  return tmp;
+}
+
+Soldier Soldier::operator--() {
+  --rank_index;
+  return *this;
+}
+
+Soldier Soldier::operator--(int) {
+  Soldier tmp(*this);
+  --rank_index;
+  return tmp;
+}
 
 std::ostream& operator<< (std::ostream &os, const Soldier &soldier) {
   os << "Name: " << soldier.name << '\n' << "Rank: " << soldier.rank << '\n' << "classification: "
-                  << soldier.classification << '\n' << "Pay: $" << soldier.pay << " a year\n";
+                 << soldier.classification << '\n' << "Pay: $" << soldier.pay << " a year\n";
   return os;
 }
 

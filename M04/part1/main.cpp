@@ -170,16 +170,16 @@ int main() {
     std::string print = new_soldier.to_string();
     std::cout << print << std::endl;
   }
-  int high_ranking_soldier_index = 0;
-  for (int i = 1; i < soldiers.size(); i++) {
-    if (soldiers[high_ranking_soldier_index] < soldiers[i]) {
-      high_ranking_soldier_index = i;
+  int highest_rank = 0;
+  for (int i = 0; i < soldiers.size(); i++) {
+    if (soldiers[highest_rank] < soldiers[i]) {
+      highest_rank = i;
     }
   }
 
-  //soldiers[high_ranking_soldier_index];
-  std::cout << soldiers[high_ranking_soldier_index] << '\n';
-            //<< "The highest ranking soldier is: "
-            //<< soldiers[high_ranking_soldier_index] << " "
-            //<< soldiers[high_ranking_soldier_index] << '\n';
+  std::cout << "Soldier with the highest ranking: \n" << soldiers[high_ranking_soldier_index] << '\n';
+  ++soldiers[highest_rank];
+  soldiers[highest_rank].set_pay(pay_scale, soldiers[highest_rank].get_rank_index());
+  std::cout << soldiers[highest_rank].get_rank_classification(soldiers[highest_rank) << std::endl;
+  std::cout << "Soldier with the highest ranking: \n" << soldiers[highest_rank] << '\n';
 }
