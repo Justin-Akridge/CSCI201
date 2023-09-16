@@ -14,11 +14,11 @@ public:
   void set_range(int);
   void set_capacity(int);
   void set_darts(int); 
-  bool operator==(const Nerf_gun &gun) const;
-  bool operator<(const Nerf_gun &gun) const;
-  Nerf_gun& operator--(const Nerf_gun &gun) const;
-  Nerf_gun& operator+=(const Nerf_gun &gun) const;
-  std::osstream operator<<(const Nerf_gun &gun) const;
+  bool operator==(const Nerf_gun &gun);
+  bool operator<(const Nerf_gun &gun);
+  Nerf_gun& operator--();
+  Nerf_gun& operator+=(int);
+  std::ostream operator<<(std::ostream&, const Nerf_gun &gun);
 private:
   std::string model;
   int range;
