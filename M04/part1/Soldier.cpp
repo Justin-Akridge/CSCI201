@@ -58,7 +58,7 @@ Soldier Soldier::operator++() {
   return *this;
 }
 
-Soldier Soldier::operator++(int) {
+Soldier Soldier::operator++(int u) {
   Soldier tmp(*this);
   ++rank_index;
   return tmp;
@@ -69,7 +69,7 @@ Soldier Soldier::operator--() {
   return *this;
 }
 
-Soldier Soldier::operator--(int) {
+Soldier Soldier::operator--(int u) {
   Soldier tmp(*this);
   --rank_index;
   return tmp;
