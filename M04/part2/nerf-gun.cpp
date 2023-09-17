@@ -83,14 +83,28 @@ std::osstream operator<<(std::ostream& os, const Nerf_gun &gun) const {
      << capacity << '\n' << "Darts: " << darts << '\n';
 }
 
-int getModel() const {
-  std::cout << "Enter the model of the nerf gun: ";
-  std::string model = "";
-  std::cin >> model;
-  
+std::string Nerf_gun::get_model() {
+  while (true) {
+    std::string model = "";
+    std::cout << "Enter the model of the nerf gun: ";
+    std::cin >> model;
+    for (true) {
+      if (!std::isalpha(model[i])) {
+        throw std::invalid_argument("Model must contain characters from a-z");
+      }
+    }
+    return model;
+  } catch (std::invalid argument &e) {
+    std::cerr << "invalid argument: " << e.what() << '\n';
+  }
 }
 
-int getCapacity() const; 
-int getDartCount() const; 
-void fire(); 
+void Nerf_gun::fire() {
+  if (darts - 1 <= 0) {
+    darts = 0;
+    std::cout << "Your are out of bullets. You need to reload.\n";
+  } else {
+    --darts;
+  }
+}
 void reload(int);
