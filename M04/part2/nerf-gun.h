@@ -19,6 +19,11 @@ public:
   Nerf_gun& operator--();
   Nerf_gun& operator+=(int);
   std::ostream operator<<(std::ostream&, const Nerf_gun &gun);
+  int getModel() const; 
+  int getCapacity() const; 
+  int getDartCount() const; 
+  void fire(); 
+  void reload(int);
 private:
   std::string model;
   int range;

@@ -82,3 +82,15 @@ std::osstream operator<<(std::ostream& os, const Nerf_gun &gun) const {
   os << "Model: " << model << '\n' << "Range: " << range << '\n' << "Capacity: ";
      << capacity << '\n' << "Darts: " << darts << '\n';
 }
+
+int getModel() const {
+  std::cout << "Enter the model of the nerf gun: ";
+  std::string model = "";
+  std::cin >> model;
+  
+}
+
+int getCapacity() const; 
+int getDartCount() const; 
+void fire(); 
+void reload(int);
