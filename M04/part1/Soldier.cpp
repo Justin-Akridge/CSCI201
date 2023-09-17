@@ -20,9 +20,13 @@ void Soldier::set_name(std::string &init_name) {
   name = init_name;
 }
 
-void Soldier::set_rank() {
+void Soldier::set_rank(std::string& init_rank) {
   rank = init_rank;
 }
+
+//void update_rank() {
+//  set_pay
+//}
 
 std::string Soldier::to_string() {
   std::string s = "Name: " + name + '\n' + "Rank: " + rank + '\n' + "classification: " 
@@ -51,7 +55,6 @@ bool Soldier::operator<(const Soldier& soldier) const {
 
 Soldier Soldier::operator++() {
   ++rank_index;
-  std::cout << rank_index << '\n';
   return *this;
 }
 

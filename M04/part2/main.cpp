@@ -27,7 +27,7 @@ int main() {
   std::vector<Nerf_gun> nerf_guns;
   for (int i = 0; i < 2; i++) {
     std::string model = get_model();
-
+    
     Nerf_gun new_gun(std::string, int, int);
     nerf_guns.push_back(new_gun);
   }

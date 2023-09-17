@@ -177,9 +177,11 @@ int main() {
     }
   }
 
-  std::cout << "Soldier with the highest ranking: \n" << soldiers[high_ranking_soldier_index] << '\n';
+  std::cout << "Soldier with the highest ranking: \n" << soldiers[highest_rank] << '\n';
   ++soldiers[highest_rank];
   soldiers[highest_rank].set_pay(pay_scale, soldiers[highest_rank].get_rank_index());
-  std::cout << soldiers[highest_rank].get_rank_classification(soldiers[highest_rank) << std::endl;
-  std::cout << "Soldier with the highest ranking: \n" << soldiers[highest_rank] << '\n';
+  std::string new_rank = get_classification(soldiers[highest_rank].get_rank_index());
+  soldiers[highest_rank].set_rank(new_rank);
+  std::string new_rank = get_update_classification(soldiers[highest_rank].get_rank_index();
+  std::cout << "YOU HAVE JUST BE PROMOTED: \n" << soldiers[highest_rank] << '\n';
 }
