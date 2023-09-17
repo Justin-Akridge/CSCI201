@@ -1,61 +1,61 @@
 #include <iostream>
 #include "nerf-gun.h"
 
-Nerf_gun() {
+Nerf_gun::Nerf_gun() {
   model = "";
   range = 0;
   capacity = 0;
   darts = 0;
 }
 
-Nerf_gun(std::string init_model, int init_range, int init_capacity) {
+Nerf_gun::Nerf_gun(std::string init_model, int init_range, int init_capacity) {
   model = init_model;
   range = init_range;
   capacity = init_capacity;
   darts = 30;
 }
 
-std::string get_model() const {
+std::string Nerf_gun::get_model() const {
   return model;
 }
 
-int get_range() const {
+int Nerf_gun::get_range() const {
   return range;
 }
 
-int get_capacity() const {
+int Nerf_gun::get_capacity() const {
   return capacity;
 }
 
-int get_darts() const {
+int Nerf_gun::get_dart_count() const {
   return darts;
 }
 
-void set_model(std::string new_model) {
+void Nerf_gun::set_model(std::string new_model) {
   model = new_model;
 }
 
-void set_range(int new_range) {
+void Nerf_gun::set_range(int new_range) {
   range = new_range;
 }
 
-void set_capacity(int new_capacity) {
+void Nerf_gun::set_capacity(int new_capacity) {
   capacity = new_capacity;
 }
 
-void set_darts(int new_dart_amount) {
+void Nerf_gun::set_darts(int new_dart_amount) {
   darts = new_dart_amount;
 } 
 
-bool operator==(const Nerf_gun &gun) {
+bool Nerf_gun::operator==(const Nerf_gun &gun) {
   return (darts == gun.darts);
 }
 
-bool operator<(const Nerf_gun &gun) {
+bool Nerf_gun::operator<(const Nerf_gun &gun) {
   return (darts < gun.darts);
 }
 
-Nerf_gun& operator--() {
+Nerf_gun& Nerf_gun::operator--() {
   try {
     if (darts - 1 <= 0) {
       darts = 0;
@@ -68,7 +68,7 @@ Nerf_gun& operator--() {
   }
 }
 
-Nerf_gun& operator+=(int add_darts) {
+Nerf_gun& Nerf_gun::operator+=(int add_darts) {
   if (darts + add_darts > 30) {
     std::cout << "You can only load " << 30 - darts << " out of " << add_darts << '\n';
     darts = 30;
@@ -78,25 +78,9 @@ Nerf_gun& operator+=(int add_darts) {
   return *this;
 }
 
-std::osstream operator<<(std::ostream& os, const Nerf_gun &gun) const {
-  os << "Model: " << model << '\n' << "Range: " << range << '\n' << "Capacity: ";
-     << capacity << '\n' << "Darts: " << darts << '\n';
-}
-
-std::string Nerf_gun::get_model() {
-  while (true) {
-    std::string model = "";
-    std::cout << "Enter the model of the nerf gun: ";
-    std::cin >> model;
-    for (true) {
-      if (!std::isalpha(model[i])) {
-        throw std::invalid_argument("Model must contain characters from a-z");
-      }
-    }
-    return model;
-  } catch (std::invalid argument &e) {
-    std::cerr << "invalid argument: " << e.what() << '\n';
-  }
+std::ostream& operator<< (std::ostream& os, const Nerf_gun &gun) {
+  os << "Model: " << gun.model << '\n' << "Range: " << gun.range << '\n' 
+     << "Capacity:" << gun.capacity << '\n' << "Darts: " << gun.darts << '\n';
 }
 
 void Nerf_gun::fire() {
@@ -107,4 +91,6 @@ void Nerf_gun::fire() {
     --darts;
   }
 }
-void reload(int);
+void Nerf_gun::reload() {
+  darts = capacity;
+}
