@@ -182,6 +182,5 @@ int main() {
   soldiers[highest_rank].set_pay(pay_scale, soldiers[highest_rank].get_rank_index());
   std::string new_rank = get_classification(soldiers[highest_rank].get_rank_index());
   soldiers[highest_rank].set_rank(new_rank);
-  std::string new_rank = get_update_classification(soldiers[highest_rank].get_rank_index();
   std::cout << "YOU HAVE JUST BE PROMOTED: \n" << soldiers[highest_rank] << '\n';
 }
