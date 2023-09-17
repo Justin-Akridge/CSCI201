@@ -5,6 +5,9 @@
  * Purpose: Program shoots nerf guns and ...
  */
 #include <iostream>
+#include <ctime>
+#include <random>
+#include <cstdlib>
 #include <vector>
 #include "nerf-gun.h"
 
@@ -76,7 +79,25 @@ int main() {
     std::cout << new_gun;
     nerf_guns.push_back(new_gun);
   }
-  std::string model;
-  int range;
-  int capacity;
+  //display which gun has the most ammo
+  std::srand(time(nullptr));
+  for (int i = 0; i < 100; i++) {
+    std::cout << "LOOP # " << i << '\n';
+    int index_of_gun_with_most_ammo = 0; 
+    for (int i = 1; i < nerf_guns.size(); i++) {
+      if (nerf_guns[index_of_gun_with_most_ammo] < nerf_guns[i]) {
+        index_of_gun_with_most_ammo = i;
+      }
+    }
+    std::cout << "Player with the most ammo: " << nerf_guns[index_of_gun_with_most_ammo] << '\n';
+    int random_gun = std::rand() % nerf_guns.size();
+    --nerf_guns[random_gun];
+    if (nerf_guns[random_gun].get_dart_count() == 0) {
+      int darts;
+      std::cout << "Enter number of darts: ";
+      std::cin >> darts;
+      nerf_guns[random_gun] += darts;
+    }
+    std::cout << "STATUS OF NERF GUN AFTER FIRED\n" << nerf_guns[random_gun] << std::endl;
+  }
 }
