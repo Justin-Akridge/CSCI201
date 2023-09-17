@@ -23,11 +23,32 @@ std::string get_model() {
   }
 }
 
+int get_range() {
+  std::string range;
+  bool done = false;
+  while (!done) {
+    try {
+      std::cout << "Enter the range of the gun: ";
+      std::cin >> range;
+      for (int i = 0; i < range.size(); i++) {
+        if (!std::isalpha(range[i])) {
+          throw std::invalid_argument("range must be a number.");
+        }
+      }
+      int input = std::stoi(range);
+      done = true;
+    } catch (std::invalid_argument &e) {
+      std::cerr << "invalid argument: " << e.what() << std::endl;
+    }
+  }
+  return input;
+}
+
 int main() {
   std::vector<Nerf_gun> nerf_guns;
   for (int i = 0; i < 2; i++) {
     std::string model = get_model();
-    
+        
     Nerf_gun new_gun(std::string, int, int);
     nerf_guns.push_back(new_gun);
   }
