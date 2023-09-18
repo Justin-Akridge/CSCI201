@@ -13,16 +13,17 @@ public:
   void set_pay(std::vector<std::string>&, int);
   void set_name(std::string&);
   void set_rank(std::string&);
-  std::string to_string();
 
+  std::string to_string();
   void print();
+
   friend std::ostream& operator<< (std::ostream&, const Soldier&);
   bool operator==(const Soldier &) const;
   bool operator<(const Soldier&) const;
   Soldier operator--(int);
   Soldier operator--();
   Soldier operator++(int);
-  Soldier operator++();
+  Soldier& operator++();
   Soldier();
   Soldier(int, std::string, std::string, std::string, std::string);
 private:

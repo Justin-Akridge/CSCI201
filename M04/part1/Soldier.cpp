@@ -53,7 +53,7 @@ bool Soldier::operator<(const Soldier& soldier) const {
   return (rank_index < soldier.get_rank_index());
 }
 
-Soldier Soldier::operator++() {
+Soldier& Soldier::operator++() {
   ++rank_index;
   return *this;
 }
