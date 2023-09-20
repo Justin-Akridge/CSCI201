@@ -1,6 +1,6 @@
 #include "BeverageType.h"
 #include <iostream>
-
+#include <cassert>
 
 BeverageType::BeverageType() {
   name = "";
@@ -34,8 +34,11 @@ BerverageType::BeverageType(std::string init_name, std::string init_description,
     } else {
       throw std::invalid_argument("Input is not a number");
     }
-    if (init_price
-    price = init_price;
+    if (init_price > 0) {
+      price = init_price;
+    } else {
+      throw std::invalid_argument("input must be greater then 0");
+    }
   } catch (std::invalid_argument &e) {
     std::cerr << "Invalid argument: " << e.what() << std::endl;
   } catch (...) {
@@ -43,12 +46,31 @@ BerverageType::BeverageType(std::string init_name, std::string init_description,
   }
 }
 
+void BeverageType::set_price(double init_price) {
+  assert(init_price > 0);
+  price = init_price;
+}
 
+std::string BeverageType::get_name() const {
+  return name;
+}
+  
+std::string BeverageType::get_description() const {
+  return description;
+}
 
-void BeverageType::set_price(int = 0);
-std::string BeverageType::get_name() const;
-std::string BeverageType::get_description() const;
-std::string BeverageType::get_serving_size() const;
-int BeverageType::get_calories() const;
-double BeverageType::get_price() const; 
-std::string BeverageType::to_string();
+std::string BeverageType::get_serving_size() const {
+  return serving_size;
+}
+
+int BeverageType::get_calories() const {
+  return calories;
+}
+
+double BeverageType::get_price() const {
+  return price;
+}
+
+std::string BeverageType::to_string() {
+  std::string ret = "Name: " + name + "\ndescription" + description + "\nServing size: " + serving_size + "\nCalories: " + calories + '\n';
+}
