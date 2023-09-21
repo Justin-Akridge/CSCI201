@@ -15,13 +15,12 @@ public:
   bool get_caffeinated() const;
   std::string get_roast_type() const;
   std::string get_strength() const;
-  std::string get_sweetener() const;
+  bool get_sweetener() const;
 private:
   bool hot;
   bool caffeinated
   std::string roast_type 
-  //(Light, Medium, Dark, French Roast, Espresso)
-  enum strength;
+  std::string strength;
   std::string creamer;
   std::string sweetener;
 };
