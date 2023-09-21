@@ -10,7 +10,7 @@ BeverageType::BeverageType() {
   price = 0.0;
 }
 
-BerverageType::BeverageType(std::string init_name, std::string init_description, 
+BeverageType::BeverageType(std::string init_name, std::string init_description, 
                             int init_serving_size, int init_calories, 
                             double init_price) {
   try {
