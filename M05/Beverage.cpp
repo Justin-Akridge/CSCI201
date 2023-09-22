@@ -39,11 +39,50 @@ public:
       std::cerr << "Invalid argument: " << e.what() << std::endl;
     }
   }
-  std::string to_string() {
-    std::string ret = "Name: " + name + "\ndescription" + description +
-                      "\nServing size: " + std::to_string(serving_size) + "\nCalories: " + 
-                      std::to_string(calories) + '\n';
-    return ret;
+  void to_string() {
+    std::cout << "Name: " << name << "\ndescription" << description
+              << "\nServing size: " << std::to_string(serving_size) << "\nCalories: "
+              << std::to_string(calories) << '\n';
+  }
+
+  void set_name(std::string new_name) {
+    name = new_name;
+  }
+
+  void set_description(std::string new_description) {
+    description = new_description;
+  }
+
+  void set_serving_size(int new_serving_size) {
+    serving_size = new_serving_size;
+  }
+
+  void set_calories(int new_calories) {
+    calories = new_calories;
+  }
+
+  void set_price(double new_price) {
+    price = new_price;
+  }
+
+  std::string get_name() const {
+    return name;
+  }
+
+  std::string get_description() const {
+    return description;
+  }
+
+  int get_serving_size() const {
+    return serving_size;
+  }
+
+  int get_calories() const {
+    return calories;
+  }
+
+  double get_price() const {
+    return price;
   }
 
 private:
@@ -65,7 +104,7 @@ public:
     sweetener = false;
   }
   CoffeeType(std::string init_name, std::string init_description, 
-             int init_serving_size, int init_calories, int init_price, bool init_hot, 
+             int init_serving_size, int init_calories, double init_price, bool init_hot, 
              bool init_caffeinated, std::string init_roast_type, 
              std::string init_strength, std::string init_creamer, bool init_sweetener) :
              BeverageType(init_name, init_description, init_serving_size,
@@ -79,9 +118,51 @@ public:
     creamer = init_creamer;
     sweetener = init_sweetener;
   }
-  bool get_hot() {
+
+  void set_hot(bool new_hot) {
+    hot = new_hot;
+  }
+
+  void set_caffeinated(bool new_caffeinated) {
+    caffeinated = new_caffeinated;
+  }
+
+  void set_roast_type(std::string new_roast_type) {
+    roast_type = new_roast_type;
+  }
+
+  void set_strength(std::string new_strength) {
+    strength = new_strength;
+  }
+  
+  void set_creamer(std::string new_creamer) {
+    creamer = new_creamer;
+  }
+
+  void set_sweetener(bool new_sweetener) {
+    sweetener = new_sweetener;
+  }
+
+  bool get_hot() const {
     return hot;
   }
+
+  bool get_caffeinated() const {
+    return caffeinated;
+  }
+
+  std::string get_roast_type() const {
+    return roast_type;
+  }
+
+  std::string get_creamer() const {
+    return creamer;
+  }
+
+  bool get_sweetener() const {
+    return sweetener;
+  }
+
 private:
   bool hot;
   bool caffeinated;
@@ -93,23 +174,86 @@ private:
 
 class TeaType : public BeverageType {
 public:
-  TeaType();
-  TeaType(init_name, init_description, init_serving_size, init_calories, 
-          init_price, std::string init_type, bool init_hot, std::string init_creamer, 
+  TeaType() {
+    type = "";
+    hot = false;
+    creamer = "";
+    sweetener = "";
+    lemon = true;
+
+  }
+  TeaType(std::string init_name, std::string init_description, int init_serving_size, int init_calories, 
+          double init_price, std::string init_type, bool init_hot, std::string init_creamer, 
           std::string init_sweetener, bool init_lemon) :
           BeverageType(init_name, init_description, init_serving_size,
                        init_calories, init_price){
-    //maybe add validation
     type = init_type;
     hot = init_hot;
     creamer = init_creamer;
     sweetener = init_sweetener;
     lemon = init_lemon;
   }
-  std::string to_string() {
-    std::cout << "type: " << type << "\nhot/cold: " << hot ? "hot\n" : "cold\n" << "Creamer: ";
-              << creamer << "\nsweetener: " << sweetener << "Lemon: " << lemon ? "yes" : "no"; 
+  void to_string() {
+    if (hot) {
+      if (lemon) {
+        std::cout << "type: " << type << "\nhot/cold: " << "hot\n" << "creamer: "
+                  << creamer << "\nsweetener: " << sweetener << "lemon: " << "yes\n"; 
+      } else {
+        std::cout << "type: " << type << "\nhot/cold: " << "hot\n" << "creamer: "
+                  << creamer << "\nsweetener: " << sweetener << "lemon: " << "no\n";
+      }
+
+    } else {
+      if (lemon) {
+        std::cout << "type: " << type << "\nhot/cold: " << "cold\n" << "creamer: "
+                  << creamer << "\nsweetener: " << sweetener << "lemon: " << "yes\n"; 
+      } else {
+        std::cout << "type: " << type << "\nhot/cold: " << "cold\n" << "creamer: "
+                  << creamer << "\nsweetener: " << sweetener << "lemon: " << "no\n"; 
+      }
+    }
   }
+
+  void set_type(std::string new_type) {
+    type = new_type;
+  }
+
+  void set_hot(bool new_hot) {
+    hot = new_hot;
+  }
+  
+  void set_creamer(std::string new_creamer) {
+    creamer = new_creamer;
+  }
+
+  void set_sweetener(std::string new_sweetener) {
+    sweetener = new_sweetener;
+  }
+
+  void set_lemon(bool new_lemon) {
+    lemon = new_lemon;
+  }
+
+  std::string get_type() const {
+    return type;
+  }
+
+  bool get_hot() const {
+    return hot;
+  }
+
+  std::string get_creamer() const {
+    return creamer;
+  }
+
+  std::string get_sweetener() const {
+    return sweetener;
+  }
+
+  bool get_lemon() const {
+    return lemon;
+  }
+
 private:
   std::string type;
   bool hot;
@@ -118,33 +262,107 @@ private:
   bool lemon;
 };
 
-TeaType::TeaType() {
-  type = "";
-  hot = false;
-  creamer = "";
-  sweetener = "";
-  lemon = false;
-}
-
-class SodaType {
+class SodaType : public BeverageType {
 public:
   SodaType() {
     brand = "";
     type = "";
     diet = false;
   }
-  SodaType(std::string init_brand, std::string init_type, bool init_diet) :
+  SodaType(std::string init_name, std::string init_description, int init_serving_size, 
+           int init_calories, double init_price, std::string init_brand, std::string init_type, 
+           bool init_diet) :
            BeverageType(init_name, init_description, init_serving_size,
                         init_calories, init_price) {
     brand = init_brand;
     type = init_type;
     diet = init_diet;
   }
-  void to_string(
+  void to_string() {
+    std::cout << "Brand: " << brand << "\nType: " << type << "\nDiet: " << diet << '\n';
+  }
+
+  void set_brand(std::string new_brand) {
+    brand = new_brand;
+  }
+  
+  void set_type(std::string new_type) {
+    type = new_type;
+  }
+
+  void set_diet(bool new_diet) {
+    diet = new_diet;
+  }
+  
+  std::string get_brand() const {
+    return brand;
+  }
+
+  std::string get_type() const {
+    return type;
+  }
+
+  bool get_diet() const {
+    return diet;
+  }
+
 private:
   std::string brand;
   std::string type;
   bool diet;
+};
+
+class EnergyDrinkType : public BeverageType {
+public:
+  EnergyDrinkType() {
+    brand = "";
+    stimulant = "caffeine";
+    sweetener = true; 
+  }
+
+  EnergyDrinkType(std::string init_name, std::string init_description, 
+                  int init_serving_size, int init_calories, double init_price, 
+                  std::string init_brand, std::string init_stimulant, bool init_sweetener) :
+     BeverageType(init_name, init_description, init_serving_size, init_calories, 
+                  init_price) {
+    brand = init_brand;
+    stimulant = init_stimulant;
+    sweetener = init_sweetener;
+  }
+
+  void to_string() {
+    std::cout << "Brand: " << brand << "\nStimulant: " << stimulant << "\nSweetener: "
+              << sweetener << '\n';
+  }
+  
+  void set_brand(std::string new_brand) {
+    brand = new_brand;
+  }
+  
+  void set_stimulant(std::string new_stimulant) {
+    stimulant = new_stimulant;
+  }
+
+  void set_sweetener(bool new_sweetener) {
+    sweetener = new_sweetener;
+  }
+
+  std::string get_brand() const {
+    return brand;
+  }
+  
+  std::string get_stimulant() const {
+    return stimulant;
+  }
+
+  bool get_sweetener() const {
+    return sweetener;
+  }
+
+private:
+  std::string brand;
+  std::string stimulant;
+  bool sweetener;
 };
 
 int main() {
