@@ -40,9 +40,9 @@ public:
     }
   }
   void to_string() {
-    std::cout << "\nBeverage:\n" << "\nName: " << name << "\ndescription: " << description
+    std::cout << "Name: " << name << "\ndescription: " << description
               << "\nServing size: " << std::to_string(serving_size) << "\nCalories: "
-              << std::to_string(calories) << '\n';
+              << std::to_string(calories) << "\n\n";
   }
 
   void set_name(std::string new_name) {
@@ -101,12 +101,12 @@ public:
     roast_type = "French Roast";
     strength = "light";
     creamer = "";
-    sweetener = false;
+    sweetener = "";
   }
   CoffeeType(std::string init_name, std::string init_description, 
              int init_serving_size, int init_calories, double init_price, bool init_hot, 
              bool init_caffeinated, std::string init_roast_type, 
-             std::string init_strength, std::string init_creamer, bool init_sweetener) :
+             std::string init_strength, std::string init_creamer, std::string init_sweetener) :
              BeverageType(init_name, init_description, init_serving_size,
                          init_calories, init_price){
 
@@ -120,7 +120,14 @@ public:
   }
 
   void to_string() {
-    std::cout << "\nCoffee\n" <<  
+    std::string bool_to_string_hot = hot ? "Hot" : "cold";
+    std::string bool_to_string_caffeinated = caffeinated ? "yes" : "no";
+
+    std::cout << "\nCoffee\n" <<  "hot: " << bool_to_string_hot << "\nCaffeinated: " 
+              << bool_to_string_caffeinated << "\nRoast: " << roast_type 
+              << "\nStrength: " << strength << "\nCreamer: " << creamer 
+              << "\nSweetener: " << sweetener << '\n';
+  }
 
   void set_hot(bool new_hot) {
     hot = new_hot;
@@ -162,7 +169,7 @@ public:
     return creamer;
   }
 
-  bool get_sweetener() const {
+  std::string get_sweetener() const {
     return sweetener;
   }
 
@@ -172,7 +179,7 @@ private:
   std::string roast_type;
   std::string strength;
   std::string creamer;
-  bool sweetener;
+  std::string sweetener;
 };
 
 class TeaType : public BeverageType {
@@ -199,19 +206,19 @@ public:
   void to_string() {
     if (hot) {
       if (lemon) {
-        std::cout << "\ntype: " << type << "\nhot/cold: " <<  "hot\n" << "creamer: "
+        std::cout << "Tea:" << "\ntype: " << type << "\nhot/cold: " <<  "hot\n" << "creamer: "
                   << creamer << "\nsweetener: " << sweetener << "\nlemon: " << "yes\n"; 
       } else {
-        std::cout << "type: " << type << "\nhot/cold: " << "hot\n" << "creamer: "
+        std::cout << "Tea:" << "\ntype: " << type << "\nhot/cold: " << "hot\n" << "creamer: "
                   << creamer << "\nsweetener: " << sweetener << "\nlemon: " << "no\n";
       }
 
     } else {
       if (lemon) {
-        std::cout << "type: " << type << "\nhot/cold: " << "cold\n" << "creamer: "
+        std::cout << "Tea:" << "\ntype: " << type << "\nhot/cold: " << "cold\n" << "creamer: "
                   << creamer << "\nsweetener: " << sweetener << "\nlemon: " << "yes\n"; 
       } else {
-        std::cout << "type: " << type << "\nhot/cold: " << "cold\n" << "creamer: "
+        std::cout << "Tea:" << "\ntype: " << type << "\nhot/cold: " << "cold\n" << "creamer: "
                   << creamer << "\nsweetener: " << sweetener << "\nlemon: " << "no\n"; 
       }
     }
@@ -282,7 +289,9 @@ public:
     diet = init_diet;
   }
   void to_string() {
-    std::cout << "\nSoda:\n" << "\nBrand: " << brand << "\nType: " << type << "\nDiet: " << diet << '\n';
+    std::string bool_to_string_diet = diet ? "yes" : "no";
+    std::cout << "Soda:" << "\nBrand: " << brand << "\nType: " << type << "\nDiet: " 
+              << bool_to_string_diet << '\n';
   }
 
   void set_brand(std::string new_brand) {
@@ -334,8 +343,9 @@ public:
   }
 
   void to_string() {
-    std::cout << "\nEnergy Drink:\n" << "Brand: " << brand << "\nStimulant: " << stimulant << "\nSweetener: "
-              << sweetener << '\n';
+    std::string bool_to_string_sweetener = sweetener ? "yes" : "no";
+    std::cout << "Energy Drink:\n" << "Brand: " << brand << "\nStimulant: " 
+              << stimulant << "\nSweetener: " << sweetener << '\n';
   }
   
   void set_brand(std::string new_brand) {
@@ -371,17 +381,22 @@ private:
 int main() {
   BeverageType water("Water",  "Ice cold liquid goodness", 1, 0, 3.25);
   water.to_string();
-  CoffeeType coffee("Coffee", "Mocha chocolate latte", 1, 500, 12.25, false, 
-                    true, "french-roast", "strong", "mocha_creamer", true);
+  CoffeeType coffee("Mocha chocolate latte", "coffee with carmel drizzle", 1, 500, 12.25, false, 
+                    true, "french-roast", "strong", "mocha_creamer", "hazlenut");
   coffee.to_string();
+  coffee.BeverageType::to_string();
   TeaType tea("Green Tea", "Regular green tea on ice", 2, 90, 5.0, "green tea", 
               false, "no cream", "sugar", true); 
   tea.to_string();
+  tea.BeverageType::to_string();
   SodaType coke("Coke", "delicious yummy stuff", 1, 240, 4.50, "coke-a-cola", "pop", 
                 false);
+  coke.to_string();
+  coke.BeverageType::to_string();
   EnergyDrinkType redbull("redbull", "bottle of terrible stuff for you", 1, 200, 
                           8.25, "redbull", "taurine and caffeine", true);
   redbull.to_string();
+  redbull.BeverageType::to_string();
 }
 
 
