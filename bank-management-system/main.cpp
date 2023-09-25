@@ -75,12 +75,18 @@ int main(){
     customer.set_password();
     std::cout << "Thank you for creating an account global bank.\n";
     int choice = get_menu_choice();
+    int status_code;
     switch (choice) {
       case 1:
-        customer.deposit();
+        status_code = customer.deposit();
+        if (status_code) {
+          std::cout << "Would you like to enter a valid deposit (y/n)? ";
+        }
         break;
       case 2:
-        customer.withdraw();
+        status_code = customer.withdraw();
+        if (customer.get_balance() < 0) {
+          customer.alert_balance();
         break;
       case 3:
         customer.payment();
