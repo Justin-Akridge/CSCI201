@@ -29,8 +29,38 @@ std::string create_new_account_input() {
   }
 }
 
-int display_menu() {
-  std::cout << "
+int get_menu_choice() {
+  while (true) {
+    try {
+      char input;
+      std::cout << "------Dashboard------\nPress 1 to make a deposit\nPress 2 to withdraw\n
+                   Press 3 to make a payment\npress 4 to take out a loan\n";
+      std::cin >> input;
+      if (std::isdigit(input)) {
+        switch (input) {
+          case '1':
+            return 1;
+          case '2':
+            return 2;
+          case '3':
+            return 3;
+          case '4':
+          default:
+            throw std::out_of_range("Input must be a number between 1-4");
+        }
+      } else {
+        throw std::invalid_argument("Input must be a number");
+      }
+    } catch (std::invalid_argument &e) {
+      std::cerr << "Invalid argument: " << e.what() << '\n';
+    } catch (std::out_of_range &e) {
+      std::cerr << "Out of range: " << e.what() << '\n';
+    } catch (...) {
+      std::cerr << "Something else went wrong..\n";
+    }
+  }
+}
+
 int main(){ 
   Bank bank;
   if (create_new_account_input() == "no") {
@@ -39,12 +69,25 @@ int main(){
     exit(EXIT_SUCCESS); 
   } else {
     // [_] TODO: implement these functions
-    Customer new_customer;
+    Customer customer;
     std::cout << "Lets set up your account with a username and password.\n";
-    new_customer.set_username();
-    new_customer.set_password();
+    customer.set_username();
+    customer.set_password();
     std::cout << "Thank you for creating an account global bank.\n";
-    int choice = display_menu();
-    
+    int choice = get_menu_choice();
+    switch (choice) {
+      case 1:
+        customer.deposit();
+        break;
+      case 2:
+        customer.withdraw();
+        break;
+      case 3:
+        customer.payment();
+        break;
+      case 4:
+        customer.get_a_loan();
+        break;
+    }
   } 
 }
