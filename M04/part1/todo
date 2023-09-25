@@ -1,7 +1,0 @@
-[x] Create a vector to contain soldiers.
-[x] Create 4 to 7 soldiers.
-[x] Display each soldier’s information.
-[x] Compare the soldiers and display which one is higher ranking.
-[_] Promote and demote the soldiers randomly, displaying their status/information.
-[_] Handle any exceptions for inappropriate ranks or invalid promotions/demotions.
-[_] implement overloading operators
