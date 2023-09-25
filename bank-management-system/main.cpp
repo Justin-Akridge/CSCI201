@@ -29,11 +29,22 @@ std::string create_new_account_input() {
   }
 }
 
+int display_menu() {
+  std::cout << "
 int main(){ 
   Bank bank;
   if (create_new_account_input() == "no") {
     // need to implement time function here 
     std::cout << "Have a great day.\n";
     exit(EXIT_SUCCESS); 
+  } else {
+    // [_] TODO: implement these functions
+    Customer new_customer;
+    std::cout << "Lets set up your account with a username and password.\n";
+    new_customer.set_username();
+    new_customer.set_password();
+    std::cout << "Thank you for creating an account global bank.\n";
+    int choice = display_menu();
+    
   } 
 }
