@@ -228,9 +228,11 @@ public:
     return s;
   }
 private:
-  std::vector<std::string> positions = {"quarterback", "running back", "wide receiver", "tight end", "offensive tackle",
-                                        "offensive guard", "center", "fullback"};
-  std::vector<std::string> plays = {"inside run", "outside run", "draw play", "play action", "screen pass", "slant route", "post route",
+  std::vector<std::string> positions = {"quarterback", "running back", "wide receiver", 
+                                        "tight end", "offensive tackle", "offensive guard", 
+                                        "center", "fullback"};
+  std::vector<std::string> plays = {"inside run", "outside run", "draw play", "play action", 
+                                    "screen pass", "slant route", "post route",
                                     "bootleg", "double pass", "hail mary"};
   std::string position;
   std::string play;
