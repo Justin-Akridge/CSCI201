@@ -16,9 +16,10 @@ int Customer::withdraw(double withdraw_amount) {
     std::cerr << "Withdraw amount must be greater then $5.00\n;
   } else if (withdraw_amount >= 5000) {
     std::cerr << "Withdraw amount exceeds the maximum withdraw amount."
-                            "Please request a bank representative in the display menu to fulfill your request";
+                 "Please request a bank representative in the display menu to fulfill your request";
   } else if (balance - withdraw_amount < 100) {
-    std::cerr << "Your request cannot be fulfilled. Your withdraw ammount exceeds the amount in your balance.";
+    std::cerr << "Your request cannot be fulfilled. Your withdraw ammount exceeds the"
+                 "amount in your balance.";
   } else {
     balance -= withdraw_amount;
   }
