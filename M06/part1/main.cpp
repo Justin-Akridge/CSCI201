@@ -294,27 +294,75 @@ public:
       switch (input) {
         case '1':
           play = plays[0];
+          done = true;
           break;
         case '2':
           play = plays[1];
+          done = true;
           break;
         case'3':
           play = plays[2];
+          done = true;
           break;
         case '4':
           play = plays[3];
+          done = true;
           break;
         case '5':
           play = plays[4];
+          done = true;
           break;
         case'6':
           play = plays[5];
+          done = true;
           break;
         case'7':
           play = plays[6];
+          done = true;
           break;
         default:
           std::cout << "Invalid argument: Input must be a number between 1-7\n";
+          break;
+      }
+    }
+  }
+
+  void set_player_position() {
+    bool done = false;
+    while (!done) {
+      for (int i = 0; i < positions.size(); i++) {
+        std::cout << "Press " << i + 1 << " for " << positions[i] << '\n';
+      } 
+      char input;
+      std::cin >> input;
+      switch (input) {
+        case '1':
+          position = positions[0];
+          done = true;
+          break;
+        case '2':
+          position = positions[1];
+          done = true;
+          break;
+        case '3':
+          position = positions[2];
+          done = true;
+          break;
+        case '4':
+          position = positions[3];
+          done = true;
+          break;
+        case '5':
+          position = positions[4];
+          done = true;
+          break;
+        case '6':
+          position = positions[5];
+          done = true;
+          break;
+        case '7':
+          position = positions[6];
+          done = true;
           break;
       }
     }
@@ -360,10 +408,104 @@ public:
     return play;
   }
 
-  void set_play(std::string init_play) {
-    //TODO [_] finsih the plays
-    for (int i = 0; i < plays.size(); i++) {
-      st
+  void set_play() {
+    bool done = false;
+    while (!done) {
+      for (int i = 0; i < plays.size(); i++) {
+        std::cout << "Press " << i + 1 << " for " << plays[i] << '\n';
+      }
+      char input;
+      switch (input) {
+        case '1':
+          done = true;
+          play = plays[0];
+          break;
+        case '2':
+          done = true;
+          play = plays[1];
+          break;
+        case '3':
+          done = true;
+          play = plays[2];
+          break;
+        case '4':
+          done = true;
+          play = plays[3];
+          break;
+        case '5':
+          done = true;
+          play = plays[4];
+          break;
+        case '6':
+          done = true;
+          play = plays[5];
+          break;
+        case '7':
+          done = true;
+          play = plays[6];
+          break;
+        case '8':
+          done = true;
+          play = plays[7];
+          break;
+        case '9':
+          done = true;
+          play = plays[8];
+          break;
+        default:
+          std::cerr << "Input must be a number between 1-9\n";
+      }
+    }
+  }
+
+  void set_player_position() {
+    bool done = false;
+    while (!done) {
+      for (int i = 0; i < positions.size(); i++) {
+        std::cout << "Press " << i + 1 << " for " << positions[i] << '\n';
+      }
+      char input;
+      std::cin >> input;
+      switch(input) {
+        case '1':
+          position = positions[0];
+          done = true;
+          break;
+        case '2':
+          position = positions[1];
+          done = true;
+          break;
+        case '3':
+          position = positions[2];
+          done = true;
+          break;
+        case '4':
+          position = positions[3];
+          done = true;
+          break;
+        case '5':
+          position = positions[4];
+          done = true;
+          break;
+        case '6':
+          position = positions[5];
+          done = true;
+          break;
+        case '7':
+          position = positions[6];
+          done = true;
+          break;
+        case '8':
+          position = positions[7];
+          done = true;
+          break;
+        case '9':
+          position = positions[8];
+          done = true;
+          break;
+        default:
+          std::cerr << "Input must be a number between 1-9\n";
+      }
     }
   }
 
@@ -371,15 +513,12 @@ public:
     return play;
   }
 
-  void set_position(std::string init_position) {
-    position = init_position;
-  }
 private:
   std::vector<std::string> positions = {"kicker", "placekicker", "punter", "long snapper", 
                                         "holder", "kick returner", "punt returner",
                                         "gunner", "upback"};
   std::vector<std::string> plays = {"kickoff", "kickoff return", "onside kick", "field goal", 
-                "extra point (PAT)", "two-point conversion", "punt", "punt-return", "fake-punt"} 
+                "extra point (PAT)", "two-point conversion", "punt", "punt-return", "fake-punt"};
   std::string position;
   std::string play; 
 };
@@ -421,32 +560,33 @@ int get_player_number() {
 
 
 int main() {
-  char input;
-  std::cout << "-----Create Roster-----\npress 1 to add a offense player\n"
-               "press 2 to add a defense player\npress 3 to add a special teams players\n";
-  std::cin >> input;
-  std::cin.ignore(std::numeric_limits<int>::max(), '\n');
-  switch (input) {
-    case '1':
+  bool done = false;
+  while (!done) {
+    char input;
+    std::cout << "-----Create Roster-----\npress 1 to add a offense player\n"
+                 "press 2 to add a defense player\npress 3 to add a special teams players\n";
+    std::cin >> input;
+    std::cin.ignore(std::numeric_limits<int>::max(), '\n');
+    if (input == '1') {
       Offense offensive_player;
       offensive_player.Player::get_player_name_input();
       offensive_player.Player::get_player_number_input();
       offensive_player.set_player_position();
       offensive_player.set_play();
-    case '2':
+    } else if (input == '2') {
       Defense defensive_player;
       defensive_player.Player::get_player_name_input();
       defensive_player.Player::get_player_number_input();
       defensive_player.set_player_position();
       defensive_player.set_play();
-    case '3':
+    } else if (input == '3') {
       Special_teams special_teams_player;
       special_teams_player.Player::get_player_name_input();
       special_teams_player.Player::get_player_number_input();
       special_teams_player.set_player_position();
       special_teams_player.set_play();
+    } else {
+      std::cerr << "Input must be a number between 1-3\n";
+    }
   }
-  //Offense new_offense_player("Justin Akridge", 88, "quarterback", "pass");
-  //Defense new_defense_player("Jimmy Jones", 42, "tackle", "Blitz");
-  //Special_teams new_special_team_player("wille doo", 24, "Kicker", "Field Goal");
 }
