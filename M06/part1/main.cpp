@@ -9,31 +9,15 @@ class Player {
 public:
   Player() {
     name = "";
-    playerId = 0;
+    player_number = 0;
   }
 
   Player(std::string init_name, int init_playerId) {
     name = init_name;
-    playerId = init_playerId;
+    player_number = init_playerId;
   }
 
-  void set_player_name(std::string player_name) {
-    name = player_name;
-  }
-
-  std::string get_name() const {
-    return name;
-  }
-
-  int get_playerId() const {
-    return playerId;
-  }
-
-  void set_playerId(int number) {
-    playerId = number;
-  }
-  
-  void get_player_number_input() {
+  virtual void get_player_number_input() {
     std::string input_number;
     int converted_input_number;
     bool done = false;
@@ -56,11 +40,11 @@ public:
         }
       }
     }
+    player_number = converted_input_number;
     std::cout << '\n';
-    set_playerId(converted_input_number);
   }
 
-  std::string get_player_name_input() {
+  virtual void get_player_name_input() {
     std::string player_name;
     std::string first_name;
     std::string last_name;
@@ -78,30 +62,27 @@ public:
       }
       if (is_valid_name) {
         done = true;
-        std::cout << player_name << std::endl;
-        set_player_name(player_name);
       }
     }
-    return player_name;
+    name = player_name;
+    std::cout << '\n';
   }
 
   virtual ~Player() {};
-  virtual std::string get_player_position() = 0;
-  virtual std::string get_play() = 0;
+  virtual void set_play() {}
+  virtual void set_player_position() {}
 
-  std::string to_string() {
-    //this may need to return the position of the player
-    std::string print = "Name: " + name + "\nPlayers number: " + std::to_string(playerId) + '\n';
-    return print;
+  virtual std::string to_string() const {
+    return "Name: " + name + "\nPlayers number: " + std::to_string(player_number) + '\n';
   }
-private:
+protected:
   std::string name;
-  int playerId;
+  int player_number;
 };
 
 class Offense : public Player {
 public:
-  Offense() {
+  Offense() : Player() {
     position = "";
     play = "";
   }
@@ -112,9 +93,7 @@ public:
     play = init_play;
   }
 
-  ~Offense() {}; 
-
-  void set_play() {
+  void set_play() override {
     bool done = false;
     while (!done) {
       std::cout << "\nSelect a play\n";
@@ -122,134 +101,105 @@ public:
         std::cout << "Press " << i+1 << " for " << plays[i] << '\n';
       }
       std::cout << "Selection: ";
-      std::string key_input;
-      std::cin >> key_input;
-      bool is_valid_int = true;
-      for (auto i : key_input) {
-        if (!std::isdigit(i)) {
-          is_valid_int = false;
-        }
-      }
-      if (is_valid_int) {
-        int key = std::stoi(key_input);  
-        switch (key) {
-          case 1:
-            play = plays[0];
-            done = true;
-            break;
-          case 2:
-            play = plays[1];
-            done = true;
-            break;
-          case 3:
-            play = plays[2];
-            done = true;
-            break;
-          case 4:
-            play = plays[3];
-            done = true;
-            break;
-          case 5:
-            play = plays[4];
-            done = true;
-            break;
-          case 6:
-            play = plays[5];
-            done = true;
-            break;
-          case 7:
-            play = plays[6];
-            done = true;
-            break;
-          case 8:
-            play = plays[7];
-            done = true;
-            break;
-          case 9:
-            play = plays[8];
-            done = true;
-            break;
-          case 10:
-            play = plays[9];
-            done = true;
-            break;
-          default:
-            std::cerr << "Input is an invalid response. Please enter a number between 0-8";
-        }
+      char input;
+      std::cin >> input;
+      switch (input) {
+        case '1':
+          play = plays[0];
+          done = true;
+          break;
+        case '2':
+          play = plays[1];
+          done = true;
+          break;
+        case '3':
+          play = plays[2];
+          done = true;
+          break;
+        case '4':
+          play = plays[3];
+          done = true;
+          break;
+        case '5':
+          play = plays[4];
+          done = true;
+          break;
+        case '6':
+          play = plays[5];
+          done = true;
+          break;
+        case '7':
+          play = plays[6];
+          done = true;
+          break;
+        case '8':
+          play = plays[7];
+          done = true;
+          break;
+        case '9':
+          play = plays[8];
+          done = true;
+          break;
+        default:
+          std::cerr << "Input is an invalid response. Please enter a number between 0-8";
       }
     }
   }
 
-  std::string get_player_position() {
-    return position;
-  }
-
-  void set_player_position() {
+  void set_player_position() override {
     bool done = false;
     while (!done) {
       std::cout << "Select the position of the player\n";
       for (int i = 0; i < positions.size(); i++) {
         std::cout << "Press " << i+1 << " for " << positions[i] << '\n';
       }
+      char input;
       std::cout << "Selection: ";
-      std::string key_input;
-      std::cin >> key_input;
-      bool is_valid_int = true;
-      for (auto i : key_input) {
-        if (!std::isdigit(i)) {
-          is_valid_int = false;
-        }
-      }
-      if (is_valid_int) {
-        int key = std::stoi(key_input);
-        switch (key) {
-          case 1:
-            position = positions[0];
-            done = true;
-            break;
-          case 2:
-            position = positions[1];
-            done = true;
-            break;
-          case 3:
-            position = positions[2];
-            done = true;
-            break;
-          case 4:
-            position = positions[3];
-            done = true;
-            break;
-          case 5:
-            position = positions[4];
-            done = true;
-            break;
-          case 6:
-            position = positions[5];
-            done = true;
-            break;
-          case 7:
-            position = positions[6];
-            done = true;
-            break;
-          case 8:
-            position = positions[7];
-            done = true;
-            break;
-            std::cerr << "Input is an invalid response. Please enter a number between 0-8";
-        }
-      } else {
-        std::cout << "Input is an invalid response. Please enter a number between 0-8";
+      std::cin >> input;
+      std::cout << '\n';
+      switch (input) {
+        case '1':
+          position = positions[0];
+          done = true;
+          break;
+        case '2':
+          position = positions[1];
+          done = true;
+          break;
+        case '3':
+          position = positions[2];
+          done = true;
+          break;
+        case '4':
+          position = positions[3];
+          done = true;
+          break;
+        case '5':
+          position = positions[4];
+          done = true;
+          break;
+        case '6':
+          position = positions[5];
+          done = true;
+          break;
+        case '7':
+          position = positions[6];
+          done = true;
+          break;
+        case '8':
+          position = positions[7];
+          done = true;
+          break;
+        default:
+          std::cerr << "Input is an invalid response. Please enter a number between 0-8";
+          break;
       }
     }
   }
-  
-  std::string get_play() {
-    return play;
-  }
 
-  std::string to_string() {
-    std::string s = "Position: " + position + "\nPlay: " + play + '\n';
-    return s;
+  std::string to_string() const override {
+    return Player::to_string() + "Position: " + position + "\nPlay: " + play + '\n';
+   
   }
 private:
   std::vector<std::string> positions = {"quarterback", "running back", "wide receiver", 
@@ -257,7 +207,7 @@ private:
                                         "center", "fullback"};
   std::vector<std::string> plays = {"inside run", "outside run", "draw play", "play action", 
                                     "screen pass", "slant route", "post route",
-                                    "bootleg", "double pass", "hail mary"};
+                                    "double pass", "hail mary"};
   std::string position;
   std::string play;
 };
@@ -275,22 +225,17 @@ public:
     play = init_play;
   }
 
-  std::string get_player_position() {
-    return position;
-  }
-  
-  std::string get_play() {
-    return play;
-  }
-
-  void set_play() {
+  void set_play() override {
     bool done = false;
+    std::cout << "Select the defensive play\n";
     while (!done) {
       for (int i = 0; i < plays.size(); i++) {
         std::cout << "Press " << i + 1 << " for " << plays[i] << '\n';
       }
+      std::cout << "Selection: ";
       char input;
       std::cin >> input;
+      std::cout << '\n';
       switch (input) {
         case '1':
           play = plays[0];
@@ -327,14 +272,17 @@ public:
     }
   }
 
-  void set_player_position() {
+  void set_player_position() override {
     bool done = false;
+    std::cout << "Select the position of the player\n";
     while (!done) {
       for (int i = 0; i < positions.size(); i++) {
         std::cout << "Press " << i + 1 << " for " << positions[i] << '\n';
       } 
+      std::cout << "Selection: ";
       char input;
       std::cin >> input;
+      std::cout << '\n';
       switch (input) {
         case '1':
           position = positions[0];
@@ -364,25 +312,21 @@ public:
           position = positions[6];
           done = true;
           break;
+        default:
+          std::cerr << "You must enter a number between 1-7\n";
       }
     }
   }
 
-  std::string get_play() const {
-    return play;
-  }
-
-  void set_position(std::string init_position) {
-    position = init_position;
+  std::string to_string() const override{
+    return Player::to_string() + "Position: " + this->position + "\nPlay: " + this->play + '\n';
   }
 
 private:
   std::vector<std::string> positions = {"defensive tackle", "defensive end", 
               "linebacker", "cornerback", "safety", "nickelback", "dimeback"}; 
-
   std::vector<std::string> plays = {"4-3", "3-4", "Cover 2", "Cover 3", "Cover 4", 
                                     "Man-to_man", "Zone Blitz"};
-
   std::string position;
   std::string play; 
 };
@@ -400,21 +344,16 @@ public:
     play = init_play;
   }
 
-  std::string get_player_position() {
-    return position;
-  }
-  
-  std::string get_play() {
-    return play;
-  }
-
-  void set_play() {
+  void set_play() override {
     bool done = false;
     while (!done) {
       for (int i = 0; i < plays.size(); i++) {
         std::cout << "Press " << i + 1 << " for " << plays[i] << '\n';
       }
+      std::cout << "Selection: ";
       char input;
+      std::cin >> input;
+      std::cout << '\n';
       switch (input) {
         case '1':
           done = true;
@@ -458,14 +397,17 @@ public:
     }
   }
 
-  void set_player_position() {
+  void set_player_position() override {
     bool done = false;
+    std::cout << "Select the position of the player\n";
     while (!done) {
       for (int i = 0; i < positions.size(); i++) {
         std::cout << "Press " << i + 1 << " for " << positions[i] << '\n';
       }
+      std::cout << "Selection: ";
       char input;
       std::cin >> input;
+      std::cout << '\n';
       switch(input) {
         case '1':
           position = positions[0];
@@ -509,8 +451,8 @@ public:
     }
   }
 
-  std::string get_play() const {
-    return play;
+  std::string to_string() const override {
+    return Player::to_string() + "Position: " + position + "\nPlay: " + play + '\n';
   }
 
 private:
@@ -522,14 +464,6 @@ private:
   std::string position;
   std::string play; 
 };
-
-void call_get_player_position(Player *player) {
-  std::cout << player->get_player_position() << '\n';
-}
-
-void call_get_play(Player *player) {
-  std::cout << player->get_play();
-}
 
 std::string get_player_name() {
   std::string name;
@@ -561,32 +495,46 @@ int get_player_number() {
 
 int main() {
   bool done = false;
+  std::vector<Player*> players;
   while (!done) {
     char input;
-    std::cout << "-----Create Roster-----\npress 1 to add a offense player\n"
-                 "press 2 to add a defense player\npress 3 to add a special teams players\n";
+    std::cout << "-----Create Roster-----\n"
+                 "press 1 to add a offense player\n"
+                 "press 2 to add a defense player\n"
+                 "press 3 to add a special teams players\n"
+                 "press 0  to quit\n";
     std::cin >> input;
     std::cin.ignore(std::numeric_limits<int>::max(), '\n');
-    if (input == '1') {
-      Offense offensive_player;
-      offensive_player.Player::get_player_name_input();
-      offensive_player.Player::get_player_number_input();
-      offensive_player.set_player_position();
-      offensive_player.set_play();
+    if (input == '0') {
+      done = true;
+    } else if (input == '1') {
+      Offense* offensive_player = new Offense();
+      offensive_player->get_player_name_input();
+      offensive_player->get_player_number_input();
+      offensive_player->set_player_position();
+      offensive_player->set_play();
+      players.push_back(offensive_player);
     } else if (input == '2') {
-      Defense defensive_player;
-      defensive_player.Player::get_player_name_input();
-      defensive_player.Player::get_player_number_input();
-      defensive_player.set_player_position();
-      defensive_player.set_play();
+      Defense* defensive_player = new Defense();
+      defensive_player->get_player_name_input();
+      defensive_player->get_player_number_input();
+      defensive_player->set_player_position();
+      defensive_player->set_play();
+      players.push_back(defensive_player);
     } else if (input == '3') {
-      Special_teams special_teams_player;
-      special_teams_player.Player::get_player_name_input();
-      special_teams_player.Player::get_player_number_input();
-      special_teams_player.set_player_position();
-      special_teams_player.set_play();
+      Special_teams* special_teams_player = new Special_teams();
+      special_teams_player->get_player_name_input();
+      special_teams_player->get_player_number_input();
+      special_teams_player->set_player_position();
+      special_teams_player->set_play();
+      players.push_back(special_teams_player);
     } else {
       std::cerr << "Input must be a number between 1-3\n";
     }
+  }
+  std::cout << "\n------Roster------\n";
+  for (const auto& player: players) {
+    std::string player_info = player->to_string();
+    std::cout << player_info << std::endl;
   }
 }
