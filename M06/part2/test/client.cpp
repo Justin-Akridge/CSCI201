@@ -43,21 +43,26 @@ int main() {
     std::string state_abbrev = "";
     std::cout << "Enter a state abbreviation or # to quit: ";
     std::cin >> state_abbrev;
-    send(client_socket, state_abbrev.c_str(), state_abbrev.length(), 0);
-    std::cout << "The state abbreviation sent to server: " << state_abbrev << "\n";
     if (state_abbrev == "#") {
       std::cout << "Goodbye!" << std::endl;
       exit(EXIT_SUCCESS);
     } else {
+      send(client_socket, state_abbrev.c_str(), state_abbrev.length(), 0);
+      std::cout << "The state abbreviation sent to server: " << state_abbrev << "\n";
       recv(client_socket, buffer, BUFFER_SIZE, 0);
-      std::string recieved = buffer;
+      std::string tmp(buffer);
+      std::string recieved = "";
+      for (int i = 0; i < tmp.size(); i++) {
+        if (std::isalpha(tmp[i])) {
+          recieved += tmp[i];
+        }
+      }
       if (recieved == "ERROR") { 
         std::cout << "The input is not a valid state abbreviation." << std::endl;
       } else {
-        std::cout << "(Server) The state is abbreviation stands for: " << buffer << std::endl;
+        std::cout << "(Server) The state is abbreviation stands for: " << recieved << std::endl;
       }
     }
   }
-
   close(client_socket);
 }

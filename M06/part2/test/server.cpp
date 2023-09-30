@@ -51,14 +51,6 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  addr_size = sizeof(new_addr);
-  new_socket = accept(server_socket, (struct sockaddr*)&new_addr, &addr_size);
-
-  if (new_socket < 0) {
-    std::cerr << "Server accept failed.\n";
-    exit(EXIT_FAILURE);
-  }
-
   std::unordered_map<std::string, std::string> states = {
     {"AL", "Alabama"}, {"AZ", "Arizona"}, {"AR", "Arkansas"}, {"CA", "California"},
     {"CO", "Colorado"}, {"CT", "Connecticut"}, {"DE", "Delaware"}, {"FL", "Florida"},
@@ -75,10 +67,24 @@ int main() {
   };
 
   while (true) {
-    recv(new_socket, buffer, BUFFER_SIZE, 0);
-    std::string input(buffer);
-    std::cout << "(Client) State abbreviation recieved: " << input << "\n";
-    if (input != "#") {
+    addr_size = sizeof(new_addr);
+    new_socket = accept(server_socket, (struct sockaddr*)&new_addr, &addr_size);
+
+    if (new_socket < 0) {
+      std::cerr << "Server accept failed.\n";
+      exit(EXIT_FAILURE);
+    }
+
+    while (true) {
+      int bytes_recieved = recv(new_socket, buffer, BUFFER_SIZE, 0);
+      if (bytes_recieved <= 0) {
+        std::cout << "Client disconnected. Waiting for a new connection...\n";
+        close(new_socket);
+        break;
+      }
+
+      std::string input(buffer, bytes_recieved);
+      std::cout << "(Client) State abbreviation recieved: " << input << "\n";
       for (auto &i: input) {
         i = std::toupper(i);
       }
@@ -94,10 +100,7 @@ int main() {
         std::string error = "The state abbreviation entered is not a state abbreviation.";
         send(new_socket, error.c_str(), error.length(), 0);
       }
-    } else {
-      break;
     }
   }
-  close(new_socket);
   close(server_socket);
 }
