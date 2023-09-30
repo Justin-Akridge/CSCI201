@@ -60,7 +60,7 @@ int main() {
   }
 
   std::unordered_map<std::string, std::string> states = {
-    { "AL", "Alabama"}, {"AZ", "Arizona"}, {"AR", "Arkansas"}, {"CA", "California"},
+    {"AL", "Alabama"}, {"AZ", "Arizona"}, {"AR", "Arkansas"}, {"CA", "California"},
     {"CO", "Colorado"}, {"CT", "Connecticut"}, {"DE", "Delaware"}, {"FL", "Florida"},
     {"GA", "Georgia"}, {"HI", "Hawaii"}, {"ID", "Idaho"}, {"IL", "Illinois"}, {"IN", "Indiana"},
     {"IA", "Iowa"}, {"KS", "Kansas"}, {"KY", "Kentucky"}, {"LA", "Louisiana"}, {"ME", "Maine"},
@@ -70,31 +70,34 @@ int main() {
     {"NY", "New York"}, {"NC", "North Carolina"}, {"ND", "North Dakota"}, {"OH", "Ohio"}, 
     {"OK", "Oklahoma"}, {"OR", "Oregon"}, {"PA", "Pennsylvania"}, {"RI", "Rhode Island"},
     {"SC", "South Carolina"}, {"SD", "South Dakota"}, {"TN", "Tennessee"}, {"TX", "Texas"}, 
-    {"UT", "Utah"}, {"VT", "Vermont"}, {"Va", "Virginia"}, {"WA", "Washington"}, 
+    {"UT", "Utah"}, {"VT", "Vermont"}, {"VA", "Virginia"}, {"WA", "Washington"}, 
     {"WV", "West Virginia"}, {"WI", "Wisconsin"}, {"WY", "Wyoming"}
   };
-  do {
-    recv(new_socket, buffer, BUFFER_SIZE, 0);
-    std::cout << "(Client) State abbreviation recieved: " << buffer << "\n";
-    std::string message(buffer);
-    std::cout << typeid(message).name() << std::endl;
-    for (auto &i: message) {
-      i = std::toupper(i);
-    }
-    bool is_valid_state = false;
-    for (auto i : states) {
-      if (i.first == message) {
-        is_valid_state = true;
-        send(new_socket, states[message].c_str(), states[message].length(), 0);
-        std::cout << "Message sent to client: " << message << std::endl;
-      }
-    }
-    if (!is_valid_state) {
-      std::string error = "The state abbreviation entered is not a state abbreviation.";
-      send(new_socket, error.c_str(), error.size(), 0);
-    }
-  } while (*buffer != '#');
 
+  while (true) {
+    recv(new_socket, buffer, BUFFER_SIZE, 0);
+    std::string input(buffer);
+    std::cout << "(Client) State abbreviation recieved: " << input << "\n";
+    if (input != "#") {
+      for (auto &i: input) {
+        i = std::toupper(i);
+      }
+      bool is_valid_state = false;
+      for (auto i : states) {
+        if (i.first == input) {
+          is_valid_state = true;
+          send(new_socket, states[input].c_str(), states[input].length(), 0);
+          std::cout << "input sent to client: " << input << std::endl;
+        }
+      }
+      if (!is_valid_state) {
+        std::string error = "The state abbreviation entered is not a state abbreviation.";
+        send(new_socket, error.c_str(), error.length(), 0);
+      }
+    } else {
+      break;
+    }
+  }
   close(new_socket);
   close(server_socket);
 }
