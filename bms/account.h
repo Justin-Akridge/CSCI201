@@ -6,13 +6,14 @@ class Customer {
 public:
   Customer();
   ~Customer();
-  const int withdraw(double) const;
-  const void deposit(std::string&) const;
-  const double get_loan() const;
+  Account(const Account &acct) {
+  const int withdraw(const double);
+  void deposit(const double);
+  const double get_loan(const Account &acct) const;
   const std::string get_username() const;
-  const void set_username();
-  const void set_password();
-  const void reset_password();
+  void set_username(const std::string&);
+  void set_password(const std::string&);
+  void reset_password(const std::string&);
   const double get_balance() const;
 private:
   std::string username;
