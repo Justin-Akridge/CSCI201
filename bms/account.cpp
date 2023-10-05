@@ -30,10 +30,30 @@ Account::Account(int number, std::string init_first_name, std::string init_last_
   savings = init_savings;
 }
 
-void Account::create_account(const Account &a) {
-  std::cout << "Hello " << std::endl;
-//  void set_username(const std::string&);
-//  void set_password(const std::string&);
+//void Account::create_account(const Account &a) {
+//  std::cout << "Hello " << std::endl;
+////  void set_username(const std::string&);
+////  void set_password(const std::string&);
+//}
+
+void Account::set_first_name(std::string& fn) {
+  first_name = fn;
+}
+
+void Account::set_last_name(std::string& ln) {
+  last_name = ln;
+}
+
+void Account::set_pin(int& pin) {
+  pin = pin;
+}
+
+void Account::set_balance(double& balance) {
+  balance = balance;
+}
+
+void Account::set_savings(double& savings) {
+  savings = savings;
 }
 #if 0
 

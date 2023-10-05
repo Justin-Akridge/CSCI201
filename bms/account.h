@@ -19,6 +19,11 @@ public:
   void set_password(const std::string&);
   void reset_password(const std::string&);
   const double get_balance() const;
+  void set_first_name(std::string&);
+  void set_last_name(std::string&);
+  void set_pin(int&);
+  void set_balance(double&);
+  void set_savings(double&);
 private:
   std::string first_name;
   std::string last_name;
