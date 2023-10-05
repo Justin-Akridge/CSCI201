@@ -1,12 +1,16 @@
-#ifndef CUSTOMER_H
-#define CUSTOMER_H
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 #include <string>
 
-class Customer {
+class Account {
 public:
-  Customer();
-  ~Customer();
-  Account(const Account &acct) {
+  const int get_account_number(); 
+  void set_account_number(); 
+  void create_account(const Account&);
+  //static vector<Accounts *> account_list;
+  Account(int);
+  Account(int, std::string, std::string, int, int);
+  Account(int, std::string, std::string, int, int, double);
   const int withdraw(const double);
   void deposit(const double);
   const double get_loan(const Account &acct) const;
@@ -16,6 +20,9 @@ public:
   void reset_password(const std::string&);
   const double get_balance() const;
 private:
+  std::string first_name;
+  std::string last_name;
+  const int account_number;
   std::string username;
   std::string password;
   int credit_score;

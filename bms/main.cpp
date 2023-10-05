@@ -1,55 +1,115 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Account.h"
+#include "account.h"
+using namespace std;
 
+std::string get_first_name() {
+  cout << "Enter you first name: ";
+  string first_name;
+  cin >> first_name; 
+}
+
+std::string get_last_name() {
+  cout << "Enter you last name: ";
+  string last_name;
+  cin >> last_name; 
+}
+
+int pin() {
+  bool done = false;
+  string pin;
+  while (!done) {
+    cout << "Enter a 4 digit pin for you account: ";
+    cin >> pin;
+    bool valid_pin = true;
+    if (pin.size == 4) {
+      for (const auto &digit : pin) {
+        if (!isdigit(digit)) {
+          std::cerr << "Pin must contain only digits.\n";
+          valid_pin = false;
+          break;
+        }
+      }
+    } else {
+      std::cerr << "Pin number must be 4 digits.\n";
+    }
+    if (valid_pin) {
+      done = true;
+    }
+  }
+  return stoi(pin);
+}
+
+double get_balance() {
+  //implement this tommorow
+}
 
 int main() {
-  while (true) {
-    int option = 0;
-    int *const option = &option;
-    while (*option != 7) {
-    std::cout << "------Dashboard------\n"
-              << "Press 1 to open an account\n"
-              << "Press 2 to check balance\n"
-              << "Press 3 make a deposit\n"
-              << "Press 4 to withdraw\n"
-              << "Press 5 to close an account\n"
-              << "Press 6 to display account\n";
-              << "Press 7 to quit\n";
-    std::cin >> *option;
-    switch (*option) {
-      case 1:
-        Account::open();
-        break;
-      case 2:
-        Account::balance();
-        break;
-      case 3:
-        Account::deposit();
-        break;
-      case 4:
-        Account::withdraw();
-        break;
-      case 5:
-        Account::close();
-        break;
-      case 6:
-        Account::display();
-        break;
-      case 7: {
-        Account::ledgerDump();
-        Vector<Account *>::iterator itr;
-        for (itr = Account::v_list.begin(); itr != Account::v_list.end(); itr++) {
-          delete *itr;
-        }
-        std::cout << "Have a good day! Goodbye!" << std::endl;
-        break;
-      }
-      default:
-        std::cout << "Please enter a valid option [1-7]" << std::endl;
-        break;
-    } 
-    delete option;
-  }
-}
+    int account_total = 0;
+    std::cout << "Welcome to the bank!\n"
+              << "Do you have an account? [y/n]: ";
+    char input;
+    std::cin >> input;
+    input = std::tolower(input);
+    if (input == 'y') {
+      ;
+    } else if (input == 'n') {
+      Account new_account(account_total);
+      std::string first_name = get_first_name();
+      std::string last_name = get_last_name();
+      int pin = get_pin();
+      double balance = get_balance();
+      double savings = get_savings();
+      account_total++;
+    }
+//    while (true) {
+//      int option = 0;
+//      int *const option = &option;
+//      while (*option != 7) {
+//      std::cout << "------Dashboard------\n"
+//                << "Press 1 to open an account\n"
+//                << "Press 2 to check balance\n"
+//                << "Press 3 make a deposit\n"
+//                << "Press 4 to withdraw\n"
+//                << "Press 5 to close an account\n"
+//                << "Press 6 to display account\n";
+//                << "Press 7 to quit\n";
+//      std::cin >> *option;
+//      switch (*option) {
+//        case 1:
+//          Account::open();
+//          break;
+//        case 2:
+//          Account::balance();
+//          break;
+//        case 3:
+//          Account::deposit();
+//          break;
+//        case 4:
+//          Account::withdraw();
+//          break;
+//        case 5:
+//          Account::close();
+//          break;
+//        case 6:
+//          Account::display();
+//          break;
+//        case 7: {
+//          Account::ledgerDump();
+//          Vector<Account *>::iterator itr;
+//          for (itr = Account::v_list.begin(); itr != Account::v_list.end(); itr++) {
+//            delete *itr;
+//          }
+//          std::cout << "Have a good day! Goodbye!" << std::endl;
+//          break;
+//        }
+//        default:
+//          std::cout << "Please enter a valid option [1-7]" << std::endl;
+//          break;
+//      } 
+//      delete option;
+//    }
+//  }
+} 
+

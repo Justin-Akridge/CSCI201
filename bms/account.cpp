@@ -1,7 +1,6 @@
 #include <iostream>
-#include "Customer.h"
-
-Account::Account() {
+#include "account.h"
+Account::Account(int number) : account_number(number) {
   //maybe implement temporary encripted username and password
   username = "";
   password = "";
@@ -9,23 +8,34 @@ Account::Account() {
   balance = 1000;
   savings = 0.0;
   credit = 0.0;
+  account_number;
 }
 
-Account::Account(string init_first_name, string init_last_name, const long &init_account_amount) {
+Account::Account(int number, std::string init_first_name, std::string init_last_name, 
+                 int init_pin, int init_balance) : account_number(number){
+  // add in username and password
   first_name = init_first_name;
   last_name = init_last_name;
-  account_amount = init_account_amount;
+  pin = init_pin;
+  balance = init_balance;
 }
 
-Account::Account(const Account &a) {
-  cumulative_account_amount = a->cumulative_account_amount;
-  account_amount = a->account_amount;
-  first_name = a->first_name;
-  last_name = a->last_name;
-  account_amount = a-> account_amount;
+Account::Account(int number, std::string init_first_name, std::string init_last_name, int init_pin, 
+                 int init_balance, double init_savings) : account_number(number) {
+  // add in username and password
+  first_name = init_first_name;
+  last_name = init_last_name;
+  pin = init_pin;
+  balance = init_balance;
+  savings = init_savings;
 }
 
-Customer::~Customer();
+void Account::create_account(const Account &a) {
+  std::cout << "Hello " << std::endl;
+//  void set_username(const std::string&);
+//  void set_password(const std::string&);
+}
+#if 0
 
 int Customer::withdraw(double withdraw_amount) {
   if (withdraw_amount <= 5) {
@@ -140,10 +150,4 @@ double Customer::get_balance() const {
 void alert_balance() {
   std::cerr << "You have overdrawn your account. Your current balance is: "  << balance << '\n'; 
 }
-
-  std::string username;
-  std::string password;
-  int pin;
-  double balance;
-  double savings;
-  double credit;
+#endif
