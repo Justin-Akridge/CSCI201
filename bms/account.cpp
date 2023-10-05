@@ -55,6 +55,10 @@ void Account::set_balance(double& balance) {
 void Account::set_savings(double& savings) {
   savings = savings;
 }
+
+double Account::get_balance() const {
+  return balance;
+}
 #if 0
 
 int Customer::withdraw(double withdraw_amount) {
@@ -163,9 +167,6 @@ double Customer::get_loan() const {
 void Customer::set_password();
 void Customer::reset_password();
 
-double Customer::get_balance() const {
-  return balance;
-}
 
 void alert_balance() {
   std::cerr << "You have overdrawn your account. Your current balance is: "  << balance << '\n'; 
