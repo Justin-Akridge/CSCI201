@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sqlite3.h>
 #include "account.h"
 using namespace std;
 
@@ -18,30 +19,6 @@ std::string get_last_name() {
   return last_name;
 }
 
-int get_pin() {
-  bool done = false;
-  string pin;
-  while (!done) {
-    cout << "Enter a 4 digit pin for you account: ";
-    cin >> pin;
-    bool valid_pin = true;
-    if (pin.size() == 4) {
-      for (const auto &digit : pin) {
-        if (!isdigit(digit)) {
-          std::cerr << "Pin must contain only digits.\n";
-          valid_pin = false;
-          break;
-        }
-      }
-    } else {
-      std::cerr << "Pin number must be 4 digits.\n";
-    }
-    if (valid_pin) {
-      done = true;
-    }
-  }
-  return stoi(pin);
-}
 
 double get_balance() {
   double balance;
@@ -76,11 +53,11 @@ std::string get_password() {
       if (has_capital_letter && has_digit)
         done = true;
       else if (!has_capital_letter && !has_digit)
-        cerr << "Password must contain atleast one digit and one uppercase letter";
+        cerr << "Password must contain atleast one digit and one uppercase letter\n";
       else if (!has_capital_letter)
-        cerr << "Password must contain atleast one uppercase letter";
+        cerr << "Password must contain atleast one uppercase letter\n";
       else
-        cerr << "Password must contain atleast one digit";
+        cerr << "Password must contain atleast one digit\n";
       
     } else if (password.size() < 7) {
       cerr << "Password must must atleast 7 characters long\n";
@@ -108,81 +85,75 @@ std::string get_username() {
   return username;
 }
 
-int main() {
-  int number_of_accounts = 0;
-  std::cout << "Welcome to the bank!\n"
-            << "Do you have an account? [y/n]: ";
-  char input;
-  std::cin >> input;
-  input = std::tolower(input);
-  if (input == 'y') {
-    string username;
-    string password;
-    cout << "Please enter your username and password\n";
-    cout << "Username: ";
-    cin >> username;
-    cout << "Password: ";
-    cin >> pasword;
+double get_deposit_ammount() {
+  cout << "Enter the amount you would like to deposit: ";
+  double deposit;
+  cin >> deposit;
+  return deposit;
+}
 
-  } else if (input == 'n') {
-    Account new_account(number_of_accounts);
-    std::string first_name = get_first_name();
-    std::string last_name = get_last_name();
-    int pin = get_pin();
-    double balance = get_balance();
-    double savings = get_savings();
-    std::string username = get_username();
-    std::string password = get_password();
-    number_of_accounts++;
-  }
-  while (true) {
-    int option = 0;
-    int *const option = &option;
-    while (*option != 7) {
+string get_username_login() {
+  string username;
+  cout << "Please enter your username and password\n";
+  cout << "Username: ";
+  cin >> username;
+  return username;
+}
+
+string get_password_login() {
+  string password;
+  cout << "Password: ";
+  cin >> password;
+  return password;
+}
+
+void write_new_account_to_file(int account_number) {
+  account new_account;
+  ofstream output_file;
+  output_file.open("account.dat", ios::binary|ios::app);
+  new_account.create_account();
+  output_file.write(reinterpret_cast<char *>(&new_account), sizeof(account));
+  output_file.close();
+}
+
+int main() {
+  int number_of_accounts_in_bank; 
+  int option = 0;
+  do {
+    system("cls");
     std::cout << "------Dashboard------\n"
-              << "Press 1 to open an account\n"
-              << "Press 2 to check balance\n"
-              << "Press 3 make a deposit\n"
-              << "Press 4 to withdraw\n"
-              << "Press 5 to close an account\n"
-              << "Press 6 to display account\n";
-              << "Press 7 to quit\n";
-    std::cin >> *option;
-//      switch (*option) {
-//        case 1:
-//          Account::open();
-//          break;
-//        case 2:
-//          Account::balance();
-//          break;
-//        case 3:
-//          Account::deposit();
-//          break;
-//        case 4:
-//          Account::withdraw();
-//          break;
-//        case 5:
-//          Account::close();
-//          break;
-//        case 6:
-//          Account::display();
-//          break;
-//        case 7: {
-//          Account::ledgerDump();
-//          Vector<Account *>::iterator itr;
-//          for (itr = Account::v_list.begin(); itr != Account::v_list.end(); itr++) {
-//            delete *itr;
-//          }
-//          std::cout << "Have a good day! Goodbye!" << std::endl;
-//          break;
-//        }
-//        default:
-//          std::cout << "Please enter a valid option [1-7]" << std::endl;
-//          break;
-//      } 
-//      delete option;
-//    }
-//  }
-  }
+              << "Press 1 Create account" 
+              << "Press 2 Deposit account\n"
+              << "Press 3 Withdraw account\n"
+              << "Press 4 Check balance\n"
+              << "Press 5 Display account\n"
+              << "Press 6 Close account\n"
+              << "Press 7 Modify account\n"
+              << "Press 7 Quit\n";
+    std::cin >> option;
+    system("cls");
+    int account_number;
+    switch (option) {
+      case 1:
+        write_new_account_to_file(accounts_made);
+        break;
+      case 2:
+        cout << "Enter your accounter number: ";
+        cin >> account_number;
+        break;
+        case 3:
+          new_account.withdraw();
+          break;
+        case 4:
+          new_account.display();
+          break;
+        case 5:
+          new_a
+          break;
+        default:
+          std::cout << "Please enter a valid option [1-7]" << std::endl;
+          break;
+    }
+  } while (option != 7);
 } 
 

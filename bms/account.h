@@ -4,37 +4,25 @@
 
 class Account {
 public:
-  const int get_account_number(); 
-  void set_account_number(); 
-  void create_account(const Account&);
-  //static vector<Accounts *> account_list;
-  Account(int);
-  Account(int, std::string, std::string, int, int);
-  Account(int, std::string, std::string, int, int, double);
-  const int withdraw(const double);
-  void deposit(const double);
-  const double get_loan(const Account &acct) const;
-  const std::string get_username() const;
-  void set_username(const std::string&);
-  void set_password(const std::string&);
-  void reset_password(const std::string&);
-  const double get_balance() const;
-  void set_first_name(std::string&);
-  void set_last_name(std::string&);
-  void set_pin(int&);
-  void set_balance(double&);
-  void set_savings(double&);
+  void set_pin();
+  int get_pin() const; 
+  void create_account();
+  void show_account_details() const;
+  void withdraw();
+  void deposit(double);
+  void report() const;
+  int get_account_number() const;
+  double get_balance() const;
 private:
-  std::string first_name;
-  std::string last_name;
+  string name;
   const int account_number;
-  std::string username;
-  std::string password;
-  int credit_score;
   int pin;
   double balance;
   double savings;
   double credit;
+  //std::string username;
+  //std::string password;
+  //int credit_score;
 };
 
 #endif
