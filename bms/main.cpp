@@ -1,9 +1,19 @@
 #include <iostream>
+#include <cctype>
 #include <vector>
+#include <limits>
 #include <string>
 #include <sqlite3.h>
 #include "account.h"
 using namespace std;
+
+std::string get_account_name() {
+  std::cout << "Enter the name of the account holder: ";
+  std::string name;
+  std::getline(std::cin, name);
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  return name;
+}
 
 std::string get_first_name() {
   cout << "Enter you first name: ";
@@ -34,41 +44,52 @@ double get_savings() {
   return savings;
 }
 
-std::string get_password() {
+// TODO [] All of these functions come from account class and need  to be implemented
+// in main.cpp
+//
+//double account::get_loan() const {
+//  double total_cash_in_bank = this->balance + this->savings;
+//  if (total_cash_in_bank >= 2000 && credit_score >= 300) {
+//    std::cout << cout << "Enter the amount of loan you want to withdraw: ";
+//    std::string loan_amount;
+//    std::cin >> loan_amount;
+//    double interest_rate;
+//    double max_loan_amount_from_bank = total_cash_in_bank * 10;
+//
+//    //if (credit_score >= 800) {
+//
+//    //} else if (credit_score >= 700) {
+//    //} else if (credit_score >= 600) {
+//    //} else if (credit_score >= 500) {
+//    //} else if (credit_score >= 400) {
+//    //} else if (credit_score >= 300) {
+//    //}
+//  } else {
+//    std::cerr << "Bank account must have atleast $2000 to pull out a loan. ";
+//                 "Your account only has " << total_cash_in_bank << " in the bank.";
+//  }
+//}
+double get_initial_deposit() {
   bool done = false;
-  string password;
+  double deposit_amount;
+  std::cout << "You are required to make a $1000 deposit to open an account."
+            << " Enter the amount you would like to deposit or -1 to quit: ";
   while (!done) {
-    cout << "Please enter a 7-20 characters password with one digit and one uppercase letter: ";
-    cin >> password;
-    if (password.size() >= 7 && password.size() <= 20) {
-      bool has_capital_letter = false;
-      bool has_digit = false;
-      for (const auto& letter : password) {
-        if (isdigit(letter)) {
-          has_digit = true;
-        } else if (isupper(letter)) {
-          has_capital_letter = true;
-        }
-      }
-      if (has_capital_letter && has_digit)
-        done = true;
-      else if (!has_capital_letter && !has_digit)
-        cerr << "Password must contain atleast one digit and one uppercase letter\n";
-      else if (!has_capital_letter)
-        cerr << "Password must contain atleast one uppercase letter\n";
-      else
-        cerr << "Password must contain atleast one digit\n";
-      
-    } else if (password.size() < 7) {
-      cerr << "Password must must atleast 7 characters long\n";
+    std::cin >> deposit_amount;
+    if (deposit_amount == -1) {
+      return -1;
+    }
+    if (deposit_amount >= 1000) {
+      done = true;
     } else {
-      cerr << "Password must be less then 21 characters long\n";
+      std::cerr << "Initial deposit must be greater then 1000$ to open an account." 
+                << " Enter an amount greater than 1000 or -1 to quit: \n";
     }
   }
-  return password;
+  return deposit_amount;
 }
 
-std::string get_username() {
+const auto get_username() {
   bool done = false;
   std::string username;
   while (!done) {
@@ -82,7 +103,103 @@ std::string get_username() {
       std::cerr << "Username must be atleast 20 characters long\n";
     }
   }
-  return username;
+  
+  //hash username
+  const std::hash<std::string> hasher;
+  const auto hash_result = hasher(username);
+  std::cout << hash_result << std::endl;
+  return hash_result;
+}
+
+const auto get_password() {
+  //get password
+  while (true) {
+    std::string password;
+    std::cout << "Enter a password (password must be between 7 and 20 characters long"
+              << " and contain a digit and capital letter: ";
+    std::cin >> password;
+
+    // check if username is valid but confirming 7-20 characters and contains a 
+    // capital letter and number.
+    bool contains_digit = false;
+    bool contains_capital_letter = false;
+    if (password.size() >= 7 && password.size() <= 20) {
+      for (auto const &ch : password) {
+        if (std::isdigit(ch)) {
+          contains_digit = true;
+        } else if(std::isupper(ch)) {
+          contains_capital_letter = true; 
+        }
+      }
+      //hash password before returning
+      if (contains_digit && contains_capital_letter) {
+        const std::hash<std::string> hasher;
+        const auto hash_result = hasher(password);
+        return hash_result;
+      } else if (!contains_capital_letter && !contains_digit) {
+        std::cerr << "Password must contain atleast one digit and one uppercase letter\n";
+      } else if (!contains_digit) {
+        std::cerr << "Invalid password: Password must contain atleast one digit.\n";
+      } else {
+        std::cerr << "Invalid password: Password must contain atleast one capital letter.\n";
+      } 
+    } else if (password.size() > 20) {
+      std::cerr << "Invalid password: Password must be 20 or less characters\n";
+    } else {
+      std::cerr << "Invalid password: Password must be 7 or more characters\n";
+    }
+  }
+}
+   
+int get_pin() {
+  bool done = false;
+  string pin;
+  while (!done) {
+    std::cout << "Enter a 4 digit pin for you account: ";
+    std::cin >> pin;
+    bool valid_pin = true;
+    if (pin.size() == 4) {
+      for (const auto &digit : pin) {
+        if (!isdigit(digit)) {
+          std::cerr << "Pin must contain only digits.\n";
+          valid_pin = false;
+          break;
+        }
+      }
+    } else {
+      valid_pin = false;
+      std::cerr << "Pin number must be 4 digits.\n";
+    }
+    if (valid_pin) {
+      done = true;
+    }
+  }
+  return stoi(pin);
+}
+
+
+double get_withdraw_amount() {
+  bool done = false;
+  double withdraw_amount = -1;
+  while (!done) {
+    std::cout << "Enter the amount you would like to withdraw: ";
+    std::cin >> withdraw_amount;
+    std::cout << "Do you want to withdraw $" << withdraw_amount << "? [y/n] ";
+    char res;
+    std::cin >> res;
+    if (res == 'y') {
+      return withdraw_amount;
+    } else {
+      std::cout << "Would you like to enter a new amount? [y/n] ";
+      std::cin >> res;
+      if (res == 'y') {
+        continue; 
+      } else {
+        return -1;
+      }
+    }
+  }
+  return withdraw_amount;
 }
 
 double get_deposit_ammount() {
@@ -107,53 +224,111 @@ string get_password_login() {
   return password;
 }
 
-void write_new_account_to_file(int account_number) {
-  account new_account;
-  ofstream output_file;
-  output_file.open("account.dat", ios::binary|ios::app);
-  new_account.create_account();
-  output_file.write(reinterpret_cast<char *>(&new_account), sizeof(account));
-  output_file.close();
+void write_new_account_to_file(int account_number, Account&) {
+  Account new_account(account_number);
+
+  // TODO [] implement file writing
+  //ofstream output_file;
+  //output_file.open("account.dat", ios::binary|ios::app);
+  //new_account.create_account();
+  //output_file.write(reinterpret_cast<char *>(&new_account), sizeof(account));
+  //output_file.close();
 }
 
 int main() {
-  int number_of_accounts_in_bank; 
+  int number_of_accounts_in_bank = 0;
   int option = 0;
   do {
-    system("cls");
-    std::cout << "------Dashboard------\n"
-              << "Press 1 Create account" 
+    std::cout << "\n------Dashboard------\n"
+              << "Press 1 Create account\n" 
               << "Press 2 Deposit account\n"
               << "Press 3 Withdraw account\n"
               << "Press 4 Check balance\n"
               << "Press 5 Display account\n"
               << "Press 6 Close account\n"
               << "Press 7 Modify account\n"
-              << "Press 7 Quit\n";
+              << "Press 8 Quit\n"
+              << "\n-------Settings------\n"
+              << "Press 9 Change password\n"
+              << "Press 0 Change username\n\nEnter: ";
     std::cin >> option;
-    system("cls");
-    int account_number;
+    Account new_account(number_of_accounts_in_bank);
     switch (option) {
       case 1:
-        write_new_account_to_file(accounts_made);
-        break;
+        {
+          //set name
+          std::string full_name = get_account_name();
+          new_account.set_name(full_name);
+          double initial_deposit = get_initial_deposit();
+          if (initial_deposit == -1) {
+            break;
+          } 
+          
+          // get the initial deposits for the account
+          new_account.set_balance(initial_deposit);
+          std::cout << "Would you like to make a deposit in your savings account: [y/n] ";
+          char res;
+          std::cin >> res;
+          if (res == 'y') {
+            double savings_amount = get_savings(); 
+            new_account.set_savings(savings_amount);
+          } 
+          // set pin number for account
+          int pin = get_pin();
+          new_account.set_pin(pin);
+          
+          // get the username and password for account
+          const auto username = get_username();
+          const auto password = get_password();
+          number_of_accounts_in_bank++;
+          write_new_account_to_file(number_of_accounts_in_bank, new_account);
+          break;
+        }
       case 2:
-        cout << "Enter your accounter number: ";
-        cin >> account_number;
+        {
+          bool done = false;
+          while (!done) {
+            std::cout << "Enter account pin number: ";
+            int pin;
+            std::cin >> pin;
+            if (pin == new_account.pin) {
+              double deposit_amount = get_deposit_ammount();
+              done = true;
+            } else {
+              std::cerr << "Invalid pin number. Please re-enter account number.\n"; 
+            }
+          }
+        }
         break;
-        case 3:
-          new_account.withdraw();
+      case 3:
+        {
+          bool done = false;
+          double withdraw_amount = 0.0;
+          while (!done) {
+            std::cout << "Would you have like to withdraw from debit or savings?\n"
+                      << "1 for debit\n2 for savings\n-1 to exit\nEnter: ";
+            char res;
+            std::cin >> res;
+            if (res == '1') {
+              done = true;
+              withdraw_amount = get_withdraw_amount();
+              new_account.withdraw_from_debit(withdraw_amount);
+            } else if (res == '2') {
+              done = true;
+              withdraw_amount = get_withdraw_amount();
+              new_account.withdraw_from_savings(withdraw_amount);
+            } else {
+              std::cerr << "Input is invalid response. Please try again..\n";
+            }
+          }
           break;
-        case 4:
-          new_account.display();
-          break;
-        case 5:
-          new_a
-          break;
-        default:
-          std::cout << "Please enter a valid option [1-7]" << std::endl;
-          break;
+        }
+      case 4:
+        new_account.show_account_details();
+        break;
+      default:
+        std::cout << "Please enter a valid option [1-7]" << std::endl;
+        break;
     }
   } while (option != 7);
-} 
-
+}
