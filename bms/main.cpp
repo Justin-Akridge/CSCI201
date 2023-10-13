@@ -92,15 +92,40 @@ string get_password_login() {
   return password;
 }
 
-void write_new_account() {
-  Account new_account;
+Account write_new_account(Account &ac) {
+  Account account = ac;
   ofstream output_file;
   output_file.open("account.dat", ios::binary|ios::app);
-  if (new_account.create_account()) {
-    new_account.serialize(output_file);
+  if (account.create_account()) {
+    account.serialize(output_file);
   }
   output_file.close();
+  return account;
 }
+
+bool valid_pin(int pin) {
+  Account account;
+  bool flag=false;
+  ifstream inFile;
+  inFile.open("account.dat",ios::binary);
+  if(!inFile) {
+    cout<<"File could not be open !! Press any Key...";
+    return false;
+  }
+  cout<<"\nBALANCE DETAILS\n";
+  while(inFile.read(reinterpret_cast<char *> (&account), sizeof(account))) {
+    cout << account.get_pin();
+    if(account.get_pin() == pin){
+      account.show_account_details();
+      flag=true;
+    }
+  }
+  inFile.close();
+  if(flag==false) {
+    cout<<"\n\nAccount number does not exist";
+  }
+}
+
 
 void display_account(int account_number) {
   Account account;
@@ -131,8 +156,7 @@ int main() {
               << "Press 1 Create account\n" 
               << "Press 2 Deposit account\n"
               << "Press 3 Withdraw account\n"
-              << "Press 4 Display attribute\n"
-              << "Press 5 Display account\n"
+              << "Press 4 Display account\n"
               << "Press 6 Close account\n"
               << "Press 7 Modify account\n"
               << "Press 8 Quit\n"
@@ -140,59 +164,75 @@ int main() {
               << "Press 9 Change password\n"
               << "Press 0 Change username\n\nEnter: ";
     std::cin >> option;
+    Account new_account;
     switch (option) {
       case 1:
-        write_new_account();
+        new_account = write_new_account(new_account);
         break;
-     // case 2:
-     //   {
-     //     bool done = false;
-     //     while (!done) {
-     //       std::cout << "Enter account pin number: ";
-     //       int pin;
-     //       std::cin >> pin;
-     //       if (pin == new_account.pin) {
-     //         double deposit_amount = get_deposit_ammount();
-     //         done = true;
-     //       } else {
-     //         std::cerr << "Invalid pin number. Please re-enter account number.\n"; 
-     //       }
-     //     }
-     //   }
-     //   break;
-     // case 3:
-     //   {
-     //     bool done = false;
-     //     double withdraw_amount = 0.0;
-     //     while (!done) {
-     //       std::cout << "Would you have like to withdraw from debit or savings?\n"
-     //                 << "1 for debit\n2 for savings\n-1 to exit\nEnter: ";
-     //       char res;
-     //       std::cin >> res;
-     //       if (res == '1') {
-     //         done = true;
-     //         withdraw_amount = get_withdraw_amount();
-     //         new_account.withdraw_from_debit(withdraw_amount);
-     //       } else if (res == '2') {
-     //         done = true;
-     //         withdraw_amount = get_withdraw_amount();
-     //         new_account.withdraw_from_savings(withdraw_amount);
-     //       } else {
-     //         std::cerr << "Input is invalid response. Please try again..\n";
-     //       }
-     //     }
-     //     break;
-     //   }
-      case 4:
-        // make a seperate bank inquiry
-        std::cout << "Enter your account number: ";
-        int ac_nu;
-        std::cin >> ac_nu; 
-        display_account(ac_nu);
-        break;
-      default:
-        std::cout << "Please enter a valid option [1-7]" << std::endl;
-        break;
-    }
+      case 2:
+        {
+          bool done = false;
+          while (!done) {
+            std::cout << "Enter account pin number: ";
+            int pin;
+            std::cin >> pin;
+            if (new_account.get_pin() == pin) {
+              double deposit_amount = get_deposit_ammount();
+              done = true;
+            } else {
+              std::cerr << "Invalid pin number. Please re-enter account number.\n"; 
+            }
+          }
+          break;
+        }
+      case 3:
+        {
+          bool done = false;
+          double withdraw_amount = 0.0;
+          while (!done) {
+            std::cout << "Would you have like to withdraw from debit or savings?\n"
+                      << "1 for debit\n2 for savings\n-1 to exit\nEnter: ";
+            char res;
+            std::cin >> res;
+            std::cout << "Enter account pin number: ";
+            int pin;
+            std::cin >> pin;
+            if (new_account.get_pin() == pin) {
+              if (res == '1') {
+                done = true;
+                withdraw_amount = get_withdraw_amount();
+                new_account.withdraw_from_debit(withdraw_amount);
+              } else if (res == '2') {
+                done = true;
+                withdraw_amount = get_withdraw_amount();
+                new_account.withdraw_from_savings(withdraw_amount);
+              } else {
+                std::cerr << "Input is invalid response. Please try again..\n";
+              }
+            } else {
+              std::cerr << "Invalid pin number. Please re-enter account number.\n"; 
+            }
+          }
+          break;
+        }
+     case 4:
+       {
+         bool done = false;
+         int pin;
+         while (!done || pin == -1) {
+           std::cout << "Enter account pin number or -1 to quit: ";
+           std::cin >> pin;
+           if (new_account.get_pin() == pin) {
+             new_account.show_account_details();
+           } else {
+             std::cerr << "Invalid pin number. Please re-enter account number.\n"; 
+           }
+         } 
+         break;
+       }
+     default:
+       std::cout << "Please enter a valid option [1-7]" << std::endl;
+       break;
+    } 
   } while (option != 7);
 }
