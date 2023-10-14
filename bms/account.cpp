@@ -207,7 +207,7 @@ void Account::withdraw_from_debit(double& withdraw_amount) {
     std::cerr << "Withdraw amount exceeds the maximum withdraw amount."
                  "Please request a bank representative in the display menu to fulfill your request";
   } else if (balance - withdraw_amount < 100) {
-    std::cerr << "Your request cannot be fulfilled. Your withdraw ammount exceeds the"
+    std::cerr << " Your request cannot be fulfilled. Your withdraw ammount exceeds the"
                  "available balance. Your current balance is: " << balance << '\n';
   }
 }

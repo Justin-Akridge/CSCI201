@@ -77,6 +77,22 @@ double get_deposit_ammount() {
   return deposit;
 }
 
+string change_username() {
+  string username;
+  cout << "Please enter your username and password\n";
+  cout << "Username: ";
+  cin >> username;
+  return username;
+}
+
+string change_password() {
+  string password;
+  cout << "Please enter your new password\n";
+  cout << "Password: ";
+  cin >> password;
+  return password;
+}
+
 string get_username_login() {
   string username;
   cout << "Please enter your username and password\n";
@@ -157,9 +173,10 @@ int main() {
               << "Press 2 Deposit account\n"
               << "Press 3 Withdraw account\n"
               << "Press 4 Display account\n"
-              << "Press 6 Close account\n"
+              << "Press 5 Close account\n"
+              << "Press 6 Loans\n"
               << "Press 7 Modify account\n"
-              << "Press 8 Quit\n"
+              << "Press 7 Quit\n"
               << "\n-------Settings------\n"
               << "Press 9 Change password\n"
               << "Press 0 Change username\n\nEnter: ";
@@ -228,6 +245,26 @@ int main() {
              std::cerr << "Invalid pin number. Please re-enter account number.\n"; 
            }
          } 
+         break;
+       }
+     case 5:
+       {
+         std::cout << "Enter the loan amount: ";
+         double loan_amount = 0;
+         std::cin >> loan_amount;
+         new_account.set_balance(loan_amount);
+         break;
+       }
+     case 0:
+       {
+         string new_username = change_username(); 
+         new_account.set_username(new_username);       
+         break;
+       }
+     case 9:
+       {
+         string new_password = change_password(); 
+         new_account.set_password(new_password);       
          break;
        }
      default:
