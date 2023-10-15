@@ -1,0 +1,1 @@
+[_] Need to fill matrix with 0 - 99 chars so that we can still use char markers ('X', 'O'). Right now it is converting the chars to letters.
