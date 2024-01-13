@@ -9,18 +9,16 @@
 
 class Board {
 public:
-  Board() {}
-  Board(int x, int y) {
-    resize_this(x, y);
+  Board() {
+    board = {{'#', '#', '#'}, 
+             {'#', '#', '#'},
+             {'#', '#', '#'}};
   }
 
-  void fill_board() {
-    std::string count = "0";
-    for (size_t i = 0; i < board.size(); i++) {
-      for (size_t j = 0; j < board[i].size(); j++) {
-        board[i][j] = count;
-        int tmp = std::stoi(count);
-        count = std::to_string(++tmp);
+  void fill_board(int height, int width) {
+    for (size_t i = 0; i < height; i++) {
+      for (size_t j = 0; j < width; j++) {
+        board[i][j] = '#';
       }
     }
   }
@@ -32,9 +30,15 @@ public:
       }
       std::cout << '\n';
     }
+    std::cout << '\n';
   }
 
-  std::array<int, 2> parser(std::string board_size) {
+  std::vector<std::vector<char> > board;
+
+#if 0
+  // New feature: implement custom board size
+
+  std::array<int, 2> validate_board_size(std::string board_size) {
     std::array<int, 2> arr {-1, -1};
     std::string builder = "";
     bool is_not_valid_board_size = false;
@@ -64,17 +68,12 @@ public:
     return arr;
   }
 
-  bool validate_size(std::array<int, 2> &arr) {
+  bool validate_size(const std::array<int, 2> &arr) {
     for (const auto &digit : arr) {
       if (digit < 3 || digit > 10)
         return false;
     }
     return true;
-  }
-
-  void resize_this(int x, int y) {
-    board.resize(x, std::vector<std::string>(y));
-    fill_board();
   }
 
   void set_custom_dimension() {
@@ -102,43 +101,113 @@ public:
       }
     }
   }
-
-private:
-  std::vector<std::vector<std::string>> board;
+#endif
 };
 
 struct Player {
-  char marker; 
+  char marker = 'x'; 
   int wins = 0;
   int losses = 0;
 };
 
-void bot(std::vector<std::vector<std::string>> &board) {
-  int x = rand() % board.size();
-  int y = rand() % board[0].size();
-  if (board[x][y] == "0") {
-    board[x][y] = "1";
-  } else {
-    bot(board);
+struct Computer {
+  char marker = 'o';
+  int wins = 0;
+  int losses = 0;
+};
+
+static void computer_play(char marker, std::vector<std::vector<char> > &board) {
+  bool done = false;
+  while (!done) {
+    int x = rand() % board.size();
+    int y = rand() % board[0].size();
+    if (board[x][y] == '#') {
+      board[x][y] = marker;
+      done = true;
+    } 
   }
 }
 
-int main() {
-  std::cout << "------TIC-TAC-TOE-------\n";
+bool check_for_winner(char marker, std::vector<std::vector<char> > &board) {
+       // Check for horizontal win
+  if ((board[0][0] == marker && board[0][1] && board[0][2] == marker) ||
+      (board[1][0] == marker && board[1][1] && board[1][2] == marker) ||
+      (board[2][0] == marker && board[2][1] && board[2][2] == marker) ||
+
+      // Check for vertical win
+      (board[0][0] == marker && board[1][0] && board[2][0] == marker) ||
+      (board[0][1] == marker && board[1][1] && board[2][1] == marker) ||
+      (board[0][2] == marker && board[1][2] && board[2][2] == marker) ||
+      
+      // Check for diagonal win
+      (board[0][0] == marker && board[1][1] && board[2][2] == marker) ||
+      (board[0][2] == marker && board[1][1] && board[2][0] == marker)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+bool check_for_valid_space(char position) {
+  return position == '#';
+};
+
+
+static void players_play(char marker, std::vector<std::vector<char> > &board) {
   bool done = false;
   while (!done) {
-    std::cout << "Would like you like to play tic-tac-toe with default settings? [y/n] ";
-    char response = '\0';
-    std::cin >> response;
-    std::cin.ignore(256, '\n');
-    response = std::tolower(response);
-
-    Board board;
-    if (response == 'y') {
-      board.resize_this(3, 3);
-    } else if (response == 'n') {
-      board.set_custom_dimension(); 
+    char row = '\0';
+    bool valid_row = false;
+    while (!valid_row) {
+      std::cout << "Pick a row 0 - 2 that contains a #: ";
+      std::cin >> row;
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      if (row == '0' || row == '1' || row == '2') {
+        valid_row = true;
+      } else {
+        std::cerr << "Error: " << row << " is not a valid row.\n\n";
+      }
     }
-    board.display_board();
+
+    char col = '\0';
+    bool valid_col = false;
+    while (!valid_col) {
+      std::cout << "Pick a column 0 - 2 that contains a #: ";
+      std::cin >> col;
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      if (col == '0' || col == '1' || col == '2') {
+        valid_col = true;
+      } else {
+        std::cerr << "Error: " << col << " is not a valid column.\n\n";
+      }
+    }
+    if (board[row][col] == '#') {
+      board[row][col] = marker;
+      done = true;
+    } else {
+      std::cerr << "Position has already been taken!\n";
+    }
+  }
+  std::cout << '\n';
+}
+
+int main() {
+  std::cout << "------TIC-TAC-TOE-------\n\n";
+  Board tic_tac_toe;
+  Player player1;
+  Computer computer1;
+  
+  while (true){ 
+    tic_tac_toe.display_board();
+    players_play(player1.marker, tic_tac_toe.board);
+    if (check_for_winner(player1.marker, tic_tac_toe.board)) {
+      tic_tac_toe.display_board();
+      std::cout << "Player wins" << std::endl;
+      break;
+    }
+    //computer_play(computer1.marker, tic_tac_toe.board);
+    //if (check_for_winner(computer1.marker, tic_tac_toe.board)) {
+    //  std::cout << "Computer wins" << std::endl;
+    //  break;
+    //}
   }
 }
