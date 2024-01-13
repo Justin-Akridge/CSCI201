@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
+#include <random>
+#include <ctime>
 
 class Board {
 public:
@@ -15,8 +17,8 @@ public:
     std::cin >> res;
     std::cout << '\n';
     if (res == 'y') {
-      int height_of_board = 3;
-      int width_of_board = 3;
+      constexpr int height_of_board = 3;
+      constexpr int width_of_board = 3;
       board.resize(height_of_board, std::vector<char>(width_of_board, '#'));
     } else if (res == 'n') {
       set_custom_dimension();
@@ -182,6 +184,12 @@ public:
     std::cout << '\n';
   }
 
+  void print_score() {
+    std::cout << "\n--------Player's Score---------\n";
+    std::cout << "Wins : " << wins << '\n';
+    std::cout << "Losses : " << losses << "\n\n";
+  } 
+
   char marker = 'X'; 
   int wins = 0;
   int losses = 0;
@@ -210,45 +218,132 @@ class Computer {
     }
     int x = 0;
     int y = 0;
+    std::mt19937 generator(static_cast<unsigned>(std::time(0)));
+    std::uniform_int_distribution<int> distribution(0, tic_tac_toe.board.size() - 1);
     do {
-      x = rand() % tic_tac_toe.board.size();
-      y = rand() % tic_tac_toe.board[0].size();
+      x = distribution(generator);
+      y = distribution(generator);
     } while (tic_tac_toe.board[x][y] != '#');
 
     tic_tac_toe.board[x][y] = cp_marker;
   }
   
+  void print_score() {
+    std::cout << "\n--------Computer's Score---------\n";
+    std::cout << "Wins : " << wins << '\n';
+    std::cout << "Losses : " << losses << "\n\n";
+  } 
+
   char marker = 'O';
   int wins = 0;
   int losses = 0;
 };
 
+template <typename T>
+T random_number_generator(T first, T last) {
+  std::mt19937 generator(static_cast<unsigned>(std::time(0)));
+  std::uniform_int_distribution<int> distribution(first, last);
+  return distribution(generator);
+}
 
 int main() {
   std::cout << "------TIC-TAC-TOE-------\n\n";
   Board tic_tac_toe;
   Player player;
   Computer computer;
+
+  // Upon creation of player object, if player decides to pick there own marker,
+  // we will assign the oposite marker to the computer. See Player constructor.
   if (player.marker == 'O') {
     computer.marker = 'X';
   }  
-  while (true) { 
-    computer.computer_play(player.marker, computer.marker, tic_tac_toe);
-    if (tic_tac_toe.check_for_winner(computer.marker)) {
-      tic_tac_toe.display_board();
-      std::cout << "Computer wins" << std::endl;
-      break;
+
+  std::cout << "Lets flip a coin to see who goes first\n";
+  // 0 is the computer and 1 is the player in the generator
+  // The algorithm will pick the player to go first for the first game. 
+  // Thereafter, the winner will be the one to go first
+  int player_to_go_first = random_number_generator(0,1);
+
+  // Player goes first. 
+  // TODO [_] find a clever way to avoid repeating this block. The if/else block is
+  // the same but flips the functions to whichever player goes first.
+  bool done = false;
+  while (!done) {
+    if (player_to_go_first) {
+      std::cout << "You go first!\n";
+      while (true) {
+        tic_tac_toe.display_board();
+        player.players_play(player.marker, tic_tac_toe.board);
+        if (tic_tac_toe.check_for_winner(player.marker)) {
+          player_to_go_first = 1;
+          player.wins++;
+          computer.losses++;
+          tic_tac_toe.display_board();
+          std::cout << "Player wins" << std::endl;
+          break;
+        }
+        if (tic_tac_toe.is_a_tie()) {
+          tic_tac_toe.display_board();
+          std::cout << "\nTie!\n\n";
+          break;
+        }
+        computer.computer_play(player.marker, computer.marker, tic_tac_toe);
+        if (tic_tac_toe.check_for_winner(computer.marker)) {
+          player_to_go_first = 0;
+          computer.wins++;
+          player.losses++;
+          tic_tac_toe.display_board();
+          std::cout << "Computer wins" << std::endl;
+          break;
+        }
+      }
+    } else {
+      // TODO [_] find a clever way to avoid repeating this block. The if/else block is
+      // the same but flips the functions to whichever player goes first.
+      std::cout << "Computer goes first!\n";
+      while (true) { 
+        computer.computer_play(player.marker, computer.marker, tic_tac_toe);
+        if (tic_tac_toe.check_for_winner(computer.marker)) {
+          player_to_go_first = 0;
+          computer.wins++;
+          player.losses++;
+          tic_tac_toe.display_board();
+          std::cout << "Computer wins" << std::endl;
+          break;
+        }
+        if (tic_tac_toe.is_a_tie()) {
+          tic_tac_toe.display_board();
+          std::cout << "\nTie!\n\n";
+          break;
+        }
+        tic_tac_toe.display_board();
+        player.players_play(player.marker, tic_tac_toe.board);
+        if (tic_tac_toe.check_for_winner(player.marker)) {
+          player_to_go_first = 1;
+          player.wins++;
+          computer.losses++;
+          tic_tac_toe.display_board();
+          std::cout << "Player wins" << std::endl;
+          break;
+        }
+      }
     }
-    if (tic_tac_toe.is_a_tie()) {
-      std::cout << "\nTie\n";
-      break;
-    }
-    tic_tac_toe.display_board();
-    player.players_play(player.marker, tic_tac_toe.board);
-    if (tic_tac_toe.check_for_winner(player.marker)) {
-      tic_tac_toe.display_board();
-      std::cout << "Player wins" << std::endl;
-      break;
+    std::cout << "Would you like to play again? [y/n]: ";
+    char res;
+    std::cin >> res;
+    if (res == 'y') {
+      ;
+    } else if (res == 'n') {
+      computer.print_score();
+      player.print_score();
+      if (computer.wins > player.wins) {
+        std::cout << "Computer wins the most games LOSER!\n";
+      } else {
+        std::cout << "You won the most games!\n";
+      }
+      done = true;
+    } else {
+      std::cout << "Error: invalid input. Enter y for yes or n for no\n";
     }
   }
 }
