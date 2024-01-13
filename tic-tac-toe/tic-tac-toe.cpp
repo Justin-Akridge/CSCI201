@@ -1,5 +1,5 @@
 #include <iostream>
-#include <ofstream>
+#include <fstream>
 #include <limits>
 #include <iomanip>
 #include <string>
@@ -10,11 +10,13 @@
 
 class Board {
 public:
+
   Board() {
     std::cout << "Would you like to play with default settings? [y/n]: ";
     char res;
     std::cin >> res;
     std::cout << '\n';
+
     if (res == 'y') {
       constexpr int height_of_board = 3;
       constexpr int width_of_board = 3;
@@ -46,11 +48,13 @@ public:
 
   void set_custom_dimension() {
     bool done = false;
+
     while (!done) {
       std::cout << "Enter the size of the playing board (ex: Enter 10 for 10x10 board): ";
       int size_of_board;
       std::cin >> size_of_board;
       std::cout << '\n';
+
       if (size_of_board >= 3 && size_of_board <= 10) {
         board.resize(size_of_board, std::vector<char>(size_of_board, '#'));
         done = true;
@@ -98,6 +102,7 @@ public:
 
 class Player {
 public:
+
   Player() {
     set_marker();
   }
@@ -108,6 +113,7 @@ public:
       std::cout << "Set player marker:\n1 for X or 2 for O: ";
       char res = '\0';
       std::cin >> res;
+
       if (res == '1') {
         done = true;
       } else if (res == '2') {
@@ -125,10 +131,12 @@ public:
       char row_input = '\0';
       int row = 0;
       bool valid_row = false;
+
       while (!valid_row) {
         std::cout << "Pick a row 1 - 3 that contains a #: ";
         std::cin >> row_input;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         if (row_input == '1' || row_input == '2' || row_input == '3') {
           switch (row_input) { 
             case '1':
@@ -150,10 +158,12 @@ public:
       char col_input = 0;
       int col = 0;
       bool valid_col = false;
+
       while (!valid_col) {
         std::cout << "Pick a column 1 - 3 that contains a #: ";
         std::cin >> col_input;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         if (col_input == '1' || col_input == '2' || col_input == '3') {
           switch (col_input) {
             case '1':
@@ -194,30 +204,38 @@ public:
 };
 
 class Computer {
-  public:
+public:
+
   void computer_play(char op_marker, char cp_marker, Board &tic_tac_toe) {
     for (size_t i = 0; i < 3; i++) {
       for (size_t j = 0; j < 3; j++) {
         if (tic_tac_toe.board[i][j] == '#') {
           tic_tac_toe.board[i][j] = cp_marker;
+
           if (tic_tac_toe.check_for_winner(cp_marker)) {
             return;
           }
-          tic_tac_toe.board[i][j] = '#';
 
+          tic_tac_toe.board[i][j] = '#';
           tic_tac_toe.board[i][j] = op_marker;
+
           if (tic_tac_toe.check_for_winner(op_marker)) {
             tic_tac_toe.board[i][j] = cp_marker;
             return;
           }
+
           tic_tac_toe.board[i][j] = '#';
         }
       }
     }
+
     int x = 0;
     int y = 0;
+    
+    // Generate random number with this function
     std::mt19937 generator(static_cast<unsigned>(std::time(0)));
     std::uniform_int_distribution<int> distribution(0, tic_tac_toe.board.size() - 1);
+
     do {
       x = distribution(generator);
       y = distribution(generator);
@@ -256,7 +274,7 @@ static int callback(void *data, int argc, char **argv, char **ColNames) {
 
 void log_error(const std::string& error_message) {
   std::ofstream log_file("error_log.txt", std::ios::app);
-  if (log_error.is_open()) {
+  if (log_file.is_open()) {
     log_file << error_message << std::endl;
     log_file.close();
   } else {
@@ -264,21 +282,59 @@ void log_error(const std::string& error_message) {
   }
 }
 
+void update_scoreboard(sqlite3 *db, const std::string &player_name, const std::string &update_query) {
+  sqlite3_stmt *stmt;
+
+  int rc = sqlite3_prepare_v2(db, update_query.c_str(), -1, &stmt, nullptr);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to prepare query to update scores: " << sqlite3_errmsg(db);
+    log_error("Error: failed to prepare query to update scores: " + std::string(sqlite3_errmsg(db)));
+    sqlite3_close(db);
+    return;
+  }
+
+  rc = sqlite3_bind_text(stmt, 1, player_name.c_str(), -1, SQLITE_STATIC);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to bind parameter: " << sqlite3_errmsg(db);
+    log_error("Error: failed to bind parameter: " + std::string(sqlite3_errmsg(db)));
+    sqlite3_close(db);
+    return;
+  }
+
+  rc = sqlite3_step(stmt);
+
+  if (rc != SQLITE_DONE) {
+    std::cout << "Error: execution of query statement failed: " << sqlite3_errmsg(db);
+    log_error("Error: execution of query statement failed: " + std::string(sqlite3_errmsg(db)));
+    sqlite3_close(db);
+    return;
+  }
+  
+  sqlite3_finalize(stmt);
+
+}
+
 int main() {
   sqlite3 *db;
+
   int rc = sqlite3_open("Scoreboard.db", &db);
+
   if (rc != SQLITE_OK) {
     std::cout << "Error: database failed to open: " << sqlite3_errmsg(db);
     log_error("Error: database failed to open: " + std::string(sqlite3_errmsg(db)));
     sqlite3_close(db);
     return rc;
   }
+
   std::string query = "CREATE TABLE IF NOT EXISTS SCOREBOARD("
                       "NAME   TEXT NOT NULL,"
                       "WINS   INT  DEFAULT 0,"
                       "LOSSES INT  DEFAULT 0);";
    
   rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
+
   if (rc != SQLITE_OK) {
     std::cout << "Error: Table failed to create: " << sqlite3_errmsg(db);
     log_error("Error: Table failed to create: " + std::string(sqlite3_errmsg(db)));
@@ -286,6 +342,7 @@ int main() {
   }
 
   std::cout << "------TIC-TAC-TOE-------\n\n";
+
   Board tic_tac_toe;
   Player player;
   Computer computer;
@@ -294,6 +351,7 @@ int main() {
           "INSERT INTO SCOREBOARD (NAME, WINS, LOSSES) VALUES ('Computer', 0, 0);";
 
   rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
+
   if (rc != SQLITE_OK) {
     std::cout << "Error: failed to insert new players into database: " << sqlite3_errmsg(db);
     log_error("Error: failed to insert new players into database: " + std::string(sqlite3_errmsg(db)));
@@ -315,14 +373,21 @@ int main() {
   // Player goes first. 
   // TODO [_] find a clever way to avoid repeating this block. The if/else block is
   // the same but flips the functions to whichever player goes first.
+  std::string update_win_query =  "UPDATE SCOREBOARD set WINS = WINS + 1 WHERE NAME = ?";
+  std::string update_loss_query = "UPDATE SCOREBOARD set LOSSES = LOSSES + 1 WHERE NAME = ?";
+
   bool done = false;
   while (!done) {
     if (player_to_go_first) {
       std::cout << "You go first!\n";
       while (true) {
+
         tic_tac_toe.display_board();
         player.players_play(player.marker, tic_tac_toe.board);
+
         if (tic_tac_toe.check_for_winner(player.marker)) {
+          update_scoreboard(db, "Player", update_win_query);
+          update_scoreboard(db, "Computer", update_loss_query);
           player_to_go_first = 1;
           player.wins++;
           computer.losses++;
@@ -330,13 +395,18 @@ int main() {
           std::cout << "Player wins" << std::endl;
           break;
         }
+
         if (tic_tac_toe.is_a_tie()) {
           tic_tac_toe.display_board();
           std::cout << "\nTie!\n\n";
           break;
         }
+
         computer.computer_play(player.marker, computer.marker, tic_tac_toe);
+
         if (tic_tac_toe.check_for_winner(computer.marker)) {
+          update_scoreboard(db, "Computer", update_win_query);
+          update_scoreboard(db, "Player", update_loss_query);
           player_to_go_first = 0;
           computer.wins++;
           player.losses++;
@@ -350,8 +420,12 @@ int main() {
       // the same but flips the functions to whichever player goes first.
       std::cout << "Computer goes first!\n";
       while (true) { 
+        
         computer.computer_play(player.marker, computer.marker, tic_tac_toe);
+
         if (tic_tac_toe.check_for_winner(computer.marker)) {
+          update_scoreboard(db, "Computer", update_win_query);
+          update_scoreboard(db, "Player", update_loss_query);
           player_to_go_first = 0;
           computer.wins++;
           player.losses++;
@@ -359,14 +433,19 @@ int main() {
           std::cout << "Computer wins" << std::endl;
           break;
         }
+
         if (tic_tac_toe.is_a_tie()) {
           tic_tac_toe.display_board();
           std::cout << "\nTie!\n\n";
           break;
         }
+
         tic_tac_toe.display_board();
         player.players_play(player.marker, tic_tac_toe.board);
+
         if (tic_tac_toe.check_for_winner(player.marker)) {
+          update_scoreboard(db, "Player", update_win_query);
+          update_scoreboard(db, "Computer", update_loss_query);
           player_to_go_first = 1;
           player.wins++;
           computer.losses++;
@@ -376,14 +455,18 @@ int main() {
         }
       }
     }
+
     std::cout << "Would you like to play again? [y/n]: ";
     char res;
     std::cin >> res;
+
     if (res == 'y') {
       ;
     } else if (res == 'n') {
+
       computer.print_score();
       player.print_score();
+
       if (computer.wins > player.wins) {
         std::cout << "Computer wins the most games LOSER!\n";
       } else {
@@ -394,5 +477,4 @@ int main() {
       std::cout << "Error: invalid input. Enter y for yes or n for no\n";
     }
   }
-#endif
 }
