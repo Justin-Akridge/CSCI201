@@ -1,13 +1,12 @@
 #include <iostream>
-#include <array>
+#include <ofstream>
 #include <limits>
 #include <iomanip>
 #include <string>
-#include <algorithm>
 #include <vector>
-#include <cctype>
 #include <random>
 #include <ctime>
+#include <sqlite3.h>
 
 class Board {
 public:
@@ -94,7 +93,6 @@ public:
   }
 
   std::vector<std::vector<char> > board;
-                                       
                                        
 };
 
@@ -246,7 +244,52 @@ T random_number_generator(T first, T last) {
   return distribution(generator);
 }
 
+// This function will loop through the selected columns from a database. Used
+// with a "SELECT" sqlite3_exec query.
+static int callback(void *data, int argc, char **argv, char **ColNames) {
+  for(int i = 0; i < argc; i++) {
+    std::cout << ColNames[i] << ": " << (argv[i] ? argv[i] : "NULL") << '\t';
+  }
+  std::cout << '\n';
+  return 0;
+}
+
+void log_error(const std::string& error_message) {
+  std::ofstream log_file("error_log.txt", std::ios::app);
+  if (log_error.is_open()) {
+    log_file << error_message << std::endl;
+    log_file.close();
+  } else {
+    std::cerr << "Error: failed to open log file for writing." << std::endl;
+  }
+}
+
 int main() {
+  sqlite3 *db;
+  int rc = sqlite3_open("Scoreboard.db", &db);
+  if (rc == SQLITE_OK) {
+    std::cout << "Database opened successfully\n";
+  } else {
+    std::cout << "Error: database failed to open: " << sqlite3_errmsg(db);
+    log_error("Error: database failed to open: " + std::string(sqlite3_errmsg(db)));
+    sqlite3_close(db);
+    return rc;
+  }
+  std::string query = "CREATE TABLE IF NOT EXISTS SCOREBOARD("
+                      "NAME   TEXT NOT NULL,"
+                      "WINS   INT  DEFAULT 0,"
+                      "LOSSES INT  DEFAULT 0);";
+  
+  rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
+  if (rc == SQLITE_OK) {
+    std::cout << "Table was created successfully\n";
+  } else {
+    std::cout << "Failed to create table\n";
+    return rc;
+  }
+  sqlite3_close(db);
+
+#if 0
   std::cout << "------TIC-TAC-TOE-------\n\n";
   Board tic_tac_toe;
   Player player;
@@ -346,4 +389,5 @@ int main() {
       std::cout << "Error: invalid input. Enter y for yes or n for no\n";
     }
   }
+#endif
 }
