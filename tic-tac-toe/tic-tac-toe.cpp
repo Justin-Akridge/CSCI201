@@ -267,9 +267,7 @@ void log_error(const std::string& error_message) {
 int main() {
   sqlite3 *db;
   int rc = sqlite3_open("Scoreboard.db", &db);
-  if (rc == SQLITE_OK) {
-    std::cout << "Database opened successfully\n";
-  } else {
+  if (rc != SQLITE_OK) {
     std::cout << "Error: database failed to open: " << sqlite3_errmsg(db);
     log_error("Error: database failed to open: " + std::string(sqlite3_errmsg(db)));
     sqlite3_close(db);
@@ -279,21 +277,28 @@ int main() {
                       "NAME   TEXT NOT NULL,"
                       "WINS   INT  DEFAULT 0,"
                       "LOSSES INT  DEFAULT 0);";
-  
+   
   rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
-  if (rc == SQLITE_OK) {
-    std::cout << "Table was created successfully\n";
-  } else {
-    std::cout << "Failed to create table\n";
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: Table failed to create: " << sqlite3_errmsg(db);
+    log_error("Error: Table failed to create: " + std::string(sqlite3_errmsg(db)));
     return rc;
   }
-  sqlite3_close(db);
 
-#if 0
   std::cout << "------TIC-TAC-TOE-------\n\n";
   Board tic_tac_toe;
   Player player;
   Computer computer;
+
+  query = "INSERT INTO SCOREBOARD (NAME, WINS, LOSSES) VALUES ('Player',   0, 0);" \
+          "INSERT INTO SCOREBOARD (NAME, WINS, LOSSES) VALUES ('Computer', 0, 0);";
+
+  rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to insert new players into database: " << sqlite3_errmsg(db);
+    log_error("Error: failed to insert new players into database: " + std::string(sqlite3_errmsg(db)));
+    return rc;
+  }
 
   // Upon creation of player object, if player decides to pick there own marker,
   // we will assign the oposite marker to the computer. See Player constructor.
