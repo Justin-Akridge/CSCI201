@@ -36,6 +36,14 @@ public:
     }
   }
 
+  void reset_board() {
+    for (size_t i = 0; i < board.size(); i++) {
+      for (size_t j = 0; j < board[i].size(); j++) {
+        board[i][j] = '#';
+      }
+    }
+  }
+
   void display_board() {
     for (const auto &row : board) {
       for (const auto &col : row) {
@@ -306,17 +314,16 @@ void update_scoreboard(sqlite3 *db, std::string &name, const std::string &update
     return;
   }
 
-  //rc = sqlite3_step(stmt);
+  rc = sqlite3_step(stmt);
 
-  //if (rc != SQLITE_DONE) {
-  //  std::cout << "Error: execution of query statement failed: " << sqlite3_errmsg(db) << '\n';
-  //  log_error("Error: execution of query statement failed: " + std::string(sqlite3_errmsg(db)));
-  //  sqlite3_close(db);
-  //  return;
-  //}
-  
+  if (rc != SQLITE_DONE) {
+    std::cout << "Error: execution of query statement failed: " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: execution of query statement failed: " + std::string(sqlite3_errmsg(db)));
+    sqlite3_close(db);
+    return;
+  }
+
   sqlite3_finalize(stmt);
-
 }
 
 bool check_if_player_exists(std::string &name, sqlite3 *db) {
@@ -404,9 +411,13 @@ void insert_player_into_database(std::string &name, sqlite3 *db) {
   std::cout << "successfully inserted player";
 }
 
+void errorLogCallback(void *pArg, int iErrCode, const char *zMsg){
+  fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
+}
+
 int main() {
   sqlite3 *db;
-
+  sqlite3_config(SQLITE_CONFIG_LOG, errorLogCallback, nullptr);
   int rc = sqlite3_open("Scoreboard.db", &db);
 
   if (rc != SQLITE_OK) {
@@ -428,8 +439,6 @@ int main() {
     std::cout << "Error: Table failed to create: " << sqlite3_errmsg(db) << '\n';
     log_error("Error: Table failed to create: " + std::string(sqlite3_errmsg(db)));
     return rc;
-  } else {
-    std::cout << "Database was created succesfully\n";
   }
 
   std::cout << "------TIC-TAC-TOE-------\n\n";
@@ -440,18 +449,11 @@ int main() {
 
   if (!check_if_player_exists(player.player_name, db)) {
     insert_player_into_database(player.player_name, db);
-    std::cout << "Player did not exist in database!\n";
-  } else {
-    std::cout << "Player already exists in database!\n";
-  }
+  } 
 
   if (!check_if_player_exists(computer.computer_name, db)) {
     insert_player_into_database(computer.computer_name, db);
-    std::cout << "Player did not exist in database!\n";
-  } else {
-    std::cout << "Player already exists in database!\n";
-  }
-
+  } 
 
   // Upon creation of player object, if player decides to pick there own marker,
   // we will assign the oposite marker to the computer. See Player constructor.
@@ -556,7 +558,7 @@ int main() {
     std::cin >> res;
 
     if (res == 'y') {
-      ;
+      tic_tac_toe.reset_board();
     } else if (res == 'n') {
 
       computer.print_score();
