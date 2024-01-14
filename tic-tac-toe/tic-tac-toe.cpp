@@ -198,6 +198,8 @@ public:
     std::cout << "Losses : " << losses << "\n\n";
   } 
 
+  // TODO [_]  add input for player name 
+  std::string player_name = "Player";
   char marker = 'X'; 
   int wins = 0;
   int losses = 0;
@@ -249,7 +251,8 @@ public:
     std::cout << "Wins : " << wins << '\n';
     std::cout << "Losses : " << losses << "\n\n";
   } 
-
+  
+  std::string computer_name = "bot";
   char marker = 'O';
   int wins = 0;
   int losses = 0;
@@ -282,38 +285,123 @@ void log_error(const std::string& error_message) {
   }
 }
 
-void update_scoreboard(sqlite3 *db, const std::string &player_name, const std::string &update_query) {
+void update_scoreboard(sqlite3 *db, std::string &name, const std::string &update_query) {
   sqlite3_stmt *stmt;
 
   int rc = sqlite3_prepare_v2(db, update_query.c_str(), -1, &stmt, nullptr);
 
   if (rc != SQLITE_OK) {
-    std::cout << "Error: failed to prepare query to update scores: " << sqlite3_errmsg(db);
+    std::cout << "Error: failed to prepare query to update scores: " << sqlite3_errmsg(db) << '\n';
     log_error("Error: failed to prepare query to update scores: " + std::string(sqlite3_errmsg(db)));
     sqlite3_close(db);
     return;
   }
 
-  rc = sqlite3_bind_text(stmt, 1, player_name.c_str(), -1, SQLITE_STATIC);
+  rc = sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
 
   if (rc != SQLITE_OK) {
-    std::cout << "Error: failed to bind parameter: " << sqlite3_errmsg(db);
+    std::cout << "Error: failed to bind parameter: " << sqlite3_errmsg(db) << '\n';
     log_error("Error: failed to bind parameter: " + std::string(sqlite3_errmsg(db)));
     sqlite3_close(db);
     return;
   }
 
-  rc = sqlite3_step(stmt);
+  //rc = sqlite3_step(stmt);
 
-  if (rc != SQLITE_DONE) {
-    std::cout << "Error: execution of query statement failed: " << sqlite3_errmsg(db);
-    log_error("Error: execution of query statement failed: " + std::string(sqlite3_errmsg(db)));
-    sqlite3_close(db);
-    return;
-  }
+  //if (rc != SQLITE_DONE) {
+  //  std::cout << "Error: execution of query statement failed: " << sqlite3_errmsg(db) << '\n';
+  //  log_error("Error: execution of query statement failed: " + std::string(sqlite3_errmsg(db)));
+  //  sqlite3_close(db);
+  //  return;
+  //}
   
   sqlite3_finalize(stmt);
 
+}
+
+bool check_if_player_exists(std::string &name, sqlite3 *db) {
+  std::string select_query = "SELECT * FROM SCOREBOARD WHERE NAME = ?;";
+
+  sqlite3_stmt *stmt;
+
+  int rc = sqlite3_prepare_v2(db, select_query.c_str(), -1, &stmt, nullptr);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to prepare select query in (check_if_player_exists)" << sqlite3_errmsg(db) << '\n';
+    log_error("Error: failed to prepare select query in (check_if_player_exists)" + std::string(sqlite3_errmsg(db)));
+    return false;
+  }
+  
+  rc = sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to bind parameter 1 (id in check_if_player_exists): " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: failed to bind parameter 1 (id in check_if_player_exists): " + std::string(sqlite3_errmsg(db)));
+    sqlite3_finalize(stmt);
+    return false;
+  }
+
+  rc = sqlite3_step(stmt);
+
+  if (rc == SQLITE_ROW) {
+    sqlite3_finalize(stmt);
+    return true;
+  }
+
+  sqlite3_finalize(stmt);
+  return false;
+}
+
+void insert_player_into_database(std::string &name, sqlite3 *db) {
+  std::string query = "INSERT OR IGNORE INTO SCOREBOARD (NAME, WINS, LOSSES) VALUES (?, ?, ?);";
+
+  sqlite3_stmt *stmt;
+
+  int rc = sqlite3_prepare_v2(db, query.c_str(), -1, &stmt, nullptr);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to insert new players into database: " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: failed to insert new players into database: " + std::string(sqlite3_errmsg(db)));
+    return;
+  } 
+
+  rc = sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to bind parameter 1 (name): " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: failed to bind parameter 1 (name): " + std::string(sqlite3_errmsg(db)));
+    sqlite3_finalize(stmt);
+    return;
+  }
+
+  rc = sqlite3_bind_int(stmt, 2, 0);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to bind parameter 2 (wins): " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: failed to bind parameter 2 (wins): " + std::string(sqlite3_errmsg(db)));
+    sqlite3_finalize(stmt);
+    return;
+  }
+
+  rc = sqlite3_bind_int(stmt, 3, 0);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: failed to bind parameter 3 (losses): " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: failed to bind parameter 3 (losses): " + std::string(sqlite3_errmsg(db)));
+    sqlite3_finalize(stmt);
+    return;
+  }
+
+  rc = sqlite3_step(stmt);
+
+  if (rc != SQLITE_OK) {
+    std::cout << "Error: execution of insert player query failed: " << sqlite3_errmsg(db) << '\n';
+    log_error("Error: execution of insert player query failed: " + std::string(sqlite3_errmsg(db)));
+    return;
+  }
+
+  sqlite3_finalize(stmt);
+  std::cout << "successfully inserted player";
 }
 
 int main() {
@@ -322,23 +410,26 @@ int main() {
   int rc = sqlite3_open("Scoreboard.db", &db);
 
   if (rc != SQLITE_OK) {
-    std::cout << "Error: database failed to open: " << sqlite3_errmsg(db);
+    std::cout << "Error: database failed to open: " << sqlite3_errmsg(db) << '\n';
     log_error("Error: database failed to open: " + std::string(sqlite3_errmsg(db)));
     sqlite3_close(db);
     return rc;
   }
 
   std::string query = "CREATE TABLE IF NOT EXISTS SCOREBOARD("
-                      "NAME   TEXT NOT NULL,"
-                      "WINS   INT  DEFAULT 0,"
-                      "LOSSES INT  DEFAULT 0);";
+                      "ID     INTEGER  PRIMARY KEY AUTOINCREMENT, "
+                      "NAME   TEXT     NOT NULL, "
+                      "WINS   INT      DEFAULT 0, "
+                      "LOSSES INT      DEFAULT 0);";
    
   rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
 
   if (rc != SQLITE_OK) {
-    std::cout << "Error: Table failed to create: " << sqlite3_errmsg(db);
+    std::cout << "Error: Table failed to create: " << sqlite3_errmsg(db) << '\n';
     log_error("Error: Table failed to create: " + std::string(sqlite3_errmsg(db)));
     return rc;
+  } else {
+    std::cout << "Database was created succesfully\n";
   }
 
   std::cout << "------TIC-TAC-TOE-------\n\n";
@@ -347,16 +438,20 @@ int main() {
   Player player;
   Computer computer;
 
-  query = "INSERT INTO SCOREBOARD (NAME, WINS, LOSSES) VALUES ('Player',   0, 0);" \
-          "INSERT INTO SCOREBOARD (NAME, WINS, LOSSES) VALUES ('Computer', 0, 0);";
-
-  rc = sqlite3_exec(db, query.c_str(), 0, 0, 0);
-
-  if (rc != SQLITE_OK) {
-    std::cout << "Error: failed to insert new players into database: " << sqlite3_errmsg(db);
-    log_error("Error: failed to insert new players into database: " + std::string(sqlite3_errmsg(db)));
-    return rc;
+  if (!check_if_player_exists(player.player_name, db)) {
+    insert_player_into_database(player.player_name, db);
+    std::cout << "Player did not exist in database!\n";
+  } else {
+    std::cout << "Player already exists in database!\n";
   }
+
+  if (!check_if_player_exists(computer.computer_name, db)) {
+    insert_player_into_database(computer.computer_name, db);
+    std::cout << "Player did not exist in database!\n";
+  } else {
+    std::cout << "Player already exists in database!\n";
+  }
+
 
   // Upon creation of player object, if player decides to pick there own marker,
   // we will assign the oposite marker to the computer. See Player constructor.
@@ -386,8 +481,8 @@ int main() {
         player.players_play(player.marker, tic_tac_toe.board);
 
         if (tic_tac_toe.check_for_winner(player.marker)) {
-          update_scoreboard(db, "Player", update_win_query);
-          update_scoreboard(db, "Computer", update_loss_query);
+          update_scoreboard(db, player.player_name, update_win_query);
+          update_scoreboard(db, computer.computer_name, update_loss_query);
           player_to_go_first = 1;
           player.wins++;
           computer.losses++;
@@ -405,8 +500,8 @@ int main() {
         computer.computer_play(player.marker, computer.marker, tic_tac_toe);
 
         if (tic_tac_toe.check_for_winner(computer.marker)) {
-          update_scoreboard(db, "Computer", update_win_query);
-          update_scoreboard(db, "Player", update_loss_query);
+          update_scoreboard(db, computer.computer_name, update_win_query);
+          update_scoreboard(db, player.player_name, update_loss_query);
           player_to_go_first = 0;
           computer.wins++;
           player.losses++;
@@ -424,8 +519,8 @@ int main() {
         computer.computer_play(player.marker, computer.marker, tic_tac_toe);
 
         if (tic_tac_toe.check_for_winner(computer.marker)) {
-          update_scoreboard(db, "Computer", update_win_query);
-          update_scoreboard(db, "Player", update_loss_query);
+          update_scoreboard(db, computer.computer_name, update_win_query);
+          update_scoreboard(db, player.player_name, update_loss_query);
           player_to_go_first = 0;
           computer.wins++;
           player.losses++;
@@ -444,8 +539,8 @@ int main() {
         player.players_play(player.marker, tic_tac_toe.board);
 
         if (tic_tac_toe.check_for_winner(player.marker)) {
-          update_scoreboard(db, "Player", update_win_query);
-          update_scoreboard(db, "Computer", update_loss_query);
+          update_scoreboard(db, player.player_name, update_win_query);
+          update_scoreboard(db, computer.computer_name, update_loss_query);
           player_to_go_first = 1;
           player.wins++;
           computer.losses++;
