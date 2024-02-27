@@ -1,10 +1,3 @@
-/*!
- * Simple chat program (server side).cpp - http://github.com/hassanyf
- * Version - 2.0.1
- *
- * Copyright (c) 2016 Hassan M. Yousuf
- */
-
 #include <iostream>
 #include <string.h>
 #include <sys/types.h>
@@ -16,8 +9,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     /* ---------- INITIALIZING VARIABLES ---------- */
 
     /*  
@@ -25,7 +17,7 @@ int main()
        These two variables store the values returned 
        by the socket system call and the accept system call.
 
-       2. portNum is for storing port number on which
+       2. PORT is for storing port number on which
        the accepts connections
 
        3. isExit is bool variable which will be used to 
@@ -54,8 +46,7 @@ int main()
 
 
     */
-    int client, server;
-    int portNum = 1500;
+    int PORT = 1500;
     bool isExit = false;
     int bufsize = 1024;
     char buffer[bufsize];
@@ -66,12 +57,11 @@ int main()
     /* ---------- ESTABLISHING SOCKET CONNECTION ----------*/
     /* --------------- socket() function ------------------*/
 
-    client = socket(AF_INET, SOCK_STREAM, 0);
+    int client = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (client < 0) 
-    {
-        cout << "\nError establishing socket..." << endl;
-        exit(1);
+    if (client < 0) {
+      cout << "\nError establishing socket..." << endl;
+      exit(1);
     }
 
     /*
@@ -108,16 +98,15 @@ int main()
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = htons(INADDR_ANY);
-    server_addr.sin_port = htons(portNum);
+    server_addr.sin_port = htons(PORT);
 
     /* ---------- BINDING THE SOCKET ---------- */
     /* ---------------- bind() ---------------- */
 
 
-    if ((bind(client, (struct sockaddr*)&server_addr,sizeof(server_addr))) < 0) 
-    {
-        cout << "=> Error binding connection, the socket has already been established..." << endl;
-        return -1;
+    if ((bind(client, (struct sockaddr*)&server_addr,sizeof(server_addr))) < 0) {
+      cout << "=> Error binding connection, the socket has already been established..." << endl;
+      return -1;
     }
 
     /* 
@@ -169,87 +158,86 @@ int main()
     */
 
     int clientCount = 1;
-    server = accept(client,(struct sockaddr *)&server_addr,&size);
+    int server = accept(client,(struct sockaddr *)&server_addr,&size);
 
     // first check if it is valid or not
     if (server < 0) 
-        cout << "=> Error on accepting..." << endl;
+      cout << "=> Error on accepting..." << endl;
 
-    while (server > 0) 
-    {
-        strcpy(buffer, "=> Server connected...\n");
-        send(server, buffer, bufsize, 0);
-        cout << "=> Connected with the client #" << clientCount << ", you are good to go..." << endl;
-        cout << "\n=> Enter # to end the connection\n" << endl;
+    while (server > 0) {
+      strcpy(buffer, "=> Server connected...\n");
+      send(server, buffer, bufsize, 0);
+      cout << "=> Connected with the client #" << clientCount << ", you are good to go..." << endl;
+      cout << "\n=> Enter # to end the connection\n" << endl;
 
-        /* 
-            Note that we would only get to this point after a 
-            client has successfully connected to our server. 
-            This reads from the socket. Note that the read() 
-            will block until there is something for it to read 
-            in the socket, i.e. after the client has executed a 
-            the send().
+      /* 
+          Note that we would only get to this point after a 
+          client has successfully connected to our server. 
+          This reads from the socket. Note that the read() 
+          will block until there is something for it to read 
+          in the socket, i.e. after the client has executed a 
+          the send().
 
-            It will read either the total number of characters 
-            in the socket or 1024
-        */
+          It will read either the total number of characters 
+          in the socket or 1024
+      */
 
-        cout << "Client: ";
-        do {
-            recv(server, buffer, bufsize, 0);
-            cout << buffer << " ";
-            if (*buffer == '#') {
-                *buffer = '*';
-                isExit = true;
-            }
-        } while (*buffer != '*');
+      cout << "Client: ";
+      do {
+          recv(server, buffer, bufsize, 0);
+          cout << buffer << " ";
+          if (*buffer == '#') {
+              *buffer = '*';
+              isExit = true;
+          }
+      } while (*buffer != '*');
 
-        do {
-            cout << "\nServer: ";
-            do {
-                cin >> buffer;
-                send(server, buffer, bufsize, 0);
-                if (*buffer == '#') {
-                    send(server, buffer, bufsize, 0);
-                    *buffer = '*';
-                    isExit = true;
-                }
-            } while (*buffer != '*');
+      do {
+          cout << "\nServer: ";
+          do {
+              cin >> buffer;
+              send(server, buffer, bufsize, 0);
+              if (*buffer == '#') {
+                  send(server, buffer, bufsize, 0);
+                  *buffer = '*';
+                  isExit = true;
+              }
+          } while (*buffer != '*');
 
-            cout << "Client: ";
-            do {
-                recv(server, buffer, bufsize, 0);
-                cout << buffer << " ";
-                if (*buffer == '#') {
-                    *buffer == '*';
-                    isExit = true;
-                }
-            } while (*buffer != '*');
-        } while (!isExit);
+          cout << "Client: ";
+          do {
+              recv(server, buffer, bufsize, 0);
+              cout << buffer << " ";
+              if (*buffer == '#') {
+                  *buffer = '*';
+                  isExit = true;
+              }
+          } while (*buffer != '*');
+      } while (!isExit);
 
-        /* 
-            Once a connection has been established, both ends 
-            can both read and write to the connection. Naturally, 
-            everything written by the client will be read by the 
-            server, and everything written by the server will be 
-            read by the client.
-        */
+      /* 
+          Once a connection has been established, both ends 
+          can both read and write to the connection. Naturally, 
+          everything written by the client will be read by the 
+          server, and everything written by the server will be 
+          read by the client.
+      */
 
-        /* ---------------- CLOSE CALL ------------- */
-        /* ----------------- close() --------------- */
+      /* ---------------- CLOSE CALL ------------- */
+      /* ----------------- close() --------------- */
 
-        /* 
-            Once the server presses # to end the connection,
-            the loop will break and it will close the server 
-            socket connection and the client connection.
-        */
+      /* 
+          Once the server presses # to end the connection,
+          the loop will break and it will close the server 
+          socket connection and the client connection.
+      */
 
-        // inet_ntoa converts packet data to IP, which was taken from client
-        cout << "\n\n=> Connection terminated with IP " << inet_ntoa(server_addr.sin_addr);
-        close(server);
-        cout << "\nGoodbye..." << endl;
-        isExit = false;
-        exit(1);
+      // inet_ntoa converts packet data to IP, which was taken from client
+      cout << "\n\n=> Connection terminated with IP " << inet_ntoa(server_addr.sin_addr);
+      close(server);
+      cout << "\nGoodbye..." << endl;
+      isExit = false;
+      exit(1);
     }
 
     close(client);
