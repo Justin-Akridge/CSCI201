@@ -1,20 +1,16 @@
-#ifndef BANK_H
-#define BANK_H
+#pragma once
 #include <unordered_map>
+#include <string>
+#include <string_view>
 
-class Bank {
+class bank {
 public:
-  Bank();
+  bank();
+  bank(double&, double&);
+  int login(std::string_view, std::string_view);
 private:
   double balance;
   double credit_line;
-  std::string unordered_map<int, int>;
+  std::unordered_map<int, int> account;
 };
 
-Bank::Bank() {
-  balance = 0.0;
-  credit_line = 0.0;
-  std::unordered_map<int, int> account;
-}
-
-#endif

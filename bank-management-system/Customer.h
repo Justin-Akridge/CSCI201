@@ -1,5 +1,4 @@
-#ifndef CUSTOMER_H
-#define CUSTOMER_H
+#pragma once
 #include <string>
 
 class Customer {
@@ -21,5 +20,3 @@ private:
   double savings;
   double credit;
 };
-
-#endif

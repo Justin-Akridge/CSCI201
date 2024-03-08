@@ -1,0 +1,34 @@
+BANK:
+
+database for username/passwords for user confirmation
+  - encrip and decrip passwords
+  - send token to confirm login success
+datbase for user account details
+  - balance
+  - savings
+  - credit
+
+
+CUSTOMER
+create new account
+  [_] create username - usernames can be duplicated
+  [_] create password - passwords can be duplicated - implimate hashing (one - way algo)
+      - you can add a salt (random string of characters added to users info) to the password. This is added before hashing
+  [_] create pin for login - this could mean two factor auth
+
+  | username | salt             | plain-password |salted-password-to-be-hashed  | hashed-password                                                  |
+  |----------|------------------|----------------|------------------------------|------------------------------------------------------------------|
+  | user1    | db97913154884d72 | password1      | password1db97913154884d72    | 5027a576d161385ddcc72e47280f85729fc3ba5e48e0a018e2f68dc7d13e93cc |
+  | user2    | 8fc2884d127fd40b | password1      | password18fc2884d127fd40b    | 6069e0e5a06d41ed0ffb06d0c0e26dd7dea3cb14de80e4075848d3217b40b783 |
+  
+
+How to store:
+  1. The plain-password comes to your back-end application from the client through https.
+  2. The back-end application generates a salt and append (or prepend) it to the plain-password.
+  3. Then, computes the hashed-password using a hashing algorithm (such as SHA-256, MD5 etc)
+  4. Lastly, stores username, salt and hashed-password into the database. (Never stores plain-password and / or salted-password-to-be-hashed.)
+  
+How to Authenticate:
+  1. The plain-password comes to your back-end application from the client through https.
+  2. The back-end application gets user specific salt from the database and append (or prepend) it to the plain-password.
+  3. Then, computes the hashed-password using the same hashing algorithm and compares it with the stored one.
