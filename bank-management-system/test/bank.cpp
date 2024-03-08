@@ -2,18 +2,23 @@
 #include <iostream>
 #include <string>
 #include <cassert>
+#include <random>
+
 //#include <sqlite3>
 
 using namespace std;
+
 class bank {
 public:
   bank() = delete;
   bank(double);
   int login();
+  int get_shiftKey() const;
 private:
   double balance;
   double credit_line;
   std::unordered_map<int, int> account;
+  int shift_key;
 };
 
 bank::bank(double balance_) {
@@ -27,6 +32,7 @@ bank::bank(double balance_) {
   }
   balance = balance_;
   credit_line = 0;
+  generate_shift_key();
 }
 
 std::string encrypt(const std::string& ciphertext, int shift) {
@@ -57,6 +63,24 @@ std::string decrypt(const std::string& ciphertext, int shift) {
   return decrypted_text;
 }
 
+int bank::get_shiftKey() const {
+  return shift_key; 
+}
+
+void bank::generate_shift_key() {
+  using my_engine = default_random_engine;
+  using my_distribution = uniform_int_distribution<>;
+
+  my_engine end {};
+  my_distribution dist {1, 6};
+
+  auto die = [&](){ return dist(end); };
+
+  int x = die();
+
+  bank.shift_key = x;
+}
+
 int bank::login() {
   std::cout << "Login: ";
   std::string username;
@@ -68,8 +92,15 @@ int bank::login() {
 }
 
 int main() {  
+  // generate shift key for encryption
   std::string s = encrypt("Justin", 1);
   std::cout << s << '\n';
   std::string t = decrypt(s, 1);
   std::cout << t << '\n';
+
+TODO: finish implementing this function
+  bank b(1000);
+  std::cout << b.get_shiftKey << std::endl;
+  
+
 }
